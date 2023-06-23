@@ -1,0 +1,236 @@
+---
+tip: translate by openai@2023-06-23 08:48:34
+...
+
+The reason for coloring first part of the route differently from the second one is simple: Both parts use a different transport mechanism. While the first one (green) between the proxy and the bridge uses a fully vendor specific implementation, the second one (blue) has to comply with the SOME/IP specification. "Fully vendor specific" here means, that the vendor not only decides which technology he uses (pipes, sockets, shared mem, \...), but also which serialization format (see [section](#serialization) [7.1](#serialization)) he employs on that path. Here we obviously dive into the realm of optimizations: In an optimized AP product, the vendor would not apply a different (proprietary) serialization format for the path denoted with the green line. Otherwise it would lead to an inefficient runtime behavior. First the proxy within the service consumer app would employ a proprietary serialization of the data before transferring it to the bridge node and then the bridge would have to de-serialize and re-serialize it to SOME/IP serialization format! So even if the AP product vendor has a much more efficient/refined serialization approach for local communication, using it here does not pay, since then the bridge is not able to simply copy the data through between internal and external side. The result is, that for our example scenario we eventually do have a Multi-Binding setup. So even if the technical transport (pipes, unix domain sockets, shared mem, \...) for communication to other local [ara::com](#_bookmark15) applications and to the bridge node is the same, the serialization part of the binding differs.
+
+> 原因很简单：路由的第一部分和第二部分使用不同的传输机制。第一部分（绿色）介于代理和桥梁之间使用完全供应商特定的实现，而第二部分（蓝色）必须遵守SOME/IP规范。“完全供应商特定”这里意味着，供应商不仅决定使用哪种技术（管道、套接字、共享内存等），还决定使用哪种序列化格式（参见[序列化]（＃序列化）[7.1]（＃序列化））。在这里我们显然深入到了优化领域：在优化的AP产品中，供应商不会在用绿线标记的路径上应用不同的（专有的）序列化格式。否则，它将导致低效的运行时行为。首先，服务消费者应用程序中的代理将在传输数据到桥梁节点之前采用专有的序列化，然后桥梁将必须反序列化并重新序列化为SOME / IP序列化格式！因此，即使AP产品供应商有更有效/精细的序列化方法用于本地通信，但在这里使用它并不划算，因为桥梁无法在内部和外部之间简单地复制数据。结果是，对于我们的示例场景，我们最终确实拥有了多绑定设置。因此，即使用于与其他本地[ara :: com]（＃_bookmark15）应用程序和桥梁节点通信的技术传输（管道、Unix域套接字、共享内存等）相同，绑定的序列化部分也不同。
+
+
+Regarding the second noticeable point in the figure: We drew a box around the ser- vice discovery and SOME/IP bridge functionality since in product implementations it is very likely, that it is integrated into one component/running within one (demon) pro- cess. Both functionalities are highly related: The discovery/registry part also consists of parts local to the ECU (receiving local registrations/offers and serving local Find- Service requests) and network related functions (SOME/IP service discovery based offers/finds) , where the registry has to arbitrate. This arbitration in its core is also a bridging functionality.
+
+> 关于图中的第二个显著点：我们绘制了一个框围着服务发现和SOME / IP桥接功能，因为在产品实施中很可能将它们整合到一个组件/运行在一个（恶魔）进程中。这两种功能高度相关：发现/注册部分也包括局部ECU（接收本地注册/报价和提供本地查找服务请求）和网络相关功能（基于SOME / IP服务发现的报价/查找），其中注册表必须进行仲裁。这种仲裁的核心也是桥接功能。
+
+## ara::com and AUTOSAR meta-model relationship
+
+
+Throughout this document we paid attention to explain ara::com API ideas and mechanisms **without** relating to the concrete/specific AP meta-model (the manifest parts of it), which is the basis to formally describe the [SI](#_bookmark71) signature (and partially the behavior) from which the ara::com API artifacts like ProxyClass and Skeleton- Class and data types used in the communication are generated/created. In [5.1](#_bookmark100) we even introduced an oversimplified/synthetic IDL, just to shield the reader from complex- ities of the real meta-model/IDL, which wouln't have added any value at that point.
+
+> 在本文中，我们注意到解释ara :: com API的想法和机制，而无需涉及具体的AP元模型（其显示部分），该元模型是正式描述[SI]（# _bookmark71）签名（和部分行为）的基础，从而生成/创建ara :: com API的工件，如ProxyClass和Skeleton-Class以及用于通信的数据类型。在[5.1]（# _bookmark100）中，我们甚至引入了一种过度简化/合成的IDL，仅仅是为了避免读者陷入真实的元模型/IDL的复杂性，这在这一点上不会增加任何价值。
+
+
+This chapter shall by no means serve as a thorough explanation of the AUTOSAR meta-model, which is fully described in its own document, but it shall shed some light on the relation between [ara::com](#_bookmark15) and the meta-model parts described in \[[2](#_bookmark1)\]. So bear in mind, that the following parts are still somewhat high level and try to give a basic understanding of the relationship.
+
+> 本章不会作为AUTOSAR元模型的详细解释（详细解释见有关文档），但将揭示[ara :: com](#_bookmark15)与\[[2](#_bookmark1)\]中描述的元模型部分之间的关系。因此，请记住，以下部分仍然是比较高级别的，试图给出一个基本的理解关系。
+
+### Connection to AUTOSAR_TR_AdaptiveMethodology
+
+
+Overview of Modeling elements and how they are related to each other: [SI](#_bookmark71), Deploy- ment, Actual generation dependant from provided Deployment Information (E.g. also [SI](#_bookmark71) Elements that will be generated later and connection to Service Instance Manifest)
+
+> 模型元素概述及其相互关系：[SI]（＃_bookmark71），部署，根据提供的部署信息实际生成（例如也是[SI]（＃_bookmark71）元素，稍后将生成，并与服务实例清单连接）
+
+
+AUTOSAR Adaptive Platform methodology explains the process aspects necessary to build an Adaptive AUTOSAR system and how they relate to each other \[TR_AMETH\_- 00100\]. It defines activities and work products delivered or consumed \[TR_AMETH\_- 00102\] and the Roles performed by OEMs and suppliers.
+
+> AUTOSAR Adaptive Platform 方法论解释了构建Adaptive AUTOSAR系统所必需的过程方面以及它们彼此之间的关系\[TR_AMETH\_- 00100\]。它定义了汽车制造商和供应商执行的活动和工作产品\[TR_AMETH\_- 00102\]。
+
+
+Major steps involved in the development of Adaptive Software are
+
+> 主要参与自适应软件开发的步骤有：
+
+- Architecture and Design
+- Adaptive Software Development
+- Integration and Deployment
+
+
+Adaptive applications run on top of ARA layer and exchanges the information using [SI](#_bookmark71)s and Ports. Important contribution for [ara::com](#_bookmark15) API work performed during the Inte- gration and Deployment step of Adaptive Methodology. It supports the generation of [SI](#_bookmark71) Description ARXML file, which aggregates the [SI](#_bookmark71)s and ports. [SI](#_bookmark71)s for service-oriented communication defined by Events, Methods and Fields \[ [5.1](#_bookmark100)\]. This is done independent of Software components or Transport layer used for underlying communication.
+
+> 适应性应用程序运行在ARA层之上，并使用[SI](#_bookmark71)和端口交换信息。在适应性方法论的集成和部署步骤期间，对[ara::com](#_bookmark15) API的重要贡献。它支持生成[SI](#_bookmark71)描述ARXML文件，该文件聚合[SI](#_bookmark71)和端口。[SI](#_bookmark71)用于基于事件、方法和字段定义的面向服务的通信[5.1](#_bookmark100)。这是独立于用于底层通信的软件组件或传输层完成的。
+
+
+Adaptive Platform supports two types of ports namely Provided and Required. [SI](#_bookmark71) along with Provided port details used for the generation of the Service Skeleton class and Required port details used for the generation of Proxy classes \[[Figure](#_bookmark117) [5.2](#_bookmark117)\]. Proxy and Skeleton classes use [ara::com](#_bookmark15) API to communicate with other Adaptive Platform clusters and Adaptive Applications.
+
+> 适应性平台支持两种端口类型，即提供的端口和所需的端口（SI），以及用于生成服务骨架类的提供端口详细信息和用于生成代理类的所需端口详细信息（图5.2）。代理和骨架类使用ara :: com API与其他适应性平台集群和适应性应用程序进行通信。
+
+
+Service instances are configured, notably the binding of the [SI](#_bookmark71)s to a chosen transport layer, whether a specific service instance is either Provided or Required and whether there is a mapping to a dedicated Machine. The configurations of the service instance are manifested in the Service Instance Manifest.
+
+> 服务实例已配置，特别是将[SI]（#_bookmark71）绑定到所选择的传输层，无论特定服务实例是提供还是要求，以及是否将其映射到专用机器。服务实例的配置体现在服务实例清单中。
+
+
+Executable of an Adaptive Software are instantiated by means of the Execution Man- ifest. Instantiation here means to bind the executables to the context of specific pro- cesses of the operating system. Each process may start with a different start-up con- figuration depending on a machine mode. Further on, the Execution Manifest also defines Software process dependencies.
+
+> 可执行的自适应软件通过执行清单实例化。这里的实例化意味着将可执行文件绑定到操作系统特定进程的上下文中。每个进程可以根据机器模式以不同的启动配置开始。此外，执行清单还定义了软件进程依赖关系。
+
+### Service Interface
+
+
+The most important meta-model element from the [ara::com](#_bookmark15) perspective is the [SI](#_bookmark71). Most important, because it defines everything signaturewise of an [ara::com](#_bookmark15) proxy or skeleton. The [SI](#_bookmark71) describes the methods, fields and the methods a [SI](#_bookmark71) consists of and how the signatures of those elements (arguments and data types) look like. So the
+
+> 从[ara::com](#_bookmark15)的角度来看，最重要的元模型元素是[SI](#_bookmark71)。最重要的是，它定义了[ara::com](#_bookmark15)代理或骨架的一切签名。[SI](#_bookmark71)描述了一个[SI](#_bookmark71)所包含的方法、字段以及这些元素（参数和数据类型）的签名是什么样子的。因此，[SI](#_bookmark71)是[ara::com](#_bookmark15)中最重要的元素。
+
+
+[5.1](#_bookmark100) is basically a simplification of meta-model [SI](#_bookmark71) and the real meta-model data type system.
+
+> [5.1](#_bookmark100)基本上是[SI](#_bookmark71)元模型的简化，以及真实的元模型数据类型系统。
+
+
+The relationship between the meta-model element [SI](#_bookmark71) and [ara::com](#_bookmark15) is therefore clear:
+
+> [SI](#_bookmark71)和[ara::com](#_bookmark15)之间的关系很清楚：
+
+
+[ara::com](#_bookmark15) proxy and skeleton classes get generated from [SI](#_bookmark71).
+
+> [ara::com](#_bookmark15) 代理和骨架类可以从[SI](#_bookmark71)生成。
+
+### Software Component
+
+
+With software components, the AUTOSAR methodology defines a higher order ele- ment than just interfaces. The idea of a software component is to describe a reusable part of software with well defined interfaces. For this the AUTOSAR manifest spec- ification defines a model element SoftwareComponentType, which is an abstract element with several concrete subtypes, of which the subtype AdaptiveApplica- tionSwComponentType is the most important one for Adaptive Application software developers. A SoftwareComponentType model element is realized by C++ code. Which [SI](#_bookmark71)s such a component \"provides to\" or \"requires from\" the outside is expressed by ports. Ports are typed by [SI](#_bookmark71)s. P-ports express that the [SI](#_bookmark71), which types the port, is provided, while R-ports express, that the [SI](#_bookmark71), which types the port, is required by the SoftwareComponentType.
+
+> 软件组件的AUTOSAR方法学定义了比接口更高级别的元素。软件组件的想法是用定义良好的接口来描述可重用的软件部件。为此，AUTOSAR清单规范定义了一个模型元素SoftwareComponentType，它是一个抽象元素，有几个具体的子类型，其中AdaptiveApplica-tionSwComponentType是自适应应用软件开发人员最重要的子类型。SoftwareComponentType模型元素由C ++代码实现。这个组件“提供给”或“从外部需求”的是由端口表达的。端口的类型是SI。P端口表示类型化端口的SI被提供，而R端口表示类型化端口的SI被SoftwareComponentType所需要的。
+
+
+The figure [Figure](#_bookmark209) [7.6](#_bookmark209) gives a coarse idea, how the model view relates to the code implementation.
+
+> 图7.6给出了一个粗略的概念，模型视图与代码实现之间的关系。
+
+![](./media/image88.png)
+
+**Figure 7.6:** []{#\_bookmark209 .anchor}**meta-model to Implementation**
+
+
+For both of the different SoftwareComponentTypes A and B from the example in the upper part (meta-model level) a concrete implementation exists on implementation level (lower part in the figure). The realization/implementation of R-Port of Soft- wareComponentType A is based on an instance of [ara::com](#_bookmark15) proxy class on imple- mentation level, while the P-Port implementation of SoftwareComponentType B is using an instance of [ara::com](#_bookmark15) skeleton class. Proxy and skeleton class are gener- ated from the [SI](#_bookmark71) definition [SI](#_bookmark71), which is referenced by the corresponding ports. In this example it is the [SI](#_bookmark71) \"RadarService\", which we already use throughout the document.
+
+> 两个不同的软件组件类型A和B（上部图中的元模型层）都有具体的实现（图中下部）。软件组件类型A的R端口的实现基于实现层的[ara :: com]（＃_bookmark15）代理类的实例，而软件组件类型B的P端口实现则使用[ara :: com]（＃_bookmark15）骨架类的实例。代理类和骨架类是从[SI]（＃_bookmark71）定义[SI]（＃_bookmark71）生成的，该定义由相应的端口引用。在本示例中，它是我们在整个文档中使用的“RadarService” [SI]（＃_bookmark71）。
+
+
+Such a code fragment, which realizes a SoftwareComponentType can obviously be re-used. On C++ implementation level an implementation of an AdaptiveAppli- cationSwComponentType typically boils down to one or several C++ classes. So re-use simply means instantiating this class/those classes in different contexts multiple times. Here we can basically distinguish the following cases:
+
+> 这样一个实现SoftwareComponentType的代码片段显然可以被重用。在C++实现级别，AdaptiveApplicationSwComponentType的实现通常归结为一个或多个C++类。因此重用只是意味着在不同的上下文中多次实例化这个类/这些类。在这里我们基本上可以区分以下几种情况：
+
+- Explicit multiple instantiation of the C++ class(es) within Code.
+- Implicit multiple instantiation by starting/running the same executable multiple times.
+
+
+The first case still belongs to the realm of \"implementation level\".
+
+> 第一种情况仍属于"实施层面"的范畴。
+
+![](./media/image89.png)
+
+**Figure 7.7: Multiple Instantiation in Implementation Contexts**
+
+
+The figure above shows an arbitrary example, where the implementations of A and B are instantiated in different contexts. On the lower left side there is an Executable 1, which directly uses two instances of As impl and one instance of Bs impl. Opposed to that, the right side shows an Executable 2, which \"directly\" (i.e. on its top most level) uses one instance of Bs impl and an instance of a composite software component, which itself \"in its body\" again instantiates one instance of As and Bs impl. Note: This natural implementation concept of composing software components from other compo- nents to a bigger/composite artefact is fully reflected in the AUTOSAR meta-model in the form of a CompositionSwComponentType, which itself is a SoftwareCompo- nentType and allows arbitrary recursive nesting/compositing of software components.
+
+> 图中展示了一个任意的例子，A和B的实现被实例化在不同的上下文中。在左下方有一个可执行文件1，它直接使用两个A的实现实例和一个B的实现实例。相反，右边展示了一个可执行文件2，它“直接”（即在最顶层）使用一个B的实现实例和一个组合软件组件的实例，它本身“在其体内”又实例化了一个A和B的实现实例。注意：这种将软件组件组合成更大/复合的工件的自然实现概念在AUTOSAR元模型中完全体现为CompositionSwComponentType，它本身是一个SoftwareComponentType，允许任意递归嵌套/组合软件组件。
+
+
+The second case on the other hand belongs to the realm of \"deployment level\" and shall be clarified in the following sub-chapter.
+
+> 第二种情况另一方面属于“部署层”的领域，将在下一个子章节中进行澄清。
+
+### Adaptive Application/Executables and Processes
+
+
+Deployable software units within AP are so called Adaptive Applications (the corre- sponding meta-model element is AdaptiveAutosarApplication). Such an Adap- tive Application consists of 1..n executeables, which are in turn built up by instantiating CompositionSwComponentType (with arbitrary nesting) as described in the previ- ous chapter. Typically integrators then decide, which Adaptive Applications in the form of its 1..n executables they start at all and how many times they start a certain Adaptive
+
+> 可部署的软件单元在AP中被称为自适应应用程序（相应的元模型元素是AdaptiveAutosarApplication）。这样的自适应应用程序由1..n可执行文件组成，它们又通过按照前面章节描述的方式实例化CompositionSwComponentType（任意嵌套）而构建。通常，集成器会决定以1..n可执行文件的形式启动哪些自适应应用程序，以及启动某个自适应应用程序的次数。
+
+![](./media/image94.png)Application/its associated executables. That means for those kind of implicit instanti- ation no specific code has to be written! Integrators rather have to deal with machine configuration, to configure how many times Applications get started. A started Adaptive Application then turns into 1..n processes (depending on the number of executables it is made of). We call this then the \"deployment level\".
+
+**Figure 7.8: Instantiation of Adaptive Applications in Deployment**
+
+
+The figure above shows a simple example, where we have two Adaptive Applications, where each of those exactly consists of one executable. Adaptive Application 1 with Executable 1 is deployed twice, leading to Process 1 and Process 2 after executable start, where Application 2, which consists of Executable 2 is deployed once leading to Process 3 after start.
+
+> 图中给出了一个简单的例子，我们有两个自适应应用，每个应用都只有一个可执行文件。自适应应用1（包含可执行文件1）被部署了两次，在可执行文件启动后导致进程1和进程2，自适应应用2（包含可执行文件2）只被部署了一次，在可执行文件启动后导致进程3。
+
+### Usage of meta-model identifiers within ara::com based application code
+
+
+The explanations of meta-model/[ara::com](#_bookmark15) relation up to this point should help to understand the structure of instance specifiers used in ResolveInstanceIDs described in [4.3](#_bookmark94). As described in the previous chapter and depicted in [Figure](#_bookmark209) [7.6](#_bookmark209) the instance specifiers relate in a certain way to the corresponding port in the model of the SoftwareComponentType. If you followed the previous chapters the **port name** of the model alone isn't sufficient to clearly identify it in its final instantiation, where the same component implementation might be instantiated multiple times in the code and then eventually started multiple times in different processes. Instance IDs obviously have to be assigned to objects, which finally have a distinct identity in an deployment.
+
+> 至此，元模型/[ara :: com](#_bookmark15)关系的解释应该有助于理解[4.3](#_bookmark94)中描述的ResolveInstanceIDs中使用的实例指定符的结构。如前章所述并如[图7.6](#_bookmark209)所示，实例指定符与软件组件类型模型中的相应端口以某种方式相关联。如果您遵循了以前的章节，则模型的**端口名称**本身不足以在最终实例化中清楚地标识它，其中相同的组件实现可能在代码中多次实例化，然后最终在不同进程中多次启动。显然，必须为具有最终在部署中具有明确身份的对象分配实例ID。
+
+![](./media/image101.png)Process specific Service Instance Manifest
+
+**Figure 7.9: InstanceIds in Deployment**
+
+
+The figure above outlines the \"problem\" with a simple example. Within Executable 2 there are three instantiations of SoftwareComponentType B implementation in different contexts (nesting levels). All instances do provide a specific instance of SI RadarService. The integrator, who applies the Service Instance Manifest for Process 2 has to do the technical mapping on [ara::com](#_bookmark15) level. I.e. he has to de- cide, which technical transport binding is to be used in each of the B instantiations and subsequently also, which technical transport binding specific instance ID. In our example, the integrator wants to provide the SI RadarService via SOME/IP binding and an SOME/IP specific instance ID \"1\" in the context of the B instantiation, which is nested inside the composite component on the right side, while he decides to pro- vide the SI RadarService via local[IPC](#_bookmark70)(Unix domain socket) binding and a Unix domain socket specific instance ID \"/tmp/Radar/3\" and \"/tmp/Radar/4\" in the context of the B instantiations on the left side, which are not nested (they are instantiated at \"top-level\" of the executable). Here it gets obvious, that within the Service Instance Manifest, which allows to specify the mapping of port instantiations within a Process to techni- cal bindings and their concrete instance IDs, the sole usage of the **port name** from the model isn't sufficient to differentiate. To get unique identifiers within an executable (and therefore a process), the nature of nested instantiation and re-use of SoftwareCom- ponentTypes has to be considered. Every time a SoftwareComponentType gets instantiated, its instantiation gets a unique name within its instantiation context. This concept applies to both: C++ implementation level and AUTOSAR meta-model level! In our concrete example this means:
+
+> 图中简单地概括了“问题”。在可执行文件2中，有三个不同上下文（嵌套级别）的软件组件类型B实例化。所有实例都提供特定的SI雷达服务实例。应用进程2的服务实例清单的集成器必须在[ara :: com](#_bookmark15)级别上进行技术映射。也就是说，他必须决定，每个B实例化中将使用哪种技术传输绑定，并且随后还要决定哪种技术传输绑定特定的实例ID。在我们的示例中，集成器希望通过SOME / IP绑定和SOME / IP特定的实例ID“1”提供SI雷达服务，而在右侧复合组件嵌套的B实例化的上下文中，他决定通过本地[IPC](#_bookmark70)（Unix域套接字）绑定和Unix域套接字特定的实例ID“/ tmp / Radar / 3”和“/ tmp / Radar / 4”提供SI雷达服务，而不是在可执行文件的“顶级”级别实例化的左侧B实例化的上下文中。在这里，很明显，只使用模型中的**端口名称**，在服务实例清单中，用于指定进程中端口实例化到技术绑定及其具体实例ID的映射，是不够的。为了在可执行文件（因此进程）中获得唯一标识符，必须考虑嵌套实例化和软件组件类型的重用。每次实例化软件组件类型时，它的实例化在其实例化上下文中都具有唯一的名称。这个概念适用于C ++实现级别和AUTOSAR元模型级别！在我们的具体示例中，这意味着：
+
+- B instantiations on top level get unique names on their level: \"B_Inst_1\" and \"B_Inst_2\"
+- B instantiation within the Composite Component Type gets unique name on this level: \"B_Inst_1\"
+- Composite Component instantiation on top level gets unique name on its level: \"Comp_Inst_1\"
+
+- From the perspective of the executable/process, we therefore have unique iden- tifiers for all instances of B:
+
+> 从可执行文件/进程的角度来看，我们为B的所有实例都有唯一的标识符。
+
+  - \"B_Inst_1\"
+  - \"B_Inst_2\"
+  - \"Comp_Inst_1::B_Inst_1\"
+
+
+For an Adaptive Software Component developer this then means in a nutshell:
+
+> 对于一个自适应软件组件开发者，这意味着：简而言之，
+
+
+If you construct an instance specifier to be transormed via ResolveInstan- ceIDs() into an [ara::com::InstanceIdentifier](#_bookmark31) or used directly with Find- Service() (R-port side from model perspective) or as [ctor](#_bookmark23) parameter for a skeleton (P-port side from model perspective), it shall look like:
+
+> 如果您构建一个实例规范，以通过ResolveInstanceIDs（）转换为[ara :: com :: InstanceIdentifier]（#_bookmark31）或直接使用Find-Service（）（模型视角的R端）或作为[ctor]（#_bookmark23）参数进行骨架（模型视角的P端），它应该看起来像：
+
+
+\<context identifier\>/\<port name\>
+
+> \<上下文标识符\>/\<端口名称\>
+
+
+Port name is to be taken from the model, which describes the AdaptiveApplica- tionSwComponentType to be developed. Since you are not necessarily the person who decides where and how often your component gets deployed, you should fore- see, that your AdaptiveApplicationSwComponentType implementation can be handed over a stringified \<context identifier\>, which you
+
+> 模型描述要开发的AdaptiveApplica-tionSwComponentType的端口名称应该被采用。由于您不一定是决定您的组件何时何地部署的人，您应该预见到，您的AdaptiveApplicationSwComponentType实现可以接收一个字符串\<上下文标识符\>，它将提供给您。
+
+
+- either use directly, when constructing [ara::core::InstanceSpecifier](#_bookmark42) to instantiate proxies/skeleton, which reflect your own component ports.
+
+> 使用[ara::core::InstanceSpecifier](#_bookmark42)直接构造时，可以反映您自己的组件端口来实例化代理/骨架。
+
+- \"hand over\" to other AdaptiveApplicationSwComponentType implementa- tions, which you instantiate from your own AdaptiveApplicationSwCompo- nentType implementation (that is creating a new nesting level)
+
+> 交付给其他AdaptiveApplicationSwComponentType实现，这些实现是从您自己的AdaptiveApplicationSwComponentType实现中创建的新嵌套级别。
+
+
+**Note**: Since AUTOSAR AP does **not** prescribe, how the component model on meta- model level shall be translated to (C++) implementation level, component instantiation (nesting of components) and \"handing over\" of the \<context identifier\> is up to the implementer! It might be a \"natural\" solution, to solve this by a \<context iden- tifier\> ctor parameter for multi instantiable AdaptiveApplicationSwCompo- nentTypes.
+
+> **注意**：由于AUTOSAR AP没有规定如何将元模型层的组件模型转换为（C ++）实现层，组件实例化（组件嵌套）以及\<上下文标识符\>的“交接”由实施者自行决定！通过\<上下文标识符\> ctor参数为可多次实例化的AdaptiveApplicationSwComponentTypes解决这个问题可能是一个“自然”的解决方案。
+
+## Abstract Protocol Network Binding Examples
+
+
+This chapter presents Abstract Protocol Network Bindings expamples using an In- stanceSpecifier.
+
+> 本章介绍了使用InstanceSpecifier的抽象协议网络绑定示例。
+
+![](./media/image107.jpeg){width="6.114093394575678in" height="2.4010411198600177in"}
+
+**Figure 7.10: Find Service using abstract network binding**
+
+![](./media/image108.jpeg){width="6.18in" height="2.715in"}
+
+**Figure 7.11: Find Service using abstract network binding - ANY**
+
+![](./media/image109.jpeg){width="6.24in" height="2.29in"}
+
+**Figure 7.12: Skeleton creation using abstract network bindings**
+
+![](./media/image110.jpeg){width="6.255in" height="2.01in"}
+
+**Figure 7.13: Multiple usage of the same service instance manifest for an abstract binding**
