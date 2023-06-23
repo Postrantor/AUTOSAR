@@ -153,12 +153,9 @@ The glossary below includes acronyms and abbreviations relevant to the explanati
 
 > 以下词汇表包括与 ara::com API 解释相关的缩略词和缩写。
 
-```
-```
+# 3. Introduction
 
-3. # Introduction
-
-   1. ## Approach
+## 1. Approach
 
 Why did AUTOSAR invent yet another communication middleware API/technology, while there are dozens on the market --the more so as one of the guidelines of Adaptive Platform was to reuse existing and field proven technology?
 
@@ -215,9 +212,9 @@ The following statement is the basis for basically all AUTOSAR AP specifications
 
 > [ara::com] 仅定义了应用程序开发人员可见的 API 签名和其行为。提供这些 API 的实现以及底层中间件传输层的责任由 AUTOSAR AP 供应商承担。
 
-For a rough parallel with the AUTOSAR Classic Platform, [ara::com] can be seen as fulfilling functional requirements in the Adaptive Platform similar to those covered in the Classic Platform by the RTE APIs [[6]] such as Rte_Write, Rte_Read, Rte_Send, Rte_Receive, Rte_Call, Rte_Result.
+For a rough parallel with the AUTOSAR Classic Platform, [ara::com] can be seen as fulfilling functional requirements in the Adaptive Platform similar to those covered in the Classic Platform by the RTE APIs [6] such as Rte_Write, Rte_Read, Rte_Send, Rte_Receive, Rte_Call, Rte_Result.
 
-> 为了与 AUTOSAR Classic Platform 形成粗略的平行，[ara::com] 可以被视为在 Adaptive Platform 中满足类似于 RTE API [[6]]中的 Rte_Write，Rte_Read，Rte_Send，Rte_Receive，Rte_Call 和 Rte_Result 在 Classic Platform 中涵盖的功能要求。
+> 为了与 AUTOSAR Classic Platform 形成粗略的平行，[ara::com] 可以被视为在 Adaptive Platform 中满足类似于 RTE API [6]中的 Rte_Write，Rte_Read，Rte_Send，Rte_Receive，Rte_Call 和 Rte_Result 在 Classic Platform 中涵盖的功能要求。
 
 Overview of Modeling elements and how they are related to each other: [SI], Deployment, Actual generation dependant from provided Deployment Information (E.g. also [SI] Elements that will be generated later and connection to Service Instance Manifest)
 
@@ -235,21 +232,17 @@ Major steps involved in the development of Adaptive Software are
 - Adaptive Software Development
 - Integration and Deployment
 
-Adaptive applications run on top of ARA layer and exchanges the information using [SI]s and Ports. Important contribution for [ara::com] API work performed during the Integration and Deployment step of Adaptive Methodology. It supports the generation of [SI] Description ARXML file, which aggregates the [SI]s and ports. [SI]s for service-oriented communication defined by Events, Methods and Fields [ [5.1]]. This is done independent of Software components or Transport layer used for underlying communication.
+Adaptive applications run on top of ARA layer and exchanges the information using [SI]s and Ports. Important contribution for [ara::com] API work performed during the Integration and Deployment step of Adaptive Methodology. It supports the generation of [SI] Description ARXML file, which aggregates the [SI]s and ports. [SI]s for service-oriented communication defined by Events, Methods and Fields [ [5.1]. This is done independent of Software components or Transport layer used for underlying communication.
 
 > 应用程序可以在 ARA 层之上运行，并使用 SI 和端口来交换信息。在自适应方法论的集成和部署步骤中，为 ara::com API 工作做出了重要贡献。它支持生成 SI 描述 ARXML 文件，该文件聚合了 SI 和端口。针对基于底层通信的服务导向通信定义的 SI，其由事件、方法和字段组成[5.1]。这是独立于用于底层通信的软件组件或传输层完成的。
 
-Adaptive Platform supports two types of ports namely Provided and Required. [SI] along with Provided port details used for the generation of the Service Skeleton class and Required port details used for the generation of Proxy classes [[Figure] [5.2]]. Proxy and Skeleton classes use [ara::com] API to communicate with other Adaptive Platform clusters and Adaptive Applications.
+Adaptive Platform supports two types of ports namely Provided and Required. [SI] along with Provided port details used for the generation of the Service Skeleton class and Required port details used for the generation of Proxy classes [Figure] [5.2]. Proxy and Skeleton classes use [ara::com] API to communicate with other Adaptive Platform clusters and Adaptive Applications.
 
-> 适应性平台支持两种端口，即提供的端口和需要的端口。[SI]除了提供的端口详细信息用于生成服务骨架类，所需的端口详细信息用于生成代理类[[图] \> [5.2]]。代理和骨架类使用[ara::com]API 与其他适应性平台集群和适应性应用程序进行通信。
+> 适应性平台支持两种端口，即提供的端口和需要的端口。[SI]除了提供的端口详细信息用于生成服务骨架类，所需的端口详细信息用于生成代理类[图] \> [5.2]。代理和骨架类使用[ara::com]API 与其他适应性平台集群和适应性应用程序进行通信。
 
-Service instances are configured, notably the binding of the [SI]s to a chosen transport layer, whether a specific service instance is either Provided or Required and whether
+Service instances are configured, notably the binding of the [SI]s to a chosen transport layer, whether a specific service instance is either Provided or Required and whether there is a mapping to a dedicated Machine. The configurations of the service instance are manifested in the Service Instance Manifest.
 
-> 服务实例已配置，特别是将[SI]绑定到所选择的传输层，无论特定服务实例是提供还是要求，以及是否
-
-there is a mapping to a dedicated Machine. The configurations of the service instance are manifested in the Service Instance Manifest.
-
-> 有一个映射到专用机器。服务实例的配置体现在服务实例清单中。
+> 服务实例已配置，特别是将[SI]绑定到所选择的传输层，无论特定服务实例是提供还是要求，以及是否有一个映射到专用机器。服务实例的配置体现在服务实例清单中。
 
 Executable of an Adaptive Software are instantiated by means of the Execution Manifest. Instantiation here means to bind the executables to the context of specific processes of the operating system. Each process may start with a different start-up configuration depending on a machine mode. Further on, the Execution Manifest also defines Software process dependencies.
 
@@ -265,7 +258,7 @@ Our definition of the notion \"as lean as possible\" in this context means: Esse
 
 > 在此上下文中，我们对"尽可能精简"的概念的定义是：该 API 实际上只处理服务消费者和服务提供者实现端处理方法、字段和事件通信的功能。
 
-If we decided to provide a bit more than just that, then the reason generally was *\"If solving a certain communication-related problem ABOVE our API could not be done efficiently, we provide the solution as part of* [*ara::com*] *API layer.\"*
+If we decided to provide a bit more than just that, then the reason generally was _\"If solving a certain communication-related problem ABOVE our API could not be done efficiently, we provide the solution as part of_ [*ara::com*] _API layer.\"_
 
 > 如果我们决定提供比此更多的服务，那么一般的原因是：如果不能有效地解决我们 API 以上的某个通信相关问题，我们就提供 ara::com API 层的解决方案。
 
@@ -285,13 +278,9 @@ One of the central design points was --as already stated in the introduction --t
 
 > 一个核心的设计点就是，如引言中所述，要同时支持轮询和事件驱动的编程范式。
 
-So you will see in the later chapters, that the application developer, when using [ara:-]
+So you will see in the later chapters, that the application developer, when using [ara::com] is free to chose the approach, which fits best to his application design, independent whether he implements the service consumer or service provider side of a communication relation.
 
-> 在后面的章节中你会看到，当使用 [ara:-]时，应用程序开发者
-
-[:com] is free to chose the approach, which fits best to his application design, independent whether he implements the service consumer or service provider side of a communication relation.
-
-> [:com]可以免费选择最适合其应用设计的方法，无论他实现的是通信关系的服务消费者还是服务提供者端。
+> 在后面的章节中你会看到，当使用 [ara::com]时，应用程序开发者可以免费选择最适合其应用设计的方法，无论他实现的是通信关系的服务消费者还是服务提供者端。
 
 This allows for support of strictly real-time scheduled applications, where the application requires total control of what (amount) is done when and where unnecessary context switches are most critical.
 
@@ -309,7 +298,7 @@ For enhanced usability, comfort and a breeze of elegance [ara::com] API exploits
 
 > 为了提高可用性、舒适度和优雅的气息，[ara::com] API 利用 C++ 的特性，如智能指针、模板函数和类，已经证明的异步操作概念以及合理的运算符重载。
 
-4. # Fundamentals
+1. # Fundamentals
 
    1. ## Proxy/Skeleton Architecture
 
@@ -328,7 +317,6 @@ So with [ara::com] we also decided to use this classical Proxy/Skeleton architec
 > 因此，我们还决定采用这种经典的代理/骨架架构模式，并相应地将其命名为 [ara::com]。
 
 ![](./media/image1.png)
-
 **Figure 4.1: Proxy Skeleton Pattern**
 
 The basic idea of this pattern is, that from a formal service definition two code artifacts are generated:
@@ -359,9 +347,9 @@ So the service side application code interacts with this middleware adapter eith
 
 > 所以服务端应用程序代码可以通过实现生成类的抽象方法或者调用该生成类的方法与中间件适配器交互。
 
-Further details regarding the structure of [ara::com] Proxies and Skeletons are shown in section [section](#proxy-class) [5.3](#proxy-class) and [section](#skeleton-class) [5.4](#skeleton-class). Regarding this design pattern in general and its role in middleware implementations, see [[7]] and [[8]].
+Further details regarding the structure of [ara::com] Proxies and Skeletons are shown in section [section](#proxy-class) [5.3](#proxy-class) and [section](#skeleton-class) [5.4](#skeleton-class). Regarding this design pattern in general and its role in middleware implementations, see [7] and [8].
 
-> 关于 [ara::com] 代理和骨架的结构的更多细节在[第 5.3 节](#proxy-class)和[第 5.4 节](#skeleton-class)中有所展示。关于这种设计模式及其在中间件实现中的作用，请参见[[7]]和[[8]]。
+> 关于 [ara::com] 代理和骨架的结构的更多细节在[第 5.3 节](#proxy-class)和[第 5.4 节](#skeleton-class)中有所展示。关于这种设计模式及其在中间件实现中的作用，请参见[7]和[8]。
 
 ## Means of Communication
 
@@ -397,7 +385,6 @@ Triggers are used by the server to notify when a specific condition occurs. It d
 > 触发器由服务器用于在特定条件发生时通知。它不传输任何数据。它使用与事件相同的订阅和通知机制。
 
 ![](./media/image4.png)
-
 **Figure 4.2:** []**ara::com event based communication**
 
 ## ara::com Method based communication
@@ -412,14 +399,15 @@ The server can be configured for different processing modes of method invocation
 
 - **Event-driven, concurrent** (kEvent): Incoming service method calls are processed in an event based manner.
 
-> 事件驱动，并发(kEvent)：来自服务方法调用以基于事件的方式处理。**Event-driven, sequential** (kEventSingleThread): Same as kEvent on single thread basis.
+> **事件驱动，并发**(kEvent)：来自服务方法调用以基于事件的方式处理。
+
+**Event-driven, sequential** (kEventSingleThread): Same as kEvent on single thread basis.
 
 - **Polling** (KPoll): Incoming service method calls need to be explicitly processed in polling manner by calling [ProcessNextMethodCall].
 
-> \*\*投票(KPoll)：需要通过调用 [ProcessNextMethodCall] 显式地以轮询方式处理传入的服务方法调用。
+> **Polling**(KPoll)：需要通过调用 [ProcessNextMethodCall] 显式地以轮询方式处理传入的服务方法调用。
 
 ![](./media/image5.png)
-
 **Figure 4.3:** []**ara::com method based communication**
 
 ## ara::com Field based communication
@@ -429,32 +417,22 @@ With field based communication a server can provide a value for some data that a
 > 通过基于字段的通信，服务器可以为客户端随时访问或更新的数据提供一个值。字段的功能可以被看作是事件和方法的组合：
 
 - Like an event the client can subscribe to changes of the value. The client will be notified using the same notification mechanisms as for events (defined by [SetReceiveHandler()]).
+- Using methods, the client can retrieve the value by calling a get-operation ([Get()]), or update the value by calling a set-operation for the field in the proxy ([Set()]).
 
-> 客户可以像订阅事件一样订阅值的变化。客户将使用与事件相同的通知机制(由[SetReceiveHandler()]定义)收到通知。
-
-- Using methods, the client can retrieve the value by calling a get-operation ([Get()]
-
-> 使用方法，客户端可以通过调用 get 操作([Get()])来检索值。
-
-), or update the value by calling a set-operation for the field in the proxy ([Set()]).
-
-> 请帮助我翻译，或通过调用代理中的字段的 set 操作来更新值([Set()])。
+> - 客户可以像订阅事件一样订阅值的变化。客户将使用与事件相同的通知机制(由[SetReceiveHandler()]定义)收到通知。
+> - 使用 methods，客户端可以通过调用 get 操作([Get()])来检索值，或通过调用代理中的字段的 set 操作来更新值([Set()])。
 
 On the server side, the field is handled in the skeleton implementation by
 
 > 在服务器端，该字段由骨架实现来处理。
 
 - Defining a callback that is called when the value is updated by a client (defined by [RegisterSetHandler()]).
-
-> 定义一个回调，当客户端通过[RegisterSetHandler()]更新值时调用。
-
 - Calling an update-method when a new value shall be published to the clients ( [Update()]).
 
-> 当新值要发布给客户端时，调用更新方法([Update()])。
+> - 定义一个回调，当客户端通过[RegisterSetHandler()]更新值时调用。
+> - 当新值要发布给客户端时，调用更新方法([Update()])。
 
 1. ## Data Type Abstractions
-
-> ## 数据类型抽象
 
 [ara::com] API introduces specific data types, which are used throughout its various interfaces. They can roughly be divided into the following classes:
 
@@ -462,9 +440,9 @@ On the server side, the field is handled in the skeleton implementation by
 
 - Pointer types: for pointers to data transmitted via middleware
 - Collection types: for collections of data transmitted via middleware.
-- Types for async operation result management: [ara::com] relies on AUTOSAR AP specific data types (see [[3]]), which are specific versions of C++ [std::fu-] [ture]/[std::promise]
+- Types for async operation result management: [ara::com] relies on AUTOSAR AP specific data types (see [3]), which are specific versions of C++ [std::fu-] [ture]/[std::promise]
 
-> 用于异步操作结果管理的类型：[ara::com] 依赖于 AUTOSAR AP 特定的数据类型(参见[[3]])，它们是 C++ [std::fu-] \> [ture]/[std::promise] 的特定版本。
+> 用于异步操作结果管理的类型：[ara::com] 依赖于 AUTOSAR AP 特定的数据类型(参见[3])，它们是 C++ [std::future]/[std::promise] 的特定版本。
 
 - Function wrappers: for various application side callback or handler functions to be called by the middleware
 
@@ -482,7 +460,7 @@ Being able to provide their own implementations allows to optimize for their cho
 
 > 能够提供自己的实现可以为他们选择的记忆模型进行优化。
 
-For most of the types [ara::com] provides a default mapping to existing C++ types in ara/com/types.h. The default mapping of the types provided by [[3]] can be found in,
+For most of the types [ara::com] provides a default mapping to existing C++ types in ara/com/types.h. The default mapping of the types provided by [3] can be found in,
 
 > ara::com 提供了一种默认映射到 ara/com/types.h 中现有 C++ 类型的方式，可以在[3]中找到默认映射的类型。
 
@@ -496,27 +474,23 @@ The default mapping provided by [ara::com] even has a real benefit for a product
 
 ## Error Handling
 
-[ara::com] API follows the concepts of error handling described in chapter \"Error handling\" in [[3]]. Recoverable [Error]s will be returned via an ara::Core::ErrorCode embedded into a [ara::core::Result], which either holds a valid return value or the ara::Core::ErrorCode.
+[ara::com] API follows the concepts of error handling described in chapter \"Error handling\" in [3]. Recoverable [Error]s will be returned via an ara::Core::ErrorCode embedded into a [ara::core::Result], which either holds a valid return value or the ara::Core::ErrorCode.
 
 > ara::com API 遵循第 3 章中描述的错误处理概念。可恢复的错误将通过 ara::Core::ErrorCode 嵌入 ara::core::Result 中返回，该结果既可以包含有效的返回值，也可以包含 ara::Core::ErrorCode。
 
-For each function in the [ara::com] API a set of predefined ara::Core::ErrorCodes from the error domain [ara::com::ComErrorDomain], (or from [ara::com:-]
+For each function in the [ara::com] API a set of predefined ara::Core::ErrorCodes from the error domain [ara::com::ComErrorDomain], (or from [ara::com::e2e::E2EErrorDomain] for E2E checks) are defined. These errors should be handled by the application that is using the API. Besides these a stack vendor may also define additional error codes, that might need to be handles as well.
 
-> 对于 [ara::com] API 中的每个函数，都有一组预定义的 ara::Core::Error-Codes 来自错误域 [ara::com::ComErrorDomain]，或者来自 [ara::com:]。
+> 对于 [ara::com] API 中的每个函数，都有一组预定义的 ara::Core::ErrorCodes 来自错误域 [ara::com::ComErrorDomain]，或者来自 [ara::com::E2EErrorDomain] 用于 E2E 检查已经定义。这些错误应该由使用 API 的应用程序处理。除此之外，堆栈供应商也可能定义额外的错误代码，这些代码也可能需要处理。
 
-[:e2e::E2EErrorDomain] for E2E checks) are defined. These errors should be handled by the application that is using the API. Besides these a stack vendor may also define additional error codes, that might need to be handles as well.
+Application Errors within [ara::com] API can only occur in the context of a call of a [SI] method and is therefore fully covered in subsection [5.3.6](#methods) and subsection [5.4.6](#methods-1).
 
-> [E2E 错误域]用于 E2E 检查已经定义。这些错误应该由使用 API 的应用程序处理。除此之外，堆栈供应商也可能定义额外的错误代码，这些代码也可能需要处理。
-
-Application Errors within [ara::com] API can only occur in the context of a call of a [SI] method and is therefore fully covered in subsection [subsection](#methods) [5.3.6](#methods) and subsection [subsection](#methods-1) [5.4.6](#methods-1).
-
-> 在 [ara::com] API 中的应用程序错误只能在调用 [SI] 方法的上下文中发生，因此完全包含在[子节](#methods) \> [5.3.6](#methods) 和[子节](#methods-1) [5.4.6](#methods-1) 中。
+> 在 [ara::com] API 中的应用程序错误只能在调用 [SI] 方法的上下文中发生，因此完全包含在 [5.3.6] 和 [5.4.6] 中。
 
 Exceptions in the [ara::com] API are only used in case of [Violation]s or [Corrup-] [tion]s. These are non-recoverable and should normally not be handled by the application developer.
 
 > 在 ara::com API 中，只有在发生违规或腐败时才会使用异常。这些都是不可恢复的，通常不应由应用程序开发人员处理。
 
-2. ## Service Connection Approach
+1. ## Service Connection Approach
 
 > 服务连接方法
 
@@ -536,9 +510,9 @@ At [ara::com] API level the instance identifier is generally a technical binding
 
 > 在 [ara::com] API 级别上，实例标识符通常是特定绑定的技术标识符。
 
-Therefore the concrete content/structure of which such an instance identifier consists, is totally technology specific: So f.i. SOME/IP is using 16 bit unsigned integer identifiers to distinguish different instances of the same service type, while DDS (DDS-RPC) uses *string\<256\>* as service_instance_name.
+Therefore the concrete content/structure of which such an instance identifier consists, is totally technology specific: So f.i. SOME/IP is using 16 bit unsigned integer identifiers to distinguish different instances of the same service type, while DDS (DDS-RPC) uses _string\<256\>_ as service_instance_name.
 
-> 因此，这种实例标识符的具体内容/结构完全取决于技术：例如，SOME/IP 使用 16 位无符号整数标识符来区分同一服务类型的不同实例，而 DDS(DDS-RPC)使用 *string\<256\>* 作为服务实例名称。
+> 因此，这种实例标识符的具体内容/结构完全取决于技术：例如，SOME/IP 使用 16 位无符号整数标识符来区分同一服务类型的不同实例，而 DDS(DDS-RPC)使用 _string\<256\>_ 作为服务实例名称。
 
 Independant of the binding technology the abstract facade of any concrete instance identifier shall apply to this signature at [ara::com] API level in namespace [ara::-] [com]:
 
@@ -983,7 +957,7 @@ param target_position {
 | 74  |     |                                                          |
 +-----+-----+----------------------------------------------------------+
 
-oneway method LogCurrentState 
+oneway method LogCurrentState
 
 }
 ```
@@ -1311,7 +1285,7 @@ As you can see in the Listing [5.2] [ara::com] prescribes the Proxy class to pro
 
 > 根据列表 5.2，ara::com 规定 Proxy 类提供一个构造函数，这意味着开发人员负责创建一个代理实例来与可能的远程服务进行通信。
 
-The [ctor] takes a parameter of type RadarServiceProxy::HandleType --an inner class of the generated proxy class. Probably the immediate question then is: *\"What is this handle and how to create it/where to get it from?\"*
+The [ctor] takes a parameter of type RadarServiceProxy::HandleType --an inner class of the generated proxy class. Probably the immediate question then is: _\"What is this handle and how to create it/where to get it from?\"_
 
 > 这个构造函数接受一个 RadarServiceProxy::HandleType 类型的参数---这是生成的代理类的一个内部类。那么接下来可能会问："这个句柄是什么？如何创建它/从哪里获取它？"
 
@@ -1323,7 +1297,7 @@ What exactly this address information contains is totally dependent on the bindi
 
 > 这个地址信息包含的确切内容完全取决于绑定实现/技术传输层！
 
-That already partly answers the question *\"how to create/where to get it\"*: Really creating is not possible for an application developer as he is --according to AUTOSAR core concepts --implementing his application AP product and therefore Communication Management independent.
+That already partly answers the question _\"how to create/where to get it\"_: Really creating is not possible for an application developer as he is --according to AUTOSAR core concepts --implementing his application AP product and therefore Communication Management independent.
 
 > 这已经部分回答了"如何创建/如何获得它"的问题：根据 AUTOSAR 核心概念，应用程序开发人员实现其应用程序 AP 产品，因此不可能进行创建，而是独立于通信管理。
 
@@ -1425,7 +1399,7 @@ After that initial callback, it will call the provided handler again in case of 
 
 > 在初始回调之后，如果此初始服务可用性发生变化，它将再次调用提供的处理程序。
 
-*Note*, that it is explicitly allowed, that the [ara::com] user/developer does call [StopFind-] [Service] within the user provided handler.
+_Note_, that it is explicitly allowed, that the [ara::com] user/developer does call [StopFind-] [Service] within the user provided handler.
 
 > 注意，明确允许 ara::com 用户/开发人员在用户提供的处理程序中调用 StopFind-Service。
 
@@ -1433,7 +1407,7 @@ For this purpose, the handler explicitly gets the [FindServiceHandle] argument. 
 
 > 为此目的，处理程序明确获取[FindServiceHandle]参数。处理程序无需重新进入。这意味着，绑定实现者必须负责对用户提供的处理程序函数进行序列化调用。
 
-*Note*, that ServiceHandleContainer can be implemented as an allocating or nonallocating container, when used either as a return value of [FindService] or as a parameter to [FindServiceHandler], as long as it fulfils general and sequence container requirements of the C++ programming language.
+_Note_, that ServiceHandleContainer can be implemented as an allocating or nonallocating container, when used either as a return value of [FindService] or as a parameter to [FindServiceHandler], as long as it fulfils general and sequence container requirements of the C++ programming language.
 
 > 注意，只要满足 C++ 编程语言的一般序列容器要求，当 ServiceHandleContainer 用作 [FindService] 的返回值或 [FindServiceHandler] 的参数时，可以实现为分配或非分配容器。
 
@@ -1513,9 +1487,9 @@ and then to recreate a proxy instance from the new handle (and redo needed event
 
 > 然后从新句柄重新创建代理实例(并重新执行所需的事件订阅调用)。
 
-*Note*, in case you have registered a [FindServiceHandler], then the binding implementation must assure, that it does the "auto updating" of existing proxy instances **before** it calls the registered [FindServiceHandler]!
+_Note_, in case you have registered a [FindServiceHandler], then the binding implementation must assure, that it does the "auto updating" of existing proxy instances **before** it calls the registered [FindServiceHandler]!
 
-> *注意*：如果您已注册了[FindServiceHandler](# _bookmark45)，那么绑定实现必须确保在调用注册的[FindServiceHandler](# _bookmark45)之前先执行"自动更新"现有代理实例！
+> _注意_：如果您已注册了[FindServiceHandler]，那么绑定实现必须确保在调用注册的[FindServiceHandler]之前先执行"自动更新"现有代理实例！
 
 The reason for this is: It shall be supported, that the application developer can interact successfully with an existing proxy instance within the [FindServiceHandler], when the handle of the proxy instance is given in the call, signaling, that the service instance is up again.
 
@@ -2230,7 +2204,7 @@ int main(int argc, char\*\* argv) {
 
 /\* Instance Specifier from model \*/
 
-ara::core::InstanceSpecifier instspec 
+ara::core::InstanceSpecifier instspec
 
 auto handles = proxy::RadarServiceProxy::FindService(instspec);
 
@@ -2319,7 +2293,7 @@ Something, which we want to have total control over on service side via the [Met
 
 - IPC-Daemon Space: Data is sent to an explicit non-application process, which acts as a kind of demon for the IPC/binding implementation. Note, that technically this approach might be built on an[IPC]primitive like communication via kernel space or shared memory to get the data from service process to demon process.
 
-> 数据被发送到一个明确的非应用程序进程，它充当 IPC/绑定实现的某种恶魔。请注意，从技术上讲，这种方法可以基于 IPC原语，如通过内核空间或共享内存从服务进程到恶魔进程传输数据。
+> 数据被发送到一个明确的非应用程序进程，它充当 IPC/绑定实现的某种恶魔。请注意，从技术上讲，这种方法可以基于 IPC 原语，如通过内核空间或共享内存从服务进程到恶魔进程传输数据。
 
 Each of those approaches might have different pros and cons regarding flexibility/size of buffer space, efficiency in terms of access speed/overhead and protection against malicious access/writing of buffers. Therefore consideration of different constraints in an AP product and its use might lead to different solutions.
 
@@ -2487,7 +2461,7 @@ The magic of differentiation between both approaches lies in the returned [ara::
 
 > 两种方法之间的魔力之处在于返回的 ara::core::Future：ara::core::Future 基本上是 C++11/C++14 std::Future 的延伸版本。
 
-[:future] class; see [[3]] for details.
+[:future] class; see [3] for details.
 
 > 请参阅[3]，了解有关未来类的详情。
 
@@ -2753,9 +2727,9 @@ bool is_ready() const;
 
 > [ara::core::GetResult()]返回一个 [ara::core::Future] 对象中的 Result 或 Error，不会抛出异常。get()返回相应的 ara::core::Future，或抛出异常。
 
-See [[3]] chapter \"Error handling\" for detailed documentation of the error handling approaches in the Addaptive Platform.
+See [3] chapter \"Error handling\" for detailed documentation of the error handling approaches in the Addaptive Platform.
 
-> 请参阅[[3]]章节"错误处理"，了解 Adaptive Platform 中的错误处理方法的详细文档。
+> 请参阅[3]章节"错误处理"，了解 Adaptive Platform 中的错误处理方法的详细文档。
 
 Below is the sample of using \"exception-based\" approach to synchronously call a method:
 
@@ -2813,9 +2787,9 @@ There are other ways for the user to get a notification from the Communication M
 
 > 等待的变体，[ara::core::Future] 从 [std::fu-] \> [ture] 接管，它们基本上提供了阻塞等待未来实现的功能。Registering a callback method via then(). This is one of the extensions to the
 
-[std::future]; see [[3]] for details.
+[std::future]; see [3] for details.
 
-> [std::future]; 详情见 [[3]]。
+> [std::future]; 详情见 [3]。
 
 The plain parameterless wait() variant has the same blocking semantics like get()
 
@@ -3071,19 +3045,19 @@ From Proxy point of view, subscribing to a Trigger is the same as described in [
 ara::core::Result\<void\> Subscribe();
 ```
 
-A *Subscribe()* call will inform Communication Management for receiving Trigger updates.
+A _Subscribe()_ call will inform Communication Management for receiving Trigger updates.
 
 > 一个*订阅()*调用将通知通信管理接收触发更新。
 
-The other subscription capabilities (e.g. *SubscribeChangeSetSubscriptionHandler()*, *Unsubscribe()*) are the same as for Events.
+The other subscription capabilities (e.g. *SubscribeChangeSetSubscriptionHandler()*, _Unsubscribe()_) are the same as for Events.
 
-> 其他订阅功能(例如 *SubscribeChangeSetSubscriptionHandler()*、*Unsubscribe()*)与事件相同。
+> 其他订阅功能(例如 _SubscribeChangeSetSubscriptionHandler()_、_Unsubscribe()_)与事件相同。
 
 A big difference from Events is receiving Trigger updates.
 
 > 事件与之不同的是，可以接收触发更新。
 
-In contrary to Events, where we were interested in the recieved data, for Triggers we are only interested in the number of Triggers received since last check. Therefore *GetNewTriggers()* is more simple than *GetNewSamples()*:
+In contrary to Events, where we were interested in the recieved data, for Triggers we are only interested in the number of Triggers received since last check. Therefore _GetNewTriggers()_ is more simple than _GetNewSamples()_:
 
 > 相反，对于事件，我们对收到的数据感兴趣，而对于触发器，我们只对自上次检查以来收到的触发器数量感兴趣。因此，*GetNewTriggers()*比\* GetNewSamples()\*更简单。
 
@@ -3103,7 +3077,7 @@ In contrary to Events, where we were interested in the recieved data, for Trigge
 size_t GetNewTriggers();
 ```
 
-Where the return value has the number of received Triggers that took place since the last call to *GetNewTriggers()*.
+Where the return value has the number of received Triggers that took place since the last call to _GetNewTriggers()_.
 
 > 在上次调用*GetNewTriggers()*之后发生的触发器的数量将作为返回值。
 
@@ -3613,7 +3587,7 @@ The bool value of the returned [ara::core::Future] is set to true by the Communi
 
 This is a somewhat comfortable indicator to the application developer, not to call repeatedly ProcessNextMethodCall although the request queue is empty. So calling ProcessNextMethodCall directly after a previous call returned an [ara::core::Future] with the result set to false might most likely do nothing (except that incidentally in this minimal time frame a new request came in).
 
-> 这对于应用程序开发者来说是一个相对舒适的指标，不要在请求队列为空的情况下反复调用 ProcessNextMethodCall。因此，在先前的调用返回[ara::core::Future](# _bookmark36)且结果设置为 false 之后，直接调用 ProcessNextMethodCall 很可能什么都不做(除非在此最小时间框架中偶然出现了新的请求)。
+> 这对于应用程序开发者来说是一个相对舒适的指标，不要在请求队列为空的情况下反复调用 ProcessNextMethodCall。因此，在先前的调用返回[ara::core::Future]且结果设置为 false 之后，直接调用 ProcessNextMethodCall 很可能什么都不做(除非在此最小时间框架中偶然出现了新的请求)。
 
 Please note polling mode has implications on AP products based on typical operating systems. Ruling out context switches to a process (containing a service implementation) caused by Communication Management events (incoming service method calls) means also: There are constraints for the location of the queue, which has to collect the service method call requests until they are consumed by the polling service implementation.
 
@@ -3735,7 +3709,7 @@ In this scenario we would have a blocked thread inside the service-method! From 
 
 The returned [ara::core::Future] contains a structure as template parameter, which aggregates all the OUT-parameters of the service call.
 
-> 返回的 ara::core::Future(# _bookmark36)包含一个作为模板参数的结构，它聚合了服务调用的所有 OUT 参数。
+> 返回的 ara::core::Future 包含一个作为模板参数的结构，它聚合了服务调用的所有 OUT 参数。
 
 The following two code examples show two variants of an implementation of Adjust. In the first variant the service method is directly processed synchronously in the method
 
@@ -3747,7 +3721,7 @@ The following two code examples show two variants of an implementation of Adjust
 
 body, so that an [ara::core::Future] with an already set result is returned, while in the second example, the work is dispatched to an asynchronous worker, so that the returned [ara::core::Future] may not have a set result at return.
 
-> 在第一个示例中，一个已经设置好结果的 ara::core::Future(# _bookmark36)被返回，而在第二个示例中，工作被分派给异步工作者，因此返回的 ara::core::Future(# _bookmark36)可能在返回时没有设置结果。
+> 在第一个示例中，一个已经设置好结果的 ara::core::Future 被返回，而在第二个示例中，工作被分派给异步工作者，因此返回的 ara::core::Future 可能在返回时没有设置结果。
 
 ```
 using namespace ara::com;
@@ -4259,7 +4233,7 @@ Registration of such a "GetHandler" is fully optional! Typically there is no nee
 
 A theoretical reason for a service implementer to still provide a "GetHandler" could be: Calculating the new/current value of a field is costly/time consuming. Therefore the service implementer/field provider wants to defer this process until there is really need for that value (indicated by a getter call). In this case he could calculate the new field value within its "GetHandler" implementation and give it back via the known [ara::com] promise/future pattern.
 
-> 一个服务实现者仍提供"GetHandler"的理论原因可能是：计算字段的新/当前值是昂贵/耗时的。因此，服务实现者/字段提供者希望推迟此过程，直到真正需要该值(由 getter 调用指示)。在这种情况下，他可以在其"GetHandler"实现中计算新字段值，并通过已知的[ara::com](# _bookmark15)承诺/未来模式返回它。
+> 一个服务实现者仍提供"GetHandler"的理论原因可能是：计算字段的新/当前值是昂贵/耗时的。因此，服务实现者/字段提供者希望推迟此过程，直到真正需要该值(由 getter 调用指示)。在这种情况下，他可以在其"GetHandler"实现中计算新字段值，并通过已知的[ara::com]承诺/未来模式返回它。
 
 If you look at the bigger picture, then such a setup with the discussed intention, where the service implementer provides and registers a "GetHandler" will not really make sense, if the field is configured with "on-change-notification", too.
 
@@ -4370,23 +4344,23 @@ The following chapter describes the C++ language mapping in [ara::com] of the [S
 
 > 以下章节描述了 [ara::com] 中的 C++ 语言映射，这些特定("用户定义")数据类型由 [SI] 提供。"用户定义"是指，这些数据类型不是由 [ara::com]API 本身定义/强制执行的，例如 [InstanceIdentifier]，Find-ServiceHandle，ServiceHandleContainer 或 [ara::com] 在其自己的命名空间中定义的任何其他数据类型，而是由用户定义的 [SI] 描述(IDL)提供的。
 
-In the AUTOSAR Meta-Model ([[2]]) [CppImplementationDataType]s have been introduced to support the specifics of the C++14 data type system appropriately.
+In the AUTOSAR Meta-Model ([2]) [CppImplementationDataType]s have been introduced to support the specifics of the C++14 data type system appropriately.
 
-> 在 AUTOSAR 元模型([[2]])中，引入了[CppImplementationDataType]以适当地支持 C++14 数据类型系统的特性。
+> 在 AUTOSAR 元模型([2])中，引入了[CppImplementationDataType]以适当地支持 C++14 数据类型系统的特性。
 
 ### Optional data elements
 
-Record elements inside a StructureImplementationDataType can be defined as optional inside the meta-model, see [[2]].
+Record elements inside a StructureImplementationDataType can be defined as optional inside the meta-model, see [2].
 
-> 记录元素可以在元模型中定义为可选的，参见 [[2]]。
+> 记录元素可以在元模型中定义为可选的，参见 [2]。
 
 This optionality is represented in the [ara::com] API by the template class [ara::core::-] [Optional]. The serialization of such record elements is based on the Tag-Length-Value principle whereas StructureImplementationDataTypes without optional record elements do not have to make use of tags.
 
 > 这种可选性在 [ara::com] API 中由模板类 [ara::core::-] \> [Optional] 表示。这种记录元素的序列化基于标签长度值原则，而不包含可选记录元素的结构实现数据类型不必使用标签。
 
-Details on how this serialization works is specified in [[9]].
+Details on how this serialization works is specified in [9].
 
-> 详细的序列化工作方式可参见[[9]]。
+> 详细的序列化工作方式可参见[9]。
 
 The [ara::core::Optional] template parameter has the ImplementationDataType
 
@@ -4659,9 +4633,9 @@ At least one of the two previous attributes has to be defined. The socketOption 
 
 > 至少有一个前面的属性必须被定义。socketOption 属性允许指定可能只对特定平台有效的非正式套接字选项。这是定义为一个字符串数组，可能的值是特定于平台和供应商的。
 
-Remote credentials for the different use cases are defined in attributes RawDataStreamUdpCredentials and RawDataStreamUdpTcpCredentials. See TPS Manifest [[2]] for details.
+Remote credentials for the different use cases are defined in attributes RawDataStreamUdpCredentials and RawDataStreamUdpTcpCredentials. See TPS Manifest [2] for details.
 
-> 远程凭据用于不同的用例定义在属性 RawDataStreamUdpCredentials 和 RawDataStreamUdpTcpCredentials 中。有关详细信息，请参阅 TPS 清单 [[2]]。
+> 远程凭据用于不同的用例定义在属性 RawDataStreamUdpCredentials 和 RawDataStreamUdpTcpCredentials 中。有关详细信息，请参阅 TPS 清单 [2]。
 
 The [EthernetRawDataStreamMapping] also has an attribute regarding security, where TLS secure communication properties for the Raw Data Stream connection can be defined:
 
@@ -4673,9 +4647,9 @@ The [EthernetRawDataStreamMapping] also has an attribute regarding security, whe
 
 > ### RawDataStream 类的方法
 
-Detailed information about the methods of [ara::com::raw::RawDataStream] can be found in chapter Raw Data Stream API of [[1]].
+Detailed information about the methods of [ara::com::raw::RawDataStream] can be found in chapter Raw Data Stream API of [1].
 
-> 详细信息关于 ara::com::raw::RawDataStream的方法可以在参考文献 [1] 中的原始数据流 API 章节中找到。
+> 详细信息关于 ara::com::raw::RawDataStream 的方法可以在参考文献 [1] 中的原始数据流 API 章节中找到。
 
 ### Timeout parameter
 
@@ -4781,7 +4755,7 @@ ara::core:Result\<size_t\> WriteData( std::unique_ptr\<ara::core::Byte[]\> data,
 
 ara::core:Result\<size_t\> WriteData( std::unique_ptr\<ara::core::Byte[]\> data, size_t length, std::chrono::milliseconds timeout);
 
-> ara::core:Result `<size_t>` WriteData(std::unique_ptr\<ara::core::Byte[]\> 数据，大小_t 长度，std::chrono::milliseconds 超时)；
+> ara::core:Result `<size_t>` WriteData(std::unique_ptr\<ara::core::Byte[]\> 数据，大小\_t 长度，std::chrono::milliseconds 超时)；
 
 If the operation worked, it will return the actual number of bytes written. In case of an error, it will return a ara::Core::ErrorCode:
 
@@ -4861,9 +4835,9 @@ Note: Message types of a Communciation Group are defined with the Communciation 
 
 ### Usage Scope
 
-The initial usage of the Communcation Group has been Adaptive State Management applications. The SWS_StateManagement [[4]] specification has defined two Communication Groups, named: [PowerMode] and [DiagnosticReset]. The usage scope of the State Management Communication Groups are applications within a machine only. But from design point of view, a Communication Group supports the connection of local and remote applications (CP and AP). The figure below presents a local and remote scenarios for Communication Groups.
+The initial usage of the Communcation Group has been Adaptive State Management applications. The SWS_StateManagement [4] specification has defined two Communication Groups, named: [PowerMode] and [DiagnosticReset]. The usage scope of the State Management Communication Groups are applications within a machine only. But from design point of view, a Communication Group supports the connection of local and remote applications (CP and AP). The figure below presents a local and remote scenarios for Communication Groups.
 
-> 初始使用的通信组已经是自适应状态管理应用程序。SWS_StateManagement [[4]] 规范定义了两个名为 PowerMode 和 DiagnosticReset 的通信组。状态管理通信组的使用范围仅限于机器内的应用程序。但从设计角度来看，通信组支持本地和远程应用程序(CP 和 AP)之间的连接。下图显示了通信组的本地和远程场景。
+> 初始使用的通信组已经是自适应状态管理应用程序。SWS_StateManagement [4] 规范定义了两个名为 PowerMode 和 DiagnosticReset 的通信组。状态管理通信组的使用范围仅限于机器内的应用程序。但从设计角度来看，通信组支持本地和远程应用程序(CP 和 AP)之间的连接。下图显示了通信组的本地和远程场景。
 
 ![](./media/image28.png)
 
@@ -4881,7 +4855,7 @@ As before described the Communcation Group contains
 
 - only one Service Skeleton instantiation of type Communication Group server ( ServiceInterface with the category value [COMMUNICATION_GROUP_-] [SERVER]).
 
-> 只有一个类型为 Communication Group Server 的 Service Skeleton 实例(ServiceInterface 的 category 值为[COMMUNICATION_GROUP_-][SERVER])。
+> 只有一个类型为 Communication Group Server 的 Service Skeleton 实例(ServiceInterface 的 category 值为[COMMUNICATION*GROUP*-][SERVER])。
 
 Note: Today there is the constraint that only one Communication server can connect to the Communication Group server ServiceInterface.
 
@@ -4889,7 +4863,7 @@ Note: Today there is the constraint that only one Communication server can conne
 
 > 多个类型为 Communication Group client 的 Service Proxy 实例(ServiceInterface，其类别值为[COMMUNICATION_GROUP_-] \> [CLIENT])。
 
-Note: The number of Service Proxy instantiations is implementation and use case dependent. The theoretical limit (not considering for memory space requirements) is the available number of Communication client *Client_IDs*. On the other side there might be Safety requirements which force the design to support a limited known number of Communication Group clients.
+Note: The number of Service Proxy instantiations is implementation and use case dependent. The theoretical limit (not considering for memory space requirements) is the available number of Communication client _Client_IDs_. On the other side there might be Safety requirements which force the design to support a limited known number of Communication Group clients.
 
 ### Remote Connection
 
@@ -4930,9 +4904,9 @@ The [ara::com] model elements related to both design and deployment are included
 
 > **RPortPrototypes 和 PPortPrototypes：** rootSwComponentPrototype 有一个应用类型，它定义了 PPortPrototypes 和 RPortPrototypes，它们引用相应的 [SI]。
 
-For all the details about the manifest specification please see the [[2]].
+For all the details about the manifest specification please see the [2].
 
-> 请参阅[[2]]获取有关清单规范的所有详细信息。
+> 请参阅[2]获取有关清单规范的所有详细信息。
 
 Assuming that the previously mentioned partitions of the Manifest exist, the following sections describe the deployment of [SI] and ServiceInstance. Finally the most relevant aspects related with the implementation are also introduced.
 
@@ -5392,9 +5366,9 @@ The application code for the Service Proxy and Skeleton is generated according t
 
 ## Usage of InstanceSpecifier
 
-InstanceSpecifier is a core concept defined in [[3]], representing a \"/\"-separated list of shortNames of model elements conforming an absolute path to an specific model element. In less formal terms, Instance Specifiers bridge Adaptive Platform models and applications, allowing application code to unequivocally reference resource instances defined by the system model.
+InstanceSpecifier is a core concept defined in [3], representing a \"/\"-separated list of shortNames of model elements conforming an absolute path to an specific model element. In less formal terms, Instance Specifiers bridge Adaptive Platform models and applications, allowing application code to unequivocally reference resource instances defined by the system model.
 
-> 实例指示符是在 [[3]] 中定义的核心概念，它表示一个"/"分隔的模型元素的简称列表，构成一个到特定模型元素的绝对路径。用不太正式的话说，实例指示符桥接自适应平台模型和应用程序，允许应用程序代码明确引用系统模型定义的资源实例。
+> 实例指示符是在 [3] 中定义的核心概念，它表示一个"/"分隔的模型元素的简称列表，构成一个到特定模型元素的绝对路径。用不太正式的话说，实例指示符桥接自适应平台模型和应用程序，允许应用程序代码明确引用系统模型定义的资源实例。
 
 The instances referenced by Instance Specifiers may be of many different kinds: provided or required service instances, key/value or file stores, or cryptographic resources, to name a few.
 
@@ -5425,13 +5399,13 @@ from which the application derives, is something that will be checked by the dif
 
 > 此应用所派生的内容，将在尝试访问或实例化由问题中的 InstanceSpecifier 指向的资源时，由不同的功能集群进行检查。
 
-The following examples show the way in which, according to [[1]], InstanceSpecifiers might be used to instantiate and access services via skeleton and proxy classes.
+The following examples show the way in which, according to [1], InstanceSpecifiers might be used to instantiate and access services via skeleton and proxy classes.
 
 > 以下示例展示了根据[1]，使用 InstanceSpeci-fiers 实例化和通过骨架和代理类访问服务的方式。
 
-Instance specifiers point to instances of port prototypes associated with a service. Therefore multiple instance specifiers for each PortPrototype can be created. In the examples below, *SwComponentInstance_0* and *SwComponentInstance_1* are 2 instantiations of the the same SwComponentPrototype, containing the RPortPrototype *RPort_3*:
+Instance specifiers point to instances of port prototypes associated with a service. Therefore multiple instance specifiers for each PortPrototype can be created. In the examples below, _SwComponentInstance_0_ and _SwComponentInstance_1_ are 2 instantiations of the the same SwComponentPrototype, containing the RPortPrototype _RPort_3_:
 
-> 实例说明符指向与服务关联的端口原型的实例。因此，可以为每个 PortPrototype 创建多个实例说明符。在下面的示例中，\* SwComponentInstance_0 *和* SwComponentInstance_1 *是同一个 SwComponentPrototype 的两个实例，其中包含 RPortPrototype * RPort_3 \*：
+> 实例说明符指向与服务关联的端口原型的实例。因此，可以为每个 PortPrototype 创建多个实例说明符。在下面的示例中，\* SwComponentInstance*0 *和* SwComponentInstance_1 *是同一个 SwComponentPrototype 的两个实例，其中包含 RPortPrototype \_ RPort_3 \*：
 
 ```
 #include \"ara/core/instance_specifier.h\"
@@ -5621,7 +5595,7 @@ See [Figure] [6.1] for the SOME/IP Service Interface Deployment.
 
 > 见[图 6.1]，了解 SOME / IP 服务接口部署情况。
 
-The mapping between a RequiredServiceInstance and an InstanceSpecifier is done via the *Service Instance Manifest*. In the Service Instance Manifest the ServiceInstanceToPortPrototypeMapping defines which *Service Instance* is associated with a certain port inside a specific RootSwComponentPrototype. The RequiredServiceInstance specifies the InstanceId as RequireServiceInstanceId, in the example below this value is 19.
+The mapping between a RequiredServiceInstance and an InstanceSpecifier is done via the _Service Instance Manifest_. In the Service Instance Manifest the ServiceInstanceToPortPrototypeMapping defines which _Service Instance_ is associated with a certain port inside a specific RootSwComponentPrototype. The RequiredServiceInstance specifies the InstanceId as RequireServiceInstanceId, in the example below this value is 19.
 
 > 在服务实例清单中，ServiceInstanceToPortPrototypeMapping 定义了哪个服务实例与特定 RootSwComponentPrototype 中的特定端口相关联。RequiredServiceInstance 指定 InstanceId 作为 RequiredServiceInstanceId，在下面的示例中，该值为 19，这就完成了 RequiredServiceInstance 和 InstanceSpecifier 之间的映射。
 
@@ -5737,9 +5711,9 @@ The mapping between a RequiredServiceInstance and an InstanceSpecifier is done v
 
 ### Instance IDs only for provided Services
 
-The InstanceSpecifier and the [InstanceIdentifier] can be used to uniquely identify a provided service. This means that clients know which particular service instance they are communicating with. This information is lacking for provided services. Clients can't be uniquely identified with an [InstanceIdentifier], therefore the server can't know for sure with which client it communicates with. For most cases this is not a problem, however we envision that for safety this can be a problem. For these cases we recommend using the E2E parameter dataID of the method E2E_check (see [PRS_E2E_00323] of [[10]]).
+The InstanceSpecifier and the [InstanceIdentifier] can be used to uniquely identify a provided service. This means that clients know which particular service instance they are communicating with. This information is lacking for provided services. Clients can't be uniquely identified with an [InstanceIdentifier], therefore the server can't know for sure with which client it communicates with. For most cases this is not a problem, however we envision that for safety this can be a problem. For these cases we recommend using the E2E parameter dataID of the method E2E_check (see [PRS_E2E_00323] of [10]).
 
-> 实例规范和[实例标识符]可用于唯一标识提供的服务。这意味着客户端知道它们正在与哪个特定服务实例通信。但是，提供的服务缺少此信息。无法使用[实例标识符]来唯一标识客户端，因此服务器无法确定它正在与哪个客户端通信。在大多数情况下，这不是问题，但我们认为，为了安全起见，这可能是一个问题。对于这些情况，我们建议使用方法 E2E_check 的 E2E 参数 dataID(请参见[[10]]中的[PRS_E2E_00323])。
+> 实例规范和[实例标识符]可用于唯一标识提供的服务。这意味着客户端知道它们正在与哪个特定服务实例通信。但是，提供的服务缺少此信息。无法使用[实例标识符]来唯一标识客户端，因此服务器无法确定它正在与哪个客户端通信。在大多数情况下，这不是问题，但我们认为，为了安全起见，这可能是一个问题。对于这些情况，我们建议使用方法 E2E_check 的 E2E 参数 dataID(请参见[10]中的[PRS_E2E_00323])。
 
 ## Usage in context of MultiBinding
 
@@ -6059,7 +6033,7 @@ This chapter describes how RawDataStreams can be used in an AUTOSAR Adaptive app
 
 > 本章节描述了如何在 AUTOSAR Adaptive 应用中使用 RawDataStreams。
 
-RawDataStreaming currently supports four use cases regarding configuration of unicast/multicast and UDP/TCP connections. These use cases are described in chapter Raw Data Streaming of [[1]].
+RawDataStreaming currently supports four use cases regarding configuration of unicast/multicast and UDP/TCP connections. These use cases are described in chapter Raw Data Streaming of [1].
 
 > 目前，RawDataStreaming 支持四种关于配置单播/多播和 UDP/TCP 连接的用例。这些用例在[1]中的 Raw Data Streaming 章节中有描述。
 
@@ -6385,9 +6359,9 @@ Confidential C
 
    1. ## Serialization
 
-Serialization (see [[11]]) is the process of transforming certain data structures into a standardized format for exchange between a sender and a (possibly different) receiver. You typically have this notion if you transfer data from one network node to another. When putting data on the wire and reading it back, you have to follow exact, agreed-on rules to be able to correctly interpret the data on the receiver side. For the network communication use case the need for a defined approach to convert an in-process data representation into a wire-format and back is very obvious: The boxes doing the communication might be based on different micro-controllers with different endianness and different data-word sizes (16-bit, 32-bit, 64-bit) and therefore employing totally different alignments. In the AUTOSAR CP serialization typically plays no role for platform internal/node internal communication! Here the internal in-memory data representation can be directly copied from a sender to a receiver. This is possible, because three assumptions are made in the typical CP product:
+Serialization (see [11]) is the process of transforming certain data structures into a standardized format for exchange between a sender and a (possibly different) receiver. You typically have this notion if you transfer data from one network node to another. When putting data on the wire and reading it back, you have to follow exact, agreed-on rules to be able to correctly interpret the data on the receiver side. For the network communication use case the need for a defined approach to convert an in-process data representation into a wire-format and back is very obvious: The boxes doing the communication might be based on different micro-controllers with different endianness and different data-word sizes (16-bit, 32-bit, 64-bit) and therefore employing totally different alignments. In the AUTOSAR CP serialization typically plays no role for platform internal/node internal communication! Here the internal in-memory data representation can be directly copied from a sender to a receiver. This is possible, because three assumptions are made in the typical CP product:
 
-> 序列化(参见[[11]])是将某些数据结构转换为供发送者和(可能不同的)接收者交换的标准格式的过程。如果您在一个网络节点和另一个网络节点之间传输数据，您通常会有这种概念。当将数据放在电线上并读取它时，您必须遵循精确的、约定的规则，才能正确地在接收端解释数据。对于网络通信用例，将内存中的数据表示转换为线格式并返回所需的定义方法的需求非常明显：进行通信的盒子可能基于不同的微控制器，具有不同的字节序和不同的数据字大小(16 位，32 位，64 位)，因此采用完全不同的对齐方式。在 AUTOSAR CP 中，序列化通常对于平台内部/节点内部通信而言没有作用！在这里，可以直接从发送者复制到接收者的内部内存数据表示。这是可能的，因为在典型的 CP 产品中做出了三个假设：
+> 序列化(参见[11])是将某些数据结构转换为供发送者和(可能不同的)接收者交换的标准格式的过程。如果您在一个网络节点和另一个网络节点之间传输数据，您通常会有这种概念。当将数据放在电线上并读取它时，您必须遵循精确的、约定的规则，才能正确地在接收端解释数据。对于网络通信用例，将内存中的数据表示转换为线格式并返回所需的定义方法的需求非常明显：进行通信的盒子可能基于不同的微控制器，具有不同的字节序和不同的数据字大小(16 位，32 位，64 位)，因此采用完全不同的对齐方式。在 AUTOSAR CP 中，序列化通常对于平台内部/节点内部通信而言没有作用！在这里，可以直接从发送者复制到接收者的内部内存数据表示。这是可能的，因为在典型的 CP 产品中做出了三个假设：
 
 - Endianness is identical among all local SWCs.
 - Alignment of certain data structures is homogeneous among all local SWCs.
@@ -6415,7 +6389,7 @@ For the AP things look indeed different. Here the loading of executables during 
 >
 > ---
 
-copy (meaning collecting contained elements and their references from various memory regions --see [[12]]) must be done during transfer. Of course the product vendor could apply optimization strategies to get rid of the serialization and de-serialization stages within a communication path:
+copy (meaning collecting contained elements and their references from various memory regions --see [12]) must be done during transfer. Of course the product vendor could apply optimization strategies to get rid of the serialization and de-serialization stages within a communication path:
 
 > 在传输过程中必须进行复制(意思是从各种内存区域收集元素及其引用，参见[12])。当然，产品供应商可以采用优化策略来消除通信路径中的序列化和反序列化阶段。
 
@@ -6449,9 +6423,9 @@ When an AP node (more concretely an AP SWC) offers a service over the network or
 
 > 当一个 AP 节点(更具体地说是 AP SWC)在网络上提供服务或者从另一个网络节点需要服务时，就需要服务发现/服务注册。
 
-obviously takes place over the wire. The protocol for service discovery over the wire needs to be completely specified by the used communication protocol. For SOME/IP, this is done in the SOME/IP Service Discovery Protocol Specification [[13]]. But if an [ara::com] application wants to communicate with another [ara::com] application on the same node within the AP of the same vendor there has to be a local variant of a service discovery available. Here the only difference is, that the protocol implementation for service discovery taking place locally is totally up to the AP product vendor.
+obviously takes place over the wire. The protocol for service discovery over the wire needs to be completely specified by the used communication protocol. For SOME/IP, this is done in the SOME/IP Service Discovery Protocol Specification [13]. But if an [ara::com] application wants to communicate with another [ara::com] application on the same node within the AP of the same vendor there has to be a local variant of a service discovery available. Here the only difference is, that the protocol implementation for service discovery taking place locally is totally up to the AP product vendor.
 
-> 显然是通过线路进行的。服务发现的协议必须完全由所使用的通信协议来指定。对于 SOME/IP，这在 SOME/IP 服务发现协议规范中完成[[13]]。但是，如果[ara::com]应用程序想要与同一节点上的另一个[ara::com]应用程序在同一供应商的 AP 上进行通信，则必须有一个本地的服务发现变体。这里唯一的不同之处在于，本地发现协议的实现完全取决于 AP 产品供应商。
+> 显然是通过线路进行的。服务发现的协议必须完全由所使用的通信协议来指定。对于 SOME/IP，这在 SOME/IP 服务发现协议规范中完成[13]。但是，如果[ara::com]应用程序想要与同一节点上的另一个[ara::com]应用程序在同一供应商的 AP 上进行通信，则必须有一个本地的服务发现变体。这里唯一的不同之处在于，本地发现协议的实现完全取决于 AP 产品供应商。
 
 ### Central vs Distributed approach
 
@@ -6564,7 +6538,7 @@ So from the service consumer side application developer it is totally transparen
 
 > 从服务消费者端应用程序开发者的角度来看，完全透明：从供应商 ProxyClass::FindService 实现中，他获得两个不透明的句柄，用于两个服务实例，从中他创建了两个相同的实例。
 
-proxy class. But "by magic" both proxies behave totally different in the way, they contact their respective service instances. So --somehow there must be some information contained inside this handle, from which the proxy class instance knows which technical transport to choose. Although this use case looks simple at the first look it isn't on the second \... The question is: *Who* writes *When* into the handle, that the proxy instance created from it shall use a direct method/function call instead of a more complex [IPC]mechanism or vice versa?
+proxy class. But "by magic" both proxies behave totally different in the way, they contact their respective service instances. So --somehow there must be some information contained inside this handle, from which the proxy class instance knows which technical transport to choose. Although this use case looks simple at the first look it isn't on the second \... The question is: _Who_ writes _When_ into the handle, that the proxy instance created from it shall use a direct method/function call instead of a more complex [IPC]mechanism or vice versa?
 
 > 代理类。但是，"凭借魔法"，这两个代理在接触它们各自的服务实例的方式上表现出完全不同的行为。因此---某种程度上，这个句柄中必须包含一些信息，让代理类实例知道选择哪种技术传输。虽然这个用例在第一眼看起来很简单，但在第二眼看来却不是这样......问题是：*谁*在*什么时候*写入句柄，以便从中创建的代理实例使用直接的方法/函数调用而不是更复杂的[IPC]机制或者相反？
 
@@ -6610,7 +6584,7 @@ After we have seen a special variant of Multi-Binding in the preceding section, 
 
 > 在前一节中看到了多重绑定的一个特殊变体后，我们现在来看一个变体，可以被认为是一个真实世界的案例。假设我们有一个与前一章相当相似的设置。唯一的不同之处在于，服务的第二个实例位于与具有 AP 产品的 ECU 相同的以太网网络上的另一个 ECU 上，其中服务消费者(具有实例 1 和 2 的代理)所在。由于 AP 的标准协议是 SOME / IP，因此预计两个 ECU 之间的通信是基于 SOME / IP 的。对于我们的具体示例，这意味着代理 1 通过 Unix 域套接字(如果 AP 供应商/ IPC 实施者做了他的家庭作业，这可能被优化为进程本地通信以直接方法调用)与服务 1 进行通信，而代理 2 则通过网络套接字以 SOME / IP 兼容的消息格式与服务 2 进行通信。
 
-*Before someone notes, that this is not true for the typical SOME/IP deployment, because there adaptive SWCs will not directly open network socket connections to remote nodes: We will cover this in more detail here (* [subsection](#typical-someip-multi-binding-use-case) [7.3.3](#typical-someip-multi-binding-use-case)*), but for now suppose, that this is a realistic scenario. (For other network protocols it might indeed be realistic)*
+_Before someone notes, that this is not true for the typical SOME/IP deployment, because there adaptive SWCs will not directly open network socket connections to remote nodes: We will cover this in more detail here (_ [subsection](#typical-someip-multi-binding-use-case) [7.3.3](#typical-someip-multi-binding-use-case)_), but for now suppose, that this is a realistic scenario. (For other network protocols it might indeed be realistic)_
 
 > 在有人注意到这对典型的 SOME/IP 部署不正确之前，因为自适应 SWC 不会直接打开与远程节点的网络套接字连接：我们将在这里([子节](#typical-someip-multi-binding-use-case) \> [7.3.3](#typical-someip-multi-binding-use-case)\*)中更详细地介绍，但现在假设这是一个现实的情景(对于其他网络协议可能确实是现实的)。
 
@@ -6650,19 +6624,7 @@ In the above figure you see, that the service proxy within our [ara::com] enable
 
 The reason for coloring first part of the route differently from the second one is simple: Both parts use a different transport mechanism. While the first one (green) between the proxy and the bridge uses a fully vendor specific implementation, the second one (blue) has to comply with the SOME/IP specification. "Fully vendor specific" here means, that the vendor not only decides which technology he uses (pipes, sockets, shared mem, \...), but also which serialization format (see [section](#serialization) [7.1](#serialization)) he employs on that path. Here we obviously dive into the realm of optimizations: In an optimized AP product, the vendor would not apply a different (proprietary) serialization format for the path denoted with the green line. Otherwise it would lead to an inefficient runtime behavior. First the proxy within the service consumer app would employ a proprietary serialization of the data before transferring it to the bridge node and then the bridge would have to de-serialize and re-serialize it to SOME/IP serialization format! So even if the AP product vendor has a much more efficient/refined serialization approach for local communication, using it here does not pay, since then the bridge is not able to simply copy the data through between internal and external side. The result is, that for our example scenario we eventually do have a Multi-Binding setup. So even if the technical transport (pipes, unix domain sockets, shared mem, \...) for communication to other local [ara::com] applications and to the bridge node is the same, the serialization part of the binding differs.
 
-> 原因很简单：路由的第一部分和第二部分使用不同的传输机制。第一部分(绿色)介于代理和桥梁之间使用完全供应商特定的实现，而第二部分(蓝色)必须遵守 SOME/IP 规范。"完全供应商特定"这里意味着，供应商不仅决定使用哪种技术(管道、套接字、共享内存等)，还决定使用哪种序列化格式(参见[序列化](#序列化)[7.1](#序列化))。在这里我们显然深入到了优化领域：在优化的 AP 产品中，供应商不会在用绿线标记的路径上应用不同的(专有的)序列化格式。否则，它将导致低效的运行时行为。首先，服务消费者应用程序中的代理将在传输数据到桥梁节点之前采用专有的序列化，然后桥梁将必须反序列化并重新序列化为 SOME /
->
-> ---
->
-> IP 序列化格式！因此，即使 AP 产品供应商有更有效/精细的序列化方法用于本地通信，但在这里使用它并不划算，因为桥梁无法在内部和外部之间简单地复制数据。结果是，对于我们的示例场景，我们最终确实拥有了多绑定设置。因此，即使用于与其他本地[ara
->
-> ---
->
-> ```
->                                                        com]应用程序和桥梁节点通信的技术传输(管道、Unix 域套接字、共享内存等)相同，绑定的序列化部分也不同。
-> ```
->
-> ---
+> 原因很简单：路由的第一部分和第二部分使用不同的传输机制。第一部分(绿色)介于代理和桥梁之间使用完全供应商特定的实现，而第二部分(蓝色)必须遵守 SOME/IP 规范。"完全供应商特定"这里意味着，供应商不仅决定使用哪种技术(管道、套接字、共享内存等)，还决定使用哪种序列化格式(参见[序列化](#序列化)[7.1](#序列化))。在这里我们显然深入到了优化领域：在优化的 AP 产品中，供应商不会在用绿线标记的路径上应用不同的(专有的)序列化格式。否则，它将导致低效的运行时行为。首先，服务消费者应用程序中的代理将在传输数据到桥梁节点之前采用专有的序列化，然后桥梁将必须反序列化并重新序列化为 SOME / IP 序列化格式！因此，即使 AP 产品供应商有更有效/精细的序列化方法用于本地通信，但在这里使用它并不划算，因为桥梁无法在内部和外部之间简单地复制数据。结果是，对于我们的示例场景，我们最终确实拥有了多绑定设置。因此，即使用于与其他本地[ara::com]应用程序和桥梁节点通信的技术传输(管道、Unix 域套接字、共享内存等)相同，绑定的序列化部分也不同。
 
 Regarding the second noticeable point in the figure: We drew a box around the service discovery and SOME/IP bridge functionality since in product implementations it is very likely, that it is integrated into one component/running within one (demon) process. Both functionalities are highly related: The discovery/registry part also consists of parts local to the ECU (receiving local registrations/offers and serving local FindService requests) and network related functions (SOME/IP service discovery based offers/finds) , where the registry has to arbitrate. This arbitration in its core is also a bridging functionality.
 
@@ -6672,21 +6634,11 @@ Regarding the second noticeable point in the figure: We drew a box around the se
 
 Throughout this document we paid attention to explain ara::com API ideas and mechanisms **without** relating to the concrete/specific AP meta-model (the manifest parts of it), which is the basis to formally describe the [SI] signature (and partially the behavior) from which the ara::com API artifacts like ProxyClass and SkeletonClass and data types used in the communication are generated/created. In [5.1] we even introduced an oversimplified/synthetic IDL, just to shield the reader from complexities of the real meta-model/IDL, which wouln't have added any value at that point.
 
-> 在本文中，我们注意到解释 ara::com API 的想法和机制，而无需涉及具体的 AP 元模型(其显示部分)，该元模型是正式描述[SI](# _bookmark71)签名(和部分行为)的基础，从而生成/创建 ara::com API 的工件，如 ProxyClass 和 Skeleton-Class 以及用于通信的数据类型。在[5.1](# _bookmark100)中，我们甚至引入了一种过度简化/合成的 IDL，仅仅是为了避免读者陷入真实的元模型/IDL 的复杂性，这在这一点上不会增加任何价值。
+> 在本文中，我们注意到解释 ara::com API 的想法和机制，而无需涉及具体的 AP 元模型(其显示部分)，该元模型是正式描述[SI]签名(和部分行为)的基础，从而生成/创建 ara::com API 的工件，如 ProxyClass 和 Skeleton-Class 以及用于通信的数据类型。在[5.1]中，我们甚至引入了一种过度简化/合成的 IDL，仅仅是为了避免读者陷入真实的元模型/IDL 的复杂性，这在这一点上不会增加任何价值。
 
-This chapter shall by no means serve as a thorough explanation of the AUTOSAR meta-model, which is fully described in its own document, but it shall shed some light on the relation between [ara::com] and the meta-model parts described in [[2]]. So bear in mind, that the following parts are still somewhat high level and try to give a basic understanding of the relationship.
+This chapter shall by no means serve as a thorough explanation of the AUTOSAR meta-model, which is fully described in its own document, but it shall shed some light on the relation between [ara::com] and the meta-model parts described in [2]. So bear in mind, that the following parts are still somewhat high level and try to give a basic understanding of the relationship.
 
-> ---
->
-> ```
->                                  本章不会作为 AUTOSAR 元模型的详细解释(详细解释见有关文档)，但将揭示[ara
-> ```
->
-> ---
->
-> com]与[[2]]中描述的元模型部分之间的关系。因此，请记住，以下部分仍然是比较高级别的，试图给出一个基本的理解关系。
->
-> ---
+> 本章不会作为 AUTOSAR 元模型的详细解释(详细解释见有关文档)，但将揭示[ara::com]与[2]中描述的元模型部分之间的关系。因此，请记住，以下部分仍然是比较高级别的，试图给出一个基本的理解关系。
 
 ### Connection to AUTOSAR_TR_AdaptiveMethodology
 
@@ -6706,11 +6658,11 @@ Major steps involved in the development of Adaptive Software are
 - Adaptive Software Development
 - Integration and Deployment
 
-Adaptive applications run on top of ARA layer and exchanges the information using [SI]s and Ports. Important contribution for [ara::com] API work performed during the Integration and Deployment step of Adaptive Methodology. It supports the generation of [SI] Description ARXML file, which aggregates the [SI]s and ports. [SI]s for service-oriented communication defined by Events, Methods and Fields [ [5.1]]. This is done independent of Software components or Transport layer used for underlying communication.
+Adaptive applications run on top of ARA layer and exchanges the information using [SI]s and Ports. Important contribution for [ara::com] API work performed during the Integration and Deployment step of Adaptive Methodology. It supports the generation of [SI] Description ARXML file, which aggregates the [SI]s and ports. [SI]s for service-oriented communication defined by Events, Methods and Fields [5.1]. This is done independent of Software components or Transport layer used for underlying communication.
 
 > 适应性应用程序运行在 ARA 层之上，并使用 [SI] 和端口交换信息。在适应性方法论的集成和部署步骤期间，对 [ara::com] API 的重要贡献。它支持生成 [SI] 描述 ARXML 文件，该文件聚合 [SI] 和端口。[SI] 用于基于事件、方法和字段定义的面向服务的通信 [5.1]。这是独立于用于底层通信的软件组件或传输层完成的。
 
-Adaptive Platform supports two types of ports namely Provided and Required. [SI] along with Provided port details used for the generation of the Service Skeleton class and Required port details used for the generation of Proxy classes [[Figure] [5.2]]. Proxy and Skeleton classes use [ara::com] API to communicate with other Adaptive Platform clusters and Adaptive Applications.
+Adaptive Platform supports two types of ports namely Provided and Required. [SI] along with Provided port details used for the generation of the Service Skeleton class and Required port details used for the generation of Proxy classes [Figure] [5.2]. Proxy and Skeleton classes use [ara::com] API to communicate with other Adaptive Platform clusters and Adaptive Applications.
 
 > 适应性平台支持两种端口类型，即提供的端口和所需的端口(SI)，以及用于生成服务骨架类的提供端口详细信息和用于生成代理类的所需端口详细信息(图 5.2)。代理和骨架类使用 ara::com API 与其他适应性平台集群和适应性应用程序进行通信。
 
@@ -6724,21 +6676,12 @@ Executable of an Adaptive Software are instantiated by means of the Execution Ma
 
 ### Service Interface
 
-The most important meta-model element from the [ara::com] perspective is the [SI]. Most important, because it defines everything signaturewise of an [ara::com] proxy or skeleton. The [SI] describes the methods, fields and the methods a [SI] consists of and how the signatures of those elements (arguments and data types) look like. So the
+The most important meta-model element from the [ara::com] perspective is the [SI]. Most important, because it defines everything signaturewise of an [ara::com] proxy or skeleton. The [SI] describes the methods, fields and the methods a [SI] consists of and how the signatures of those elements (arguments and data types) look like. So the [5.1] is basically a simplification of meta-model [SI] and the real meta-model data type system.
 
-> 从 [ara::com] 的角度来看，最重要的元模型元素是 [SI]。最重要的是，它定义了 [ara::com] 代理或骨架的一切签名。[SI] 描述了一个 [SI] 所包含的方法、字段以及这些元素(参数和数据类型)的签名是什么样子的。因此，[SI] 是 [ara::com] 中最重要的元素。
+The relationship between the meta-model element [SI] and [ara::com] is therefore clear: [ara::com] proxy and skeleton classes get generated from [SI].
 
-[5.1] is basically a simplification of meta-model [SI] and the real meta-model data type system.
-
-> [5.1] 基本上是 [SI] 元模型的简化，以及真实的元模型数据类型系统。
-
-The relationship between the meta-model element [SI] and [ara::com] is therefore clear:
-
-> [SI] 和 [ara::com] 之间的关系很清楚：
-
-[ara::com] proxy and skeleton classes get generated from [SI].
-
-> [ara::com] 代理和骨架类可以从 [SI] 生成。
+> 从 [ara::com] 的角度来看，最重要的元模型元素是 [SI]。最重要的是，它定义了 [ara::com] 代理或骨架的一切签名。[SI] 描述了一个 [SI] 所包含的方法、字段以及这些元素(参数和数据类型)的签名是什么样子的。因此，[SI] 是 [ara::com] 中最重要的元素。[5.1] 基本上是 [SI] 元模型的简化，以及真实的元模型数据类型系统。
+> 因此，从[si]生成了元模型元素[si]和[ara::com]之间的关系：[ara::com]代理和骨架类。
 
 ### Software Component
 
@@ -6751,32 +6694,11 @@ The figure [Figure] [7.6] gives a coarse idea, how the model view relates to the
 > 图 7.6 给出了一个粗略的概念，模型视图与代码实现之间的关系。
 
 ![](./media/image88.png)
-
 **Figure 7.6:** []**meta-model to Implementation**
 
 For both of the different SoftwareComponentTypes A and B from the example in the upper part (meta-model level) a concrete implementation exists on implementation level (lower part in the figure). The realization/implementation of R-Port of SoftwareComponentType A is based on an instance of [ara::com] proxy class on implementation level, while the P-Port implementation of SoftwareComponentType B is using an instance of [ara::com] skeleton class. Proxy and skeleton class are generated from the [SI] definition [SI], which is referenced by the corresponding ports. In this example it is the [SI] \"RadarService\", which we already use throughout the document.
 
-> ---
->
-> ```
->                                两个不同的软件组件类型 A 和 B(上部图中的元模型层)都有具体的实现(图中下部)。软件组件类型 A 的 R 端口的实现基于实现层的[ara
-> ```
->
-> ---
->
-> ```
->                                                        com]代理类的实例，而软件组件类型 B 的 P 端口实现则使用[ara
->
->                                                                                              ::
-> ```
->
-> com]骨架类的实例。代理类和骨架类是从[SI]定义[SI]生成的，该定义由相应的端口引用。在本示例中，它是我们在整个文档中使用的"RadarService"
->
-> ```
->                                                                                  [SI]。
-> ```
->
-> ---
+> 两个不同的软件组件类型 A 和 B(上部图中的元模型层)都有具体的实现(图中下部)。软件组件类型 A 的 R 端口的实现基于实现层的[ara::com]代理类的实例，而软件组件类型 B 的 P 端口实现则使用[ara::com]骨架类的实例。代理类和骨架类是从[SI]定义[SI]生成的，该定义由相应的端口引用。在本示例中，它是我们在整个文档中使用的"RadarService" [SI]。
 
 Such a code fragment, which realizes a SoftwareComponentType can obviously be re-used. On C++ implementation level an implementation of an AdaptiveApplicationSwComponentType typically boils down to one or several C++ classes. So re-use simply means instantiating this class/those classes in different contexts multiple times. Here we can basically distinguish the following cases:
 
@@ -6807,9 +6729,10 @@ Deployable software units within AP are so called Adaptive Applications (the cor
 
 > 可部署的软件单元在 AP 中被称为自适应应用程序(相应的元模型元素是 AdaptiveAutosarApplication)。这样的自适应应用程序由 1..n 可执行文件组成，它们又通过按照前面章节描述的方式实例化 CompositionSwComponentType(任意嵌套)而构建。通常，集成器会决定以 1..n 可执行文件的形式启动哪些自适应应用程序，以及启动某个自适应应用程序的次数。
 
-![](./media/image94.png)Application/its associated executables. That means for those kind of implicit instantiation no specific code has to be written! Integrators rather have to deal with machine configuration, to configure how many times Applications get started. A started Adaptive Application then turns into 1..n processes (depending on the number of executables it is made of). We call this then the \"deployment level\".
-
+![](./media/image94.png)
 **Figure 7.8: Instantiation of Adaptive Applications in Deployment**
+
+Application/its associated executables. That means for those kind of implicit instantiation no specific code has to be written! Integrators rather have to deal with machine configuration, to configure how many times Applications get started. A started Adaptive Application then turns into 1..n processes (depending on the number of executables it is made of). We call this then the \"deployment level\".
 
 The figure above shows a simple example, where we have two Adaptive Applications, where each of those exactly consists of one executable. Adaptive Application 1 with Executable 1 is deployed twice, leading to Process 1 and Process 2 after executable start, where Application 2, which consists of Executable 2 is deployed once leading to Process 3 after start.
 
@@ -6827,31 +6750,7 @@ The explanations of meta-model/[ara::com] relation up to this point should help 
 
 The figure above outlines the \"problem\" with a simple example. Within Executable 2 there are three instantiations of SoftwareComponentType B implementation in different contexts (nesting levels). All instances do provide a specific instance of SI RadarService. The integrator, who applies the Service Instance Manifest for Process 2 has to do the technical mapping on [ara::com] level. I.e. he has to decide, which technical transport binding is to be used in each of the B instantiations and subsequently also, which technical transport binding specific instance ID. In our example, the integrator wants to provide the SI RadarService via SOME/IP binding and an SOME/IP specific instance ID \"1\" in the context of the B instantiation, which is nested inside the composite component on the right side, while he decides to provide the SI RadarService via local[IPC](Unix domain socket) binding and a Unix domain socket specific instance ID \"/tmp/Radar/3\" and \"/tmp/Radar/4\" in the context of the B instantiations on the left side, which are not nested (they are instantiated at \"top-level\" of the executable). Here it gets obvious, that within the Service Instance Manifest, which allows to specify the mapping of port instantiations within a Process to technical bindings and their concrete instance IDs, the sole usage of the **port name** from the model isn't sufficient to differentiate. To get unique identifiers within an executable (and therefore a process), the nature of nested instantiation and re-use of SoftwareComponentTypes has to be considered. Every time a SoftwareComponentType gets instantiated, its instantiation gets a unique name within its instantiation context. This concept applies to both: C++ implementation level and AUTOSAR meta-model level! In our concrete example this means:
 
-> ---
->
-> ```
->                                                                                                        图中简单地概括了"问题"。在可执行文件 2 中，有三个不同上下文(嵌套级别)的软件组件类型 B 实例化。所有实例都提供特定的 SI 雷达服务实例。应用进程 2 的服务实例清单的集成器必须在[ara
-> ```
->
-> ---
->
-> ```
->                                                                                                      com]级别上进行技术映射。也就是说，他必须决定，每个 B 实例化中将使用哪种技术传输绑定，并且随后还要决定哪种技术传输绑定特定的实例 ID。在我们的示例中，集成器希望通过 SOME
->
->                                                                                                                                                                                        / IP 绑定和 SOME /
->
->                                                                                                              IP 特定的实例 ID"1"提供 SI 雷达服务，而在右侧复合组件嵌套的 B 实例化的上下文中，他决定通过本地 [IPC](Unix 域套接字)绑定和 Unix 域套接字特定的实例 ID"/
->
->                                                                                                                                                                                tmp / Radar / 3"和"/ tmp / Radar /
-> ```
->
-> 4"提供 SI 雷达服务，而不是在可执行文件的"顶级"级别实例化的左侧 B 实例化的上下文中。在这里，很明显，只使用模型中的**端口名称**，在服务实例清单中，用于指定进程中端口实例化到技术绑定及其具体实例 ID 的映射，是不够的。为了在可执行文件(因此进程)中获得唯一标识符，必须考虑嵌套实例化和软件组件类型的重用。每次实例化软件组件类型时，它的实例化在其实例化上下文中都具有唯一的名称。这个概念适用于 C
->
-> ```
->                                                                                                                                                                 ++ 实现级别和 AUTOSAR 元模型级别！在我们的具体示例中，这意味着：
-> ```
->
-> ---
+> 图中简单地概括了"问题"。在可执行文件 2 中，有三个不同上下文(嵌套级别)的软件组件类型 B 实例化。所有实例都提供特定的 SI 雷达服务实例。应用进程 2 的服务实例清单的集成器必须在[ara::com]级别上进行技术映射。也就是说，他必须决定，每个 B 实例化中将使用哪种技术传输绑定，并且随后还要决定哪种技术传输绑定特定的实例 ID。在我们的示例中，集成器希望通过 SOME / IP 绑定和 SOME / IP 特定的实例 ID"1"提供 SI 雷达服务，而在右侧复合组件嵌套的 B 实例化的上下文中，他决定通过本地 [IPC](Unix 域套接字)绑定和 Unix 域套接字特定的实例 ID"/ tmp / Radar / 3"和"/ tmp / Radar / 4"提供 SI 雷达服务，而不是在可执行文件的"顶级"级别实例化的左侧 B 实例化的上下文中。在这里，很明显，只使用模型中的**端口名称**，在服务实例清单中，用于指定进程中端口实例化到技术绑定及其具体实例 ID 的映射，是不够的。为了在可执行文件(因此进程)中获得唯一标识符，必须考虑嵌套实例化和软件组件类型的重用。每次实例化软件组件类型时，它的实例化在其实例化上下文中都具有唯一的名称。这个概念适用于 C ++ 实现级别和 AUTOSAR 元模型级别！在我们的具体示例中，这意味着：
 
 - B instantiations on top level get unique names on their level: \"B_Inst_1\" and \"B_Inst_2\"
 - B instantiation within the Composite Component Type gets unique name on this level: \"B_Inst_1\"
@@ -6870,21 +6769,9 @@ For an Adaptive Software Component developer this then means in a nutshell:
 
 If you construct an instance specifier to be transormed via ResolveInstanceIDs() into an [ara::com::InstanceIdentifier] or used directly with FindService() (R-port side from model perspective) or as [ctor] parameter for a skeleton (P-port side from model perspective), it shall look like:
 
-> ---
->
-> ```
->                                              如果您构建一个实例规范，以通过 ResolveInstanceIDs()转换为[ara::com
-> ```
->
-> ---
->
-> InstanceIdentifier]或直接使用 Find-Service()(模型视角的 R 端)或作为[ctor]参数进行骨架(模型视角的 P 端)，它应该看起来像：
->
-> ---
+> 如果您构建一个实例规范，以通过 ResolveInstanceIDs()转换为[ara::com::InstanceIdentifier]或直接使用 Find-Service()(模型视角的 R 端)或作为[ctor]参数进行骨架(模型视角的 P 端)，它应该看起来像：
 
 \<context identifier\>/\<port name\>
-
-> \<上下文标识符\>/\<端口名称\>
 
 Port name is to be taken from the model, which describes the AdaptiveApplicationSwComponentType to be developed. Since you are not necessarily the person who decides where and how often your component gets deployed, you should foresee, that your AdaptiveApplicationSwComponentType implementation can be handed over a stringified \<context identifier\>, which you
 
@@ -6909,17 +6796,13 @@ This chapter presents Abstract Protocol Network Bindings expamples using an Inst
 > 本章介绍了使用 InstanceSpecifier 的抽象协议网络绑定示例。
 
 ![](./media/image107.jpeg)
-
 **Figure 7.10: Find Service using abstract network binding**
 
 ![](./media/image108.jpeg)
-
 **Figure 7.11: Find Service using abstract network binding ANY**
 
 ![](./media/image109.jpeg)
-
 **Figure 7.12: Skeleton creation using abstract network bindings**
 
 ![](./media/image110.jpeg)
-
 **Figure 7.13: Multiple usage of the same service instance manifest for an abstract binding**
