@@ -1,0 +1,336 @@
+---
+tip: translate by openai@2023-06-24 16:57:39
+...
+
+The Named Constructor approach enables exception-less error reporting for object construction. Since service skeletons and service proxies can be created using a Named Constructor, this section describes the general requirements of this approach. For the service skeleton and service proxy creation C++ API reference, see chapter [8.1.3.3](#service-skeleton-creation-1) and [8.1.3.11](#service-proxy-creation-1), respectively.
+
+> 命名构造函数方法可以用于无异常的对象构造错误报告。由于服务骨架和服务代理可以使用命名构造函数创建，因此本节描述了此方法的一般要求。有关服务骨架和服务代理创建C++ API参考，请参见第[8.1.3.3](#service-skeleton-creation-1)节和[8.1.3.11](#service-proxy-creation-1)节。
+
+
+**[SWS_CM_11326]**{DRAFT} **Creation of an object using Named Constructor approach** *[*The ClassToBeCreated shall provide a static member function Create() returning the constructed object embedded in an ara::core::Result. This function first performs all operations for constructing an object of ClassToBeCreated, which may fail or result in an error. E.g. parameter checks or resource allocation may fail. If an error occurs during these operations, the error is returned as an ara::core::ErrorCode in the ara::core::Result. If no error occurs, the created object is returned as a value in the ara::core::Result. The value object can then be considered as valid. The function shall not throw an exception.
+
+> 利用命名构造函数方法创建一个对象
+ClassToBeCreated将提供一个静态成员函数Create()，该函数返回嵌入ara :: core :: Result中的构造对象。此函数首先执行构造ClassToBeCreated对象的所有操作，这些操作可能会失败或导致错误。例如，参数检查或资源分配可能会失败。如果在这些操作期间发生错误，则将错误作为ara :: core :: ErrorCode返回到ara :: core :: Result中。如果没有错误发生，则将创建的对象作为ara :: core :: Result中的值返回。然后，可以将值对象视为有效。该函数不会抛出异常。
+
+
+static ara::core::Result\<ClassToBeCreated\> Create(/\* construction arguments \*/) noexcept;
+
+> 静态ara::core::Result<ClassToBeCreated> Create(/* 构建参数 */) noexcept;
+
+
+Unless a potentially-throwing constructor shall be available for ClassToBeCreated, only the Create() function shall be public for the user. All regular constructors shall be private._♩(RS_CM_00101, RS_AP_00114, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139)_
+
+> 除非ClassToBeCreated有可能抛出异常的构造函数，否则只有Create（）函数对用户是公开的。所有常规构造函数都是私有的。
+
+### Offer service
+
+
+For the functional description of the service offering API, see chapter [7.9.1](#offer-service).
+
+> 对于服务提供API的功能描述，请参见第7.9.1节（#offer-service）。
+
+
+**[SWS_CM_00101] Method to offer a service** *[*The Communication Management shall provide an OfferService method as part of the ServiceSkeleton class to offer a service to applications.
+
+> [SWS_CM_00101] 提供服务的方法*
+通信管理部门应该提供一个OfferService方法作为ServiceSkeleton类的一部分，以向应用程序提供服务。
+
+ara::core::Result\<void\> OfferService();
+
+
+If the offered service contains a Field, and the field value is not valid according to [[SWS_CM_00128](#_bookmark419)] when OfferService() is called, the service shall not be offered, and the error code ComErrc::kFieldValueIsNotValid shall be returned in the Result type.
+
+> 如果提供的服务包含一个字段，且该字段值根据[[SWS_CM_00128](#_bookmark419)]不合法，当调用OfferService()时，该服务不应被提供，并且在Result类型中返回错误码ComErrc::kFieldValueIsNotValid。
+
+
+If the offered service contains a Field that is defined with hasSetter=true, and no SetHandler has been registered yet, the service shall not be offered, and the error code ComErrc::kSetHandlerNotSet shall be returned in the Result type. See [[SWS_CM_00129](#_bookmark420)]_♩(RS_CM_00101, RS_AP_00114, RS_AP_00120)_
+
+> 如果提供的服务包含一个定义为hasSetter=true的字段，而尚未注册SetHandler，则不应提供该服务，并且在Result类型中返回错误代码ComErrc::kSetHandlerNotSet。参见[[SWS_CM_00129](#_bookmark420)]_♩(RS_CM_00101, RS_AP_00114, RS_AP_00120)_
+
+
+**[SWS_CM_00010]**{DRAFT} **Re-entrancy and thread-safety OfferService** *[*OfferService shall be re-entrant and thread-safe for _different_ ServiceSkeleton class instances. When called re-entrant or concurrently on the same ServiceSkeleton class instance, the behavior is undefined._♩(RS_CM_00101, RS_AP_00114, RS_AP_00120)_
+
+> **[SWS_CM_00010]**{草稿} **重入和线程安全的OfferService** *[*OfferService应该对不同的ServiceSkeleton类实例具有重入和线程安全性。当在同一个ServiceSkeleton类实例上重入调用或并发调用时，行为是不确定的。♩(RS_CM_00101, RS_AP_00114, RS_AP_00120)_*
+
+
+**[SWS_CM_00111] Method to stop offering a service** *[*The Communication Management shall provide a StopOfferService method as part of the ServiceSkeleton class to stop offering services to applications.
+
+> 通信管理应提供一个StopOfferService方法作为ServiceSkeleton类的一部分，以停止向应用程序提供服务。
+
+void StopOfferService();
+
+_♩(RS_CM_00105, RS_AP_00114, RS_AP_00120)_
+
+
+**[SWS_CM_00011]**{DRAFT} **Re-entrancy and thread-safetyStopOfferService** *[*StopOfferService shall be re-entrant and thread-safe for _different_ ServiceSkeleton class instances. When called re-entrant or concurrently on the same ServiceSkeleton class instance, the behavior is undefined._♩(RS_CM_00105, RS_AP_00114, RS_AP_00120)_
+
+> **[SWS_CM_00011]**{草案} **重入和线程安全StopOfferService** *[*StopOfferService必须对不同的ServiceSkeleton类实例具有重入性和线程安全性。当在同一个ServiceSkeleton类实例上重入或并发调用时，行为是未定义的。♩（RS_CM_00105，RS_AP_00114，RS_AP_00120）_*
+
+### Service skeleton creation
+
+
+For the functional description of the service skeleton creation API, see chapter [7.9.2](#service-skeleton-creation).
+
+> 对于服务骨架创建API的功能描述，请参见第7.9.2节（服务骨架创建）。
+
+
+**[SWS_CM_00130] Creation of service skeleton using Instance ID** *[*The Communication Management shall provide a constructor for each specific ServiceSkeleton class taking two arguments:
+
+> **[SWS_CM_00130] 使用实例ID创建服务骨架** *[*通信管理应为每个特定的ServiceSkeleton类提供一个构造函数，该构造函数接受两个参数：
+
+
+- InstanceIdentifier: See [[SWS_CM_00302](#sws_cm_00302draft-instance-identifier-class)] for the type definition.
+
+> 参见[[SWS_CM_00302](#sws_cm_00302draft-instance-identifier-class)]以查看类型定义。
+
+- MethodCallProcessingMode: As a default argument with kEvent as default value. See [[SWS_CM_00301](#_bookmark487)] for the type definition and [[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)] for more details on the behavior.
+
+> - 方法调用处理模式：默认参数为kEvent，请参阅[[SWS_CM_00301](#_bookmark487)]以获取类型定义，以及[[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)]以获取更多关于行为的详细信息。
+
+```
+ServiceSkeleton( ara::com::InstanceIdentifier instanceID, ara::com::MethodCallProcessingMode mode =
+
+ara::com::MethodCallProcessingMode::kEvent
+
+);
+```
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00121, RS_AP_00145)_
+
+
+**[SWS_CM_10435] Exception-less creation of service skeleton using Instance ID** *[*The Communication Management shall provide a non-throwing constructor for each specific ServiceSkeleton class using the Named Constructor idiom according to [[SWS_CM_11326](#_bookmark520)]. The Named Constructor shall be called Create() and shall take two arguments:
+
+> **[SWS_CM_10435] 使用实例ID无异常创建服务骨架** *[*通信管理应根据[[SWS_CM_11326](#_bookmark520)]提供每个特定ServiceSkeleton类的不抛出构造函数。命名构造函数将被称为Create()，并需要两个参数：
+
+
+- InstanceIdentifier: See [[SWS_CM_00302](#sws_cm_00302draft-instance-identifier-class)] for the type definition.
+
+> 请参阅[[SWS_CM_00302](#sws_cm_00302draft-instance-identifier-class) ]了解类型定义。
+
+- MethodCallProcessingMode: As a default argument with kEvent as default value. See [[SWS_CM_00301](#_bookmark487)] for the type definition and [[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)] for more details on the behavior.
+
+> - 方法调用处理模式：默认情况下以kEvent作为默认参数。有关类型定义，请参阅[[SWS_CM_00301](#_bookmark487)]，有关更多有关行为的详细信息，请参阅[[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)]。
+
+```
+static ara::core::Result\<ServiceSkeleton\> Create(
+
+const ara::com::InstanceIdentifier &instanceID, ara::com::MethodCallProcessingMode mode =
+
+ara::com::MethodCallProcessingMode::kEvent) noexcept ;
+```
+
+
+In case E2E-protected methods are used by the service, and a MethodCallProcessingMode of kEvent is passed to the constructor, an error code kWrongMethodCallProcessingMode shall be returned in the Result. See [[SWS_CM_10467](#_bookmark363)]
+
+> 如果服务使用E2E受保护的方法，并且在构造函数中传递了kEvent的MethodCallProcessingMode，则在Result中返回kWrongMethodCallProcessingMode错误代码。请参见[[SWS_CM_10467](#_bookmark363)]。
+
+
+In case of a Grant enforcement failure, an error code ComErrc::kGrantEnforcementError shall be returned in the Result. See [[SWS_CM_90005](#_bookmark293)].
+
+> 在授权执行失败的情况下，将在结果中返回错误代码ComErrc::kGrantEnforcementError。请参见[[SWS_CM_90005](#_bookmark293)]。
+
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139, RS_AP_00145)_
+
+> _♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139, RS_AP_00145)_
+
+♩(RS_CM_00101、RS_AP_00114、RS_AP_00115、RS_AP_00121、RS_AP_00139、RS_AP_00128、RS_AP_00132、RS_AP_00127、RS_AP_00139、RS_AP_00145)
+
+
+**[SWS_CM_00152] Creation of service skeleton using Instance Spec** *[*The Communication Management shall provide a constructor for each specific ServiceSkeleton class taking two arguments:
+
+> **[SWS_CM_00152] 使用实例规范创建服务骨架** *[*通信管理应为每个特定的ServiceSkeleton类提供一个构造函数，其中接受两个参数：
+
+- InstanceSpecifier: See [SWS_CORE_08001] for the type definition.
+
+- MethodCallProcessingMode: As a default argument with kEvent as default value. See [[SWS_CM_00301](#_bookmark487)] for the type definition and [[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)] for more details on the behavior.
+
+> - 方法调用处理模式：默认情况下使用kEvent作为默认参数。有关类型定义，请参见[[SWS_CM_00301](#_bookmark487)]，有关更多有关行为的详细信息，请参见[[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)]。
+
+```
+ServiceSkeleton( ara::core::InstanceSpecifier instanceSpec, ara::com::MethodCallProcessingMode mode =
+
+ara::com::MethodCallProcessingMode::kEvent
+
+);
+```
+
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00127, RS_AP_00137, RS_AP_00145)_
+
+> _♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00127, RS_AP_00137, RS_AP_00145)_
+
+♩(RS_CM_00101，RS_AP_00114，RS_AP_00115，RS_AP_00121，RS_AP_00127，RS_AP_00137，RS_AP_00145)
+
+
+**[SWS_CM_10436] Exception-less creation of service skeleton using Instance Spec** *[*The Communication Management shall provide a non-throwing constructor for each specific ServiceSkeleton class using the Named Constructor idiom according to [[SWS_CM_11326](#_bookmark520)]. The Named Constructor shall be called Create() and shall take two arguments:
+
+> 通信管理应提供一个无异常构造函数，用于每个特定的ServiceSkeleton类，根据[[SWS_CM_11326]](#_bookmark520)使用命名构造器习惯。命名构造器将被称为Create()，并采用两个参数：
+
+- InstanceSpecifier: See [SWS_CORE_08001] for the type definition.
+
+- MethodCallProcessingMode: As a default argument with kEvent as default value. See [[SWS_CM_00301](#_bookmark487)] for the type definition and [[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)] for more details on the behavior.
+
+> - 方法调用处理模式：默认情况下以kEvent作为默认参数。有关类型定义，请参见[[SWS_CM_00301](#_bookmark487)]，有关更多关于行为的详细信息，请参见[[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)]。
+
+```
+static ara::core::Result\<ServiceSkeleton\> Create(
+
+const ara::core::InstanceSpecifier &instanceSpec, ara::com::MethodCallProcessingMode mode =
+
+ara::com::MethodCallProcessingMode::kEvent) noexcept;
+```
+
+
+In case E2E-protected methods are used by the service, and a MethodCallProcessingMode of kEvent is passed to the constructor, an error code kWrongMethodCallProcessingMode shall be returned in the Result. See [[SWS_CM_10467](#_bookmark363)].
+
+> 如果服务使用E2E受保护的方法，并将kEvent作为MethodCallProcessingMode传递给构造函数，则Result中应返回kWrongMethodCallProcessingMode错误代码。参见[[SWS_CM_10467](#_bookmark363)]。
+
+
+In case of a Grant enforcement failure, an error code ComErrc::kGrantEnforcementError shall be returned in the Result. See [[SWS_CM_90005](#_bookmark293)].
+
+> 如果授权执行失败，则会在结果中返回错误代码ComErrc::kGrantEnforcementError。详见[[SWS_CM_90005](#_bookmark293)]。
+
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00137, RS_AP_00139, RS_AP_00145)_
+
+> _♩(RS_CM_00101，RS_AP_00114，RS_AP_00115，RS_AP_00121，RS_AP_00139，RS_AP_00128，RS_AP_00132，RS_AP_00127，RS_AP_00137，RS_AP_00139，RS_AP_00145)_
+
+
+**[SWS_CM_00153] Creation of service skeleton using Instance ID Container** *[*The Communication Management shall provide a constructor for each specific ServiceSkeleton class taking two arguments:
+
+> **[SWS_CM_00153] 使用实例ID容器创建服务骨架** *[*通信管理应为每个特定的ServiceSkeleton类提供一个构造函数，该构造函数接受两个参数：
+
+- InstanceIdentifierContainer: See [[SWS_CM_00319](#_bookmark469)] for the type definition.
+
+- MethodCallProcessingMode: As a default argument with kEvent as default value. See [[SWS_CM_00301](#_bookmark487)] for the type definition and [[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)] for more details on the behavior.
+
+> - 方法调用处理模式：默认参数为kEvent，详见[[SWS_CM_00301](#_bookmark487)]的类型定义和[[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)]的更多详情。
+
+```
+ServiceSkeleton( ara::com::InstanceIdentifierContainer instanceIDs, ara::com::MethodCallProcessingMode mode =
+
+ara::com::MethodCallProcessingMode::kEvent
+
+);
+```
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00145)_
+
+
+**[SWS_CM_10437] Exception-less creation of service skeleton using Instance ID Container** *[*The Communication Management shall provide a non-throwing constructor for each specific ServiceSkeleton class using the Named Constructor idiom according to [[SWS_CM_11326](#_bookmark520)]. The Named Constructor shall be called Create() and shall take two arguments:
+
+> 通信管理应按照[[SWS_CM_11326]](#_bookmark520)使用命名构造器惯例提供每个特定ServiceSkeleton类的无异常构造器。 命名构造函数应称为Create，并应接受两个参数：
+
+- InstanceIdentifierContainer: See [[SWS_CM_00319](#_bookmark469)] for the type definition.
+
+- MethodCallProcessingMode: As a default argument with kEvent as default value. See [[SWS_CM_00301](#_bookmark487)] for the type definition and [[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)] for more details on the behavior.
+
+> - 方法调用处理模式：默认参数为kEvent，详情请参见[[SWS_CM_00301](#_bookmark487)]的类型定义和[[SWS_CM_00198](#sws_cm_00198draft-set-service-method-processing-mode)]的更多细节。
+
+```
+static ara::core::Result\<ServiceSkeleton\> Create(
+
+const ara::com::InstanceIdentifierContainer &instanceIDs, ara::com::MethodCallProcessingMode mode =
+
+ara::com::MethodCallProcessingMode::kEvent) noexcept;
+```
+
+
+In case E2E-protected methods are used by the service, and a MethodCallProcessingMode of kEvent is passed to the constructor, an error code kWrongMethodCallProcessingMode shall be returned in the Result. See [[SWS_CM_10467](#_bookmark363)].
+
+> 如果服务使用E2E受保护的方法，并将kEvent作为构造函数传递MethodCallProcessingMode，则Result中应返回错误代码kWrongMethodCallProcessingMode。请参见[[SWS_CM_10467]](#_bookmark363)。
+
+
+In case of a Grant enforcement failure, an error code ComErrc::kGrantEnforcementError shall be returned in the Result. See [[SWS_CM_90005](#_bookmark293)].
+
+> 在授权执行失败的情况下，结果中将返回错误代码ComErrc::kGrantEnforcementError。详见[[SWS_CM_90005](#_bookmark293)]。
+
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139, RS_AP_00145)_
+
+> _♩(RS_CM_00101，RS_AP_00114，RS_AP_00115，RS_AP_00121，RS_AP_00139，RS_AP_00128，RS_AP_00132，RS_AP_00127，RS_AP_00139，RS_AP_00145)_
+
+
+Note: See chapter [7.9.17.1](#service-identifier-data-types) for more details on the behavior of InstanceIdentifier, InstanceIdentifierContainer and InstanceSpecifier.
+
+> 注意：有关InstanceIdentifier、InstanceIdentifierContainer和InstanceSpecifier行为的更多详细信息，请参见第7.9.17.1章节。
+
+
+**[SWS_CM_00134] Copy semantics of service skeleton class** *[*The Communication Management shall disable the generation of the copy constructor and the copy assignment operator for each specific ServiceSkeleton class.
+
+> [SWS_CM_00134] 为每个特定的ServiceSkeleton类禁用生成拷贝构造函数和拷贝赋值运算符的语义。
+
+
+ServiceSkeleton(const ServiceSkeleton&) = delete; ServiceSkeleton& operator=(const ServiceSkeleton&) = delete;
+
+> 服务骨架（const ServiceSkeleton&）=删除; 服务骨架& 运算符=（const ServiceSkeleton&）=删除;
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00145, RS_AP_00147)_
+
+
+**[SWS_CM_00135] Move semantics of service skeleton class** *[*The Communication Management shall provide the possibility to move construct and move assign a ServiceSkeleton instance from another instance.
+
+> **[SWS_CM_00135] 服务骨架类的移动语义** *[*通信管理应提供从另一个实例构造和移动分配ServiceSkeleton实例的可能性。
+
+
+ServiceSkeleton(ServiceSkeleton &&); ServiceSkeleton& operator=(ServiceSkeleton &&);
+
+> 服务骨架（服务骨架&&）；服务骨架&运算符=（服务骨架&&）；
+
+_♩(RS_CM_00101, RS_AP_00114, RS_AP_00145, RS_AP_00147)_
+
+
+**[SWS_CM_11370]**{DRAFT} **ServiceSkeleton destructor** *[*The Communication Management shall provide a destructor for the ServiceSkeleton.
+
+> 通信管理应提供服务骨架的析构函数。
+
+\~ServiceSkeleton();
+
+_♩(RS_AP_00114, RS_AP_00145)_
+
+### Send event
+
+
+For the functional description of event sending API, see chapter [7.9.3](#send-event).
+
+> 对于事件发送API的功能描述，请参见第7.9.3章节（#发送事件）。
+
+
+Inside the specific Event class belonging to the specific ServiceSkeleton class, a Send method shall be provided to initiate sending the corresponding event.
+
+> 在属于特定ServiceSkeleton类的特定Event类内，应提供一个Send方法来启动发送相应事件。
+
+### [SWS_CM_00162] Send event where application is responsible for the data _[_
+
+
+The Send method of the specific Event class where the application is responsible for the data and the Communication Management creates a copy for sending takes in the input parameter data, the data to send and sends it to all subscribed applications.
+
+> 特定事件类的发送方法，应用负责数据，通信管理创建一个副本用于发送，接受输入参数数据，要发送的数据，并将其发送给所有订阅的应用程序。
+
+ara::core::Result\<void\> Event::Send(const SampleType &data);
+
+
+If not successful, Send() shall return an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error. The following errors are possible:
+
+> 如果不成功，Send() 将从 ara::com::ComErrorDomain 返回一个 ara::core::ErrorCode，以指示错误。以下错误是可能的：
+
+- ComErrc::kServiceNotOffered: Service not offered.
+- ComErrc::kCommunicationLinkError: Communication link is broken.
+
+- ComErrc::kCommunicationStackError: Communication Stack Error, e.g. network stack, network binding, or communication framework reports an error.
+
+> - ComErrc::kCommunicationStackError：通信堆栈错误，例如网络堆栈、网络绑定或通信框架报告错误。
+
+_♩(RS_CM_00201, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
+
+**[SWS_CM_90437] Send event where Communication Management is responsible for the data** *[*The Send method of the specific Event class where the Communication Management is responsible for the data and the application is not allowed to access the data after sending takes in the input parameter data, the data to send and sends it to all subscribed applications.
+
+> [SWS_CM_90437] 发送事件，其中通信管理负责数据，应用程序在发送后不允许访问数据。特定事件类的发送方法接受输入参数数据，要发送的数据，并将其发送给所有订阅的应用程序。
+
+
+ara::core::Result\<void\> Event::Send(ara::com::SampleAllocateePtr \<SampleType\> data);
+
+> ara::core::结果\<void\> 事件::发送（ara::com::SampleAllocateePtr \<SampleType\> 数据）；
+
