@@ -141,37 +141,29 @@ The individual building blocks of the architecture (Functional Clusters) are spe
 
 > 软件架构的个体组件(功能群)在单独的文档中进行规定。每个功能群定义一个或多个需求规范(RS 文档)、一个或多个软件规范(SWS 文档)和一个或多个解释文档(EXP 文档)。有关 AUTOSAR Adaptive Platform 标准的任何细节，请参阅这些文档。
 
-4. []{#\_bookmark8 .anchor}**Overview and Goals**
-
-> **概览和目标**
+2.4. **Overview and Goals**
 
 In conventional automotive systems ECUs are used to replace or augment electro- mechanical systems. Those resource constrained, deeply-embedded ECUs typically perform basic control functions by creating electrical output signals (e.g. for actors) based on input signals (e.g. from sensors) and information from other ECUs con- nected to the vehicle network. Much of the control software is specifically designed and implemented for the target vehicle and does not change significantly during vehi- cle lifetime. The AUTOSAR Classic Platform standard addresses the needs of these deeply-embedded systems.
 
-> 在传统汽车系统中，ECU 用于取代或增强电子机械系统。这些资源受限的深度嵌入式 ECU 通常通过根据输入信号(例如来自传感器)和来自连接到车辆网络的其他 ECU 的信息来执行基本控制功能(例如创建电气输出信号)。大部分控制软件是专门为目标车辆设计和实施的，在车辆使用寿命期间不会显着改变。 AUTOSAR Classic Platform 标准解决了这些深度嵌入式系统的需求。
+> 在传统汽车系统中，ECU 用于取代或增强电子机械系统。<font color=Red><b>**这些资源受限的深度嵌入式 ECU 通常通过根据输入信号(例如来自传感器)和来自连接到车辆网络的其他 ECU 的信息来执行基本控制功能(例如创建电气输出信号)**</b></font>。大部分控制软件是专门为目标车辆设计和实施的，在车辆使用寿命期间不会显着改变。 AUTOSAR Classic Platform 标准解决了这些深度嵌入式系统的需求。
 
 Recent and future vehicle functions, such as highly automated driving, will introduce complex and computing resource demanding software that shall fulfill strict safety, in- tegrity and security requirements. Such software performs for example, environment perception and behavior planning, and interacts with external backend and infrastruc- ture systems. The software in the vehicle regularly needs to be updated during the life-cycle of the vehicle, due to evolving external systems, improved or added function- ality, or security problems. The AUTOSAR Classic Platform standard cannot fulfill the needs of such systems. Therefore, AUTOSAR specifies a second software platform, the AUTOSAR Adaptive Platform. It provides high-performance computing and com- munication mechanisms as well as a flexible software configuration, for example, to support software update over-the-air. Features that are specifically defined for the AU- TOSAR Classic Platform, such as access to electrical signals and automotive specific bus systems, can be integrated into the AUTOSAR Adaptive Platform but is not in the focus of standardization.
 
 > 近期和未来的车辆功能，如高度自动驾驶，将引入复杂且计算资源要求严格的安全、完整性和安全性要求的软件。例如，该软件执行环境感知和行为规划，并与外部后端和基础设施系统进行交互。车辆中的软件在车辆的使用寿命中需要定期更新，以应对演变的外部系统、改进或添加功能，或安全问题。AUTOSAR Classic Platform 标准无法满足这些系统的需求。因此，AUTOSAR 指定了第二个软件平台，即 AUTOSAR Adaptive Platform。它提供了高性能计算和通信机制，以及灵活的软件配置，例如支持软件空中更新。特别为 AUTOSAR Classic Platform 定义的功能，如访问电信号和汽车特定总线系统，可以集成到 AUTOSAR Adaptive Platform 中，但不是标准化的重点。
 
-1. []{#\_bookmark9 .anchor}**Requirements Overview**
-
-> **概述要求**
+1. **Requirements Overview**
 
 This section provides an overview of the basic requirements for the AUTOSAR Adap- tive Platform that impact its architecture. The corresponding requirement identifiers are provided in square brackets. Please refer to \[[4](#_bookmark326), RS_Main\] and \[[5](#_bookmark327), RS_General\] for any details, rationale or intended use-cases of these requirements.
 
 > 这一部分概述了对 AUTOSAR 自适应平台架构有影响的基本要求，相应的要求标识符用方括号括起来。有关这些要求的任何细节、基本原理或预期用例，请参考[4，RS_Main]和[5，RS_General]。
 
-**Support of state-of-the-art Technology**
-
-> 支持最先进的技术
+**Support of state-of-the-art Technology**(支持最先进的技术)
 
 The AUTOSAR Adaptive Platform aims to support resource-intensive (memory, cpu) applications on state-of-the-art hardware. Therefore, the AUTOSAR Adaptive Platform shall support high performance computing platforms \[RS_Main_00002\] as well as vir- tualized environments \[RS_Main_00511\]. The AUTOSAR Adaptive Platform shall be able to run multiple applications in parallel \[RS_Main_00049\], each with concurrent application internal control flows \[RS_Main_00050\].
 
-> AUTOSAR 自适应平台旨在支持在最新硬件上的资源密集型(内存、CPU)应用程序。因此，AUTOSAR 自适应平台应支持高性能计算平台\[RS_Main_00002\]以及虚拟化环境\[RS_Main_00511\]。AUTOSAR 自适应平台应能够并行运行多个应用程序\[RS_Main_00049\]，每个应用程序都具有并发的应用内控制流\[RS_Main_00050\]。
+> **AUTOSAR 自适应平台旨在支持在最新硬件上的资源密集型(内存、CPU)应用程序**。因此，AUTOSAR 自适应平台应支持高性能计算平台\[RS_Main_00002\]以及虚拟化环境\[RS_Main_00511\]。AUTOSAR 自适应平台应能够并行运行多个应用程序\[RS_Main_00049\]，每个应用程序都具有并发的应用内控制流\[RS_Main_00050\]。
 
-**Software Update and Configuration**
-
-> 软件更新与配置
+**Software Update and Configuration**(软件更新与配置)
 
 The AUTOSAR Adaptive Platform shall support a flexible (configuration) data and soft- ware update. Hereby, AUTOSAR Adaptive Platform shall support up- and download of such update packages \[RS_Main_00650\] and change of communication and applica- tion software at runtime \[RS_Main_00503\].
 
@@ -193,9 +185,7 @@ The AUTOSAR Adaptive Platform shall support the development of safety related sy
 
 > AUTOSAR 自适应平台应支持开发可靠[RS_Main_00011]和高可用性[RS_Main_00012]的安全相关系统[RS_Main_00010]。AUTOSAR 自适应平台规范应可分析，并且支持相应的方法以证明安全相关属性的实现[RS_Main_00350]。
 
-**Reuse and Interoperability**
-
-> 重复使用和互操作性
+**Reuse and Interoperability**(重复使用和互操作性)
 
 The AUTOSAR Adaptive Platform shall support standardized interoperability with non-AUTOSAR software \[RS_Main_00190\] as well as (source code) portability for AUTOSAR Adaptive Applications across different implementations of the platform \[RS_AP_00111\]. Hereby, the AUTOSAR Adaptive Platform shall provide means to describe a component model for application software \[RS_Main_00080\], and support bindings for different programming languages \[RS_Main_00513\].
 
@@ -213,33 +203,24 @@ The AUTOSAR Adaptive Platform shall provide diagnostics means during runtime for
 
 > AUTOSAR 自适应平台应在运行时为生产和服务目的提供诊断手段[RS_Main_00260]。
 
-2. []{#\_bookmark10 .anchor}**Quality Goals**
-
-> **质量目标**
+2. **Quality Goals**(质量目标)
 
 This section will list the top quality goals for the architecture whose fulfillment is of highest importance to the major stakeholders in a future version of this document. Please refer to the currently un-prioritized list of Quality Attributes in Section [6.1](#_bookmark16).
 
-> 本节将列出架构的最高质量目标，其实现对未来版本本文档的主要利益相关者至关重要。请参阅[6.1](＃\_bookmark16)节中尚未优先排序的质量属性列表。
+> 本节将列出架构的最高质量目标，其实现对未来版本本文档的主要利益相关者至关重要。请参阅[6.1]节中尚未优先排序的质量属性列表。
 
-3. []{#\_bookmark11 .anchor}**Stakeholders**
-
-> **干系人**
+3. **Stakeholders**
 
 This section lists the stakeholders of the AUTOSAR Adaptive Platform architecture and their main expectations.
 
 > 这一节列出了 AUTOSAR 自适应平台架构的利益相关者及其主要期望。
 
 ```
-
 ```
 
 **Table 4.1: Stakeholder table with roles and expectations**
 
-> 表 4.1：角色和期望的干系人表
-
-5. []{#\_bookmark12 .anchor}**Architecture Constraints**
-
-> **架构约束**
+5. **Architecture Constraints**(架构约束)
 
 AUTOSAR is a worldwide development partnership of vehicle manufacturers, suppli- ers, service providers and companies from the automotive electronics, semiconductor and software industry. AUTOSAR standardizes the AUTOSAR Adaptive Platform au- tomotive middleware. The AUTOSAR Adaptive Platform is not a concrete implemen- tation. The AUTOSAR Adaptive Platform standard leaves a certain degree of freedom to implementers of the standard, as most standards do. On the one hand, more free- dom enables competition among the different implementations and a broader choice of properties for users of the AUTOSAR Adaptive Platform. On the other hand, a more strict standardization makes the different implementations compatible and exchange- able (within the standardized scope). Naturally, those attributes are in conflict. It is usually a choice of the standardization organization to evaluate the attributes and de- fine the desired level of strictness.
 
@@ -249,9 +230,7 @@ The AUTOSAR Classic Platform is rather strict in that sense by specifying a deta
 
 > AUTOSAR Classic Platform 在这方面非常严格，其指定了详细的分层软件架构，对实现施加了许多限制。而 AUTOSAR Adaptive Platform 则以更宽松的方式推出。这种更宽松的方式对 AUTOSAR Adaptive Platform 架构施加了限制，如下所示。
 
-1. []{#\_bookmark13 .anchor}**Internal Interfaces**
-
-> **内部接口**
+5.1. **Internal Interfaces**(内部接口)
 
 An important architectural constraint is that only interfaces that are intended to be used by applications or interfaces that are used to extend the functionality of the AUTOSAR Adaptive Platform shall be standardized. Internal interfaces between the building blocks of the AUTOSAR Adaptive Platform shall not be standardized. This approach leaves a lot of freedom to design and optimize the internals of an AUTOSAR Adaptive Platform stack. However, it also imposes constraints on how the AUTOSAR Adaptive Platform architecture can be defined and described in this document. Also, this means that it might not be possible to use different functional clusters from different AUTOSAR Adaptive Platform stack vendors.
 
@@ -265,9 +244,7 @@ Second, some quality attributes may be hard to ensure in general by the architec
 
 > 第二，一些质量属性可能很难通过标准架构来确保。像安全或安全性考虑等额外的措施缺乏明确的输入，如数据流或相互依赖关系的规范。因此，当实施 AUTOSAR 自适应平台堆栈时，需要进行更彻底的设计阶段。
 
-2. []{#\_bookmark14 .anchor}**Distributed Work**
-
-> **分布式工作**
+5.2. **Distributed Work**(分布式工作)
 
 Standardization of the AUTOSAR Adaptive Platform is a worldwide distributed effort. The individual building blocks are specified by dedicated working groups in separate documents to be able to scale in that distributed setup. This impacts the way the AUTOSAR Adaptive Platform architecture is described in this document.
 
@@ -281,41 +258,31 @@ Second, this document aims to provide guidance for the working groups in specify
 
 > 第二，本文件旨在为工作组提供指导，以通过定义模式和概念来解决常见问题来确定各个构建块。这种指导应有助于从基础建立统一和一致的标准。
 
-6. []{#\_bookmark15 .anchor}**Quality Requirements**
-
-> **质量要求**
+6. **Quality Requirements**(质量要求)
 
 Quality requirements define the expectations of AUTOSAR Adaptive Platform stake- holders for the quality and the attributes of the AUTOSAR Adaptive Platform standard that indicate whether the quality factors are satisfied or not. Section [6.1](#_bookmark16) starts by list- ing the quality attributes that, in the end, are used to assess whether the AUTOSAR Adaptive Platform and its software architecture satisfies the expected quality factors or not. Section [6.2](#_bookmark20) then provides quality scenarios that operationalize quality attributes and turn them into measurable quantities by describing the reaction of the system to a stimulus in a certain situation.
 
 > 质量要求定义 AUTOSAR 自适应平台参与者对质量和 AUTOSAR 自适应平台标准属性的期望，以指示质量因素是否得到满足。第 6.1 节开始列出质量属性，最终用于评估 AUTOSAR 自适应平台及其软件架构是否满足预期的质量因素。第 6.2 节提供质量场景，通过描述系统对某种情况下刺激的反应，将质量属性操作化并转化为可测量的数量。
 
-1. []{#\_bookmark16 .anchor}**Quality Attributes**
-
-> 质量属性
+6.1. **Quality Attributes**
 
 The AUTOSAR Adaptive Platform has many stakeholders with different concerns. Thus, this document uses the following three quality attribute categories that corre- spond to the three main stakeholder groups in order to make the requirements and their impact on the architecture more comprehensible:
 
 > AUTOSAR Adaptive Platform 拥有许多具有不同关切的利益相关者。因此，本文档使用以下三个质量属性类别，以便使需求及其对架构的影响更加易懂，这三个主要利益相关者组分别如下：
 
 - **AUTOSAR Adaptive Platform Standard:** Quality requirements for the AU- TOSAR standard itself. These requirements may directly affect the architecture of the AUTOSAR Adaptive Platform.
-
-> -**AUTOSAR 自适应平台标准：**针对 AUTOSAR 标准本身的质量要求。这些要求可能直接影响 AUTOSAR 自适应平台的架构。
-
 - **AUTOSAR Adaptive Platform Stack:** Quality requirements for an implementa- tion of the AUTOSAR standard as an AUTOSAR stack. These requirements may indirectly affect the architecture of the AUTOSAR Adaptive Platform.
-
-> -**AUTOSAR 自适应平台堆栈：**对作为 AUTOSAR 堆栈实现 AUTOSAR 标准的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的体系结构。
-
 - **AUTOSAR Adaptive Application:** Quality requirements for an application based on an AUTOSAR stack. These requirements may transitively affect the architec- ture of the AUTOSAR Adaptive Platform.
 
-> **AUTOSAR 自适应应用：** 基于 AUTOSAR 栈的应用程序的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的架构。
+> - **AUTOSAR 自适应平台标准：**针对 AUTOSAR 标准本身的质量要求。这些要求可能直接影响 AUTOSAR 自适应平台的架构。
+> - **AUTOSAR 自适应平台堆栈：**对作为 AUTOSAR 堆栈实现 AUTOSAR 标准的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的体系结构。
+> - **AUTOSAR 自适应应用：** 基于 AUTOSAR 栈的应用程序的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的架构。
 
 The quality attributes are organized according to the Architecture Tradeoff Analysis Method (ATAM) \[[6](#_bookmark328)\] as a tree, one for each of the quality attribute categories. The leafs of those trees are the individual quality attributes.
 
-> 质量属性按照架构权衡分析法(ATAM)[[6](#\_bookmark328)]组织为树状结构，每个质量属性类别一棵树。这些树的叶子是各个质量属性。
+> 质量属性按照架构权衡分析法(ATAM)[[6]组织为树状结构，每个质量属性类别一棵树。这些树的叶子是各个质量属性。
 
-1. []{#\_bookmark17 .anchor}**AUTOSAR Adaptive Platform Standard**
-
-> AUTOSAR 自适应平台标准
+1. **AUTOSAR Adaptive Platform Standard**
 
 - Functional suitability
 
@@ -347,7 +314,7 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
   - The use of the standard shall be as easy as possible for suppliers and appli- cation developers. Easy means: not much material and resources required.
 
-> 使用标准应该尽可能容易，对供应商和应用程序开发者来说。容易意味着：所需的材料和资源较少。
+  > 使用标准应该尽可能容易，对供应商和应用程序开发者来说。容易意味着：所需的材料和资源较少。
 
 - The holistic approach shall not be broken (avoid different approaches in one standard).
 - The standard shall contain application sample code for all its elements.
@@ -517,7 +484,7 @@ The AUTOSAR Adaptive Platform is conceptually a middleware. AUTOSAR Adaptive Pla
 
 [7.3](#_bookmark31) describes the third category that are external systems communicating with (an
 
-> [7.3](#\_bookmark31)描述了与之通信的第三类外部系统。
+> [7.3](#_bookmark31)描述了与之通信的第三类外部系统。
 
 [Adaptive Application](#_bookmark24) via) AUTOSAR Adaptive Platform.
 
@@ -1790,7 +1757,7 @@ Figure [11.13](#_bookmark290) shows the scenario for successfully switching the 
 
 in an implementation-specific way (e.g., using tools provided with the TCP/IP stack of the [Operating System](#_bookmark28)).
 
-> 以实现特定的方式(例如使用 TCP/IP 堆栈提供的工具[操作系统](#\_bookmark28))。
+> 以实现特定的方式(例如使用 TCP/IP 堆栈提供的工具[操作系统](#_bookmark28))。
 
 2. **Report Security Event**
 
@@ -1872,7 +1839,7 @@ The AUTOSAR Adaptive Platform defines design entities that several Functional Cl
 
 A Software Package is a digitally signed package that can be installed/uninstalled via [Update and Configuration Management](#_bookmark200). A Software Package contains exactly one Software Cluster (see Section [13.4](#software-cluster) for details). A Software Clus- ter refers to a set of Executables (and other files). The corresponding executable file then holds the executable code for the Machine that the AUTOSAR Adaptive Plat- form runs on.
 
-> 一个软件包是一个经过数字签名的包，可以通过[更新和配置管理](＃\_bookmark200)安装/卸载。一个软件包包含一个软件集群(有关详细信息，请参见[13.4](＃软件集群)节)。软件集群指的是一组可执行文件(和其他文件)。然后，相应的可执行文件为 AUTOSAR Adaptive Platform 运行的机器提供可执行代码。
+> 一个软件包是一个经过数字签名的包，可以通过[更新和配置管理](＃_bookmark200)安装/卸载。一个软件包包含一个软件集群(有关详细信息，请参见[13.4](＃软件集群)节)。软件集群指的是一组可执行文件(和其他文件)。然后，相应的可执行文件为 AUTOSAR Adaptive Platform 运行的机器提供可执行代码。
 
 Additionally, a Software Cluster configuration collects a set of Processes (cf. Section [13.4](#software-cluster)) and related entities. A Process refers to an Executable and provides different Startup Configuration values, for example parameters, a scheduling
 
@@ -1930,7 +1897,7 @@ A Software Cluster serves as a grouping entity during application design. As a r
 
 From such a standardized model, an equivalent implementation-specific configura- tion for [Execution Management](#_bookmark61) is derived that is used during runtime (see Figure [13.3](#_bookmark304)). That configuration advises [Execution Management](#_bookmark61) to start and configure processes accordingly when a Function Group State is requested. Hereby, [Ex-](#_bookmark61) [ecution Management](#_bookmark61) (logically) merges configurations contributed by all installed Software Packages. Other Functional Clusters that depend on configuration provided in the Manifests merge the configurations contributed by all installed Soft- ware Packages in the same way. Please also note that there is no corresponding runtime entity for a Software Cluster (see Figure [13.3](#_bookmark304)).
 
-> 从这样的标准模型中，可以派生出一个用于运行时使用的等效实现特定配置(请参见图 13.3)。该配置建议[执行管理](＃\_bookmark61)在请求功能组状态时启动和配置进程。因此，[Ex-](＃\_bookmark61)[ecution Management](＃\_bookmark61)(逻辑上)合并所有安装软件包提供的配置。其他依赖于清单中提供的配置的功能集群以相同的方式合并所有安装的软件包提供的配置。请注意，软件集群没有相应的运行时实体(请参见图 13.3)。
+> 从这样的标准模型中，可以派生出一个用于运行时使用的等效实现特定配置(请参见图 13.3)。该配置建议[执行管理](＃_bookmark61)在请求功能组状态时启动和配置进程。因此，[Ex-](＃_bookmark61)[ecution Management](＃_bookmark61)(逻辑上)合并所有安装软件包提供的配置。其他依赖于清单中提供的配置的功能集群以相同的方式合并所有安装的软件包提供的配置。请注意，软件集群没有相应的运行时实体(请参见图 13.3)。
 
 ![](./media/image318.png)
 

@@ -1,65 +1,137 @@
+---
+tip: translate by openai@2023-06-24 23:29:16
+...
+
 If not successful, Send() shall return an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error. The following errors are possible:
+
+> 如果不成功，Send() 将从ara :: com :: ComErrorDomain返回ara :: core :: ErrorCode，以指示错误。以下错误可能：
 
 - ComErrc::kServiceNotOffered: Service not offered.
 - ComErrc::kCommunicationLinkError: Communication link is broken.
+
 - ComErrc::kCommunicationStackError: Communication Stack Error, e.g. network stack, network binding, or communication framework reports an error.
 
+> - ComErrc::kCommunicationStackError：通信堆栈错误，例如网络堆栈、网络绑定或通信框架报告了一个错误。
+
 _♩(RS_CM_00201, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
 
 **[SWS_CM_00012]**{DRAFT} **Re-entrancy and thread-safety Send** *[*Send shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00201, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
+> **[SWS_CM_00012]**{草案} **重入性和线程安全发送** *[*发送必须是不同事件类实例的可重入和线程安全的。 当在同一个事件类实例上重入或并发调用时，行为是未定义的。♩（RS_CM_00201，RS_AP_00114，RS_AP_00120，RS_AP_00121）*
+
 ### [SWS_CM_90438] Allocate data when Communication Management is responsible for the data _[_
+
 
 The Allocate method of the specific Event class is used to allocate memory for the event data when Communication Management is responsible for the data.
 
+> 特定事件类的Allocate方法用于在通信管理负责数据时为事件数据分配内存。
+
+
 ara::core::Result\<ara::com::SampleAllocateePtr\<SampleType\>\> Event::Allocate();
+
+> ara::core::结果<ara::com::SampleAllocateePtr<SampleType>> Event::分配（）;
+
 
 There are two error codes that shall be returned in the Result of the Allocate method of the specific Event class:
 
+> 在特定事件类的Allocate方法的结果中，应该返回两个错误代码。
+
+
 - ComErrc::kSampleAllocationFailure: If the allocation of the shared memory fails (i.e., failure to retrieve/allocate a shared slot for a sample).
+
+> ComErrc::kSampleAllocationFailure：如果共享内存分配失败（即无法为样本检索/分配共享槽）。
+
 - ComErrc::kIllegalUseOfAllocate: If the allocation is done via custom allocator (i.e., not via shared memory allocation).The error shall be logged.
+
+> - ComErrc::kIllegalUseOfAllocate：如果分配是通过自定义分配器（即不是通过共享内存分配）完成的，应该记录该错误。
 
 _♩(RS_CM_00201, RS_AP_00114, RS_AP_00115, RS_AP_00120)_
 
+
 See [[SWS_CM_00308](#_bookmark480)] for the type definition of SampleAllocateePtr and ARAComAPI explanatory document [1] for more details on the behavior.
+
+> 请参阅[[SWS_CM_00308](#_bookmark480)]了解SampleAllocateePtr的类型定义，并参阅ARAComAPI说明文档[1]了解更多有关行为的详细信息。
+
 
 **[SWS_CM_00013]**{DRAFT} **Re-entrancy and thread-safety Allocate** *[*Allocate
 
+> **[SWS_CM_00013]**{草案} **重入和线程安全分配** *[*分配
+
+
 shall be re-entrant and thread-safe for _different_ Event class instances. When called
+
+> 必须对不同的Event类实例可重入和线程安全。调用时
+
 
 re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00201, RS_AP_00114, RS_AP_00115, RS_AP_00120)_
 
+> 重入或同时在同一个Event类实例上的行为是未定义的。
+
 ### Send Trigger
+
 
 Inside the specific Trigger class belonging to the specific ServiceSkeleton class a Send method shall be provided to initiate sending the corresponding trigger.
 
+> 在属于特定ServiceSkeleton类的特定Trigger类内，应提供一个Send方法来启动发送相应的触发器。
+
+
 **[SWS_CM_00721]**{DRAFT} **Send trigger** *[*The Send method of the specific Trigger class send trigger to all subscribed applications.
+
+> **[SWS_CM_00721]**{草案} **发送触发器** *[*特定触发器类的发送方法将触发器发送给所有订阅的应用程序。
 
 ara::core::Result\<void\> Trigger::Send();
 
+
 If not successful, Send() shall return an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error. The following errors are possible:
+
+> 如果不成功，Send（）将从ara :: com :: ComErrorDomain返回ara :: core :: ErrorCode表示错误。 以下错误是可能的：
 
 - ComErrc::kServiceNotOffered: Service not offered.
 - ComErrc::kCommunicationLinkError: Communication link is broken.
+
 - ComErrc::kCommunicationStackError: Communication Stack Error, e.g. network stack, network binding, or communication framework reports an error.
+
+> - ComErrc::kCommunicationStackError：通信堆栈错误，例如网络堆栈、网络绑定或通信框架报告错误。
 
 _♩(RS_CM_00201, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
+
 **[SWS_CM_00722]**{DRAFT} **Re-entrancy and thread-safety Send** *[*Send shall be re-entrant and thread-safe for different Trigger class instances. When called reentrant or concurrently on the same Trigger class instance, the behavior is undefined._♩(RS_CM_00201, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
+> **[SWS_CM_00722]**{草案} **重入和线程安全发送** *[*Send应该对不同的Trigger类实例是重入和线程安全的。当在同一个Trigger类实例上重入或者并发调用时，行为是未定义的。_♩(RS_CM_00201, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
 ### Provide a service method
 
+
 **[SWS_CM_00191]**{DRAFT} **Provision of method** *[*A pure virtual method shall be defined inside the specific ServiceSkeleton class for each provided method of the service.
+
+> **[SWS_CM_00191]**{草案} **提供方法** *[*为每个提供的服务方法，在特定的ServiceSkeleton类中定义一个纯虚拟方法。
+
 
 The name of this method and its parameters are derived from the signature of the provided service method.
 
+> 这种方法的名称和参数是从提供的服务方法的签名中派生出来的。
+
+
 The service method input parameters shall become input parameters of the respective method defined inside the ServiceSkeleton class.
+
+> 服务方法输入参数应成为ServiceSkeleton类中定义的各个方法的输入参数。
+
 
 An Output type combining the possible output parameters shall be provided inside the ServiceSkeleton class.
 
+> 在ServiceSkeleton类中提供一种结合可能输出参数的输出类型。
+
+
 The method shall return an ara::core::Future object wrapping the output parameters as result.
 
+> 该方法应返回一个ara::core::Future对象，其中包装了输出参数作为结果。
+
+
 A corresponding subclass providing implementations for the methods shall be created to implement the methods of a respective ServiceSkeleton.
+
+> 一个相应的子类应该被创建以实现相应ServiceSkeleton的方法。
 
 ```
 struct Method1Output { TypeOutputParameter1 output1;
@@ -79,15 +151,32 @@ TypeInputParameter2 input2,
 ) = 0;
 ```
 
+
 _♩(RS_CM_00211, RS_AP_00114, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> _♩(RS_CM_00211, RS_AP_00114, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+♩(RS_CM_00211，RS_AP_00114，RS_AP_00138，RS_AP_00128，RS_AP_00127，RS_AP_00138)
+
 
 **[SWS_CM_90434]**{DRAFT} **Provision of a Fire and Forget method** *[*A pure virtual method shall be defined inside the specific ServiceSkeleton class for each provided Fire and Forget method of the service.
 
+> 提供一种“忘记火”方法：在提供服务的ServiceSkeleton类中定义一个纯虚拟方法，用于每个提供的“忘记火”方法。
+
+
 The name of this method and its parameters are derived from the signature of the provided Fire and Forget method.
+
+> 这种方法的名称和参数是从所提供的“发射即忘”方法的签名中得出的。
+
 
 The Fire and Forget method input parameters shall become input parameters of the respective method defined inside the ServiceSkeleton class. The Fire and Forget method shall have no return values.
 
+> 火放式方法的输入参数应成为ServiceSkeleton类内定义的相应方法的输入参数。火放式方法不应有返回值。
+
+
 A corresponding subclass providing implementations for the Fire and Forget methods shall be created to implement the Fire and Forget method of a respective ServiceSkeleton.
+
+> 一个相应的子类将提供实现来实现各自服务骨架的即发即忘方法，应该被创建出来。
 
 ```
 virtual void FireForgetMethod1( TypeInputParameter1 input1, TypeInputParameter2 input2,
@@ -99,15 +188,24 @@ virtual void FireForgetMethod1( TypeInputParameter1 input1, TypeInputParameter2 
 
 _♩(RS_CM_00225, RS_AP_00114)_
 
+
 **[SWS_CM_00017]**{DRAFT} **Re-entrancy and thread-safety ServiceSkeleton method implementation** *[*The ServiceSkeleton method implementation shall be re-entrant and thread-safe in case the ServiceSkeleton instance has been created in event-driven concurrent mode(kEvent). The ServiceSkeleton method implementation may be non-re-entrant and non-thread-safe otherwise (i.e., in eventdriven sequential mode (kEventSingleThread) and in polling mode (kPoll))._♩ (RS_CM_00211, RS_AP_00114, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> **[SWS_CM_00017]**{草案} **重入性和线程安全的ServiceSkeleton方法实现** *[*如果ServiceSkeleton实例已经在事件驱动的并发模式（kEvent）下创建，则ServiceSkeleton方法实现应该是重入性和线程安全的。 否则（即在事件驱动的单线程模式（kEventSingleThread）和轮询模式（kPoll）下），ServiceSkeleton方法实现可能是非重入性和非线程安全的。_♩（RS_CM_00211，RS_AP_00114，RS_AP_00138，RS_AP_00128，RS_AP_00127，RS_AP_00138）_
 
 ### Processing of service methods
 
+
 For the functional description of the processing of service methods API, see chapter [7.9.4](#processing-of-service-methods).
+
+> 对于服务方法API处理的功能描述，请参见[7.9.4](#processing-of-service-methods)章节。
 
 ### [SWS_CM_00198] {DRAFT} Set service method processing mode _[_
 
+
 With the instantiation of a specific ServiceSkeleton class, the mode for processing service method invocations is set by providing an ara::com::MethodCallProcessingMode as a parameter of the constructor. The data type representing the processing modes is defined by [[SWS_CM_00301](#_bookmark487)].
+
+> 通过提供一个ara::com::MethodCallProcessingMode作为构造函数的参数，实例化特定的ServiceSkeleton类可以设置处理服务方法调用的模式。表示处理模式的数据类型由[[SWS_CM_00301](#_bookmark487)]定义。
 
 The following processing modes shall be supported:
 
@@ -119,17 +217,31 @@ _♩(RS_CM_00211, RS_AP_00114, RS_AP_00115, RS_AP_00120)_
 
 ### [SWS_CM_00199] Process Service method invocation _[_
 
+
 Inside the specific ServiceSkeleton class, a ProcessNextMethodCall method shall be provided.
+
+> 在特定的ServiceSkeleton类中，应提供一个ProcessNextMethodCall方法。
+
 
 The method shall return an ara::core::Future object wrapping a bool parameter as return value. A returned value true indicates that there is at least one pending invocation, returning false indicates the opposite. The returned ara::core::Future becomes ready, after the service method (see [[SWS_CM_00191](#_bookmark537)] or [[SWS_CM_90434](#_bookmark538)]) invoked due to ProcessNextMethodCall() has completed.
 
+> 该方法将返回一个ara::core::Future对象，其中包装一个bool参数作为返回值。返回值true表示至少有一个待处理的调用，返回false表示相反。由于ProcessNextMethodCall（）调用而完成服务方法（参见[[SWS_CM_00191](#_bookmark537)]或[[SWS_CM_90434](#_bookmark538)）后，返回的ara::core::Future将准备就绪。
+
 ara::core::Future\<bool\> ProcessNextMethodCall();
+
 
 _♩(RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
 
+> _♩(RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+♩(RS_CM_00211、RS_AP_00114、RS_AP_00120、RS_AP_00138、RS_AP_00128、RS_AP_00127、RS_AP_00138)
+
 ### [SWS_CM_11350] {DRAFT} Execution Context for process service method invocation _[_
 
+
 For the ProcessNextMethodCall method described in [[SWS_CM_00199](#sws_cm_00199-process-service-method-invocation)], a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by ProcessNextMethodCall shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)]. For the first overload without an execution context argument, an implementation defined default execution context (like in previous AUTOSAR releases) shall be used.
+
+> 对于在[[SWS_CM_00199](#sws_cm_00199-process-service-method-invocation)中描述的ProcessNextMethodCall方法，应提供另一个具有附加输入参数的重载。该参数应提供一个执行者对象，其中ProcessNextMethodCall产生的任何异步计算都应调用。执行上下文的最低行为定义在[[SWS_CM_11364](#_bookmark34)]中。对于没有执行上下文参数的第一个重载，应使用实现定义的默认执行上下文（类似于以前的AUTOSAR发行版）。
 
 ```
 template\<typename ExecutorT\>
@@ -137,112 +249,235 @@ template\<typename ExecutorT\>
 ara::core::Future\<bool\> ProcessNextMethodCall(ExecutorT &&executor);
 ```
 
+
 _♩(RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> _♩(RS_CM_00211，RS_AP_00114，RS_AP_00120，RS_AP_00138，RS_AP_00128，RS_AP_00127，RS_AP_00138)_
+
 
 **[SWS_CM_11351]**{DRAFT} **Error behaviour of provided Execution Context for process service method invocation** *[*In case a ProcessNextMethodCall() cannot be executed with the provided executor (e.g. because of resource problem) an
 
+> **[SWS_CM_11351]**{草案} **提供的执行上下文对于过程服务方法调用的错误行为** *[*如果无法使用提供的执行器执行ProcessNextMethodCall（）（例如由于资源问题），则应抛出一个
+
+
 ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
+
+> 在所有情况下都会抛出ComErrc::kCouldNotExecute错误（RS_CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP_00127）。
+
 
 **[SWS_CM_10362]**{DRAFT} **Raising checked errors for application errors** *[*Whenever on the skeleton side of a service method an ApApplicationError -according to the interface description in the Manifest -is detected, the corresponding ara::core::ErrorCode representing this ApApplicationError (see [[SWS_CM_11266](#_bookmark500)]) shall be stored into the ara::core::Promise object, from which the ara::core::Future is returned to the caller._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
 
+> **[SWS_CM_10362]**{草案} **增加应用错误的检查错误** *[*每当在服务方法的骨架侧检测到ApApplicationError时（根据Manifest中的接口描述），将表示此ApApplicationError的相应ara :: core :: ErrorCode（参见[[SWS_CM_11266](#_bookmark500)])存储到ara :: core :: Promise对象中，从中返回ara :: core :: Future给调用者。_♩(RS_CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP_00127)_
+
+简体中文：**[SWS_CM_10362]**{草案} **增加应用错误的检查错误** *[*每当在服务方法的骨架侧检测到ApApplicationError时（根据Manifest中的接口描述），将表示此ApApplicationError的相应ara :: core :: ErrorCode（参见[SWS_CM_11266]）存储到ara :: core :: Promise对象中，从中返回ara :: core :: Future给调用者。_♩(RS_CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP_00127)_
+
 ### Registering get handlers for fields
+
 
 For the functional description of the registering get handlers for fields API, see chapter [7.9.5](#registering-get-handlers-for-fields).
 
+> 对于注册字段API的功能描述，请参见第7.9.5章节（注册字段的GET处理程序）。
+
+
 **[SWS_CM_00114] Registering Getters** *[*Inside the specific Field class belonging to the specific ServiceSkeleton class a RegisterGetHandler method shall be provided to give the possibility to register a GetHandler.
+
+> **[SWS_CM_00114] 注册获取器** *[*在特定的服务骨架类的特定字段类中，应提供RegisterGetHandler方法，以提供注册GetHandler的可能性。
+
 
 ara::core::Result\<void\> RegisterGetHandler( std::function\<ara::core::Future\<FieldType\>(
 
+> ara::core::Result<void> RegisterGetHandler( std::function<ara::core::Future<FieldType>(
+
 )\> getHandler);
+
 
 _♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_
 
+> _♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_
+
+♩(RS_CM_00218、RS_AP_00114、RS_AP_00120、RS_AP_00138、RS_AP_00128、RS_AP_00127)
+
+
 **[SWS_CM_11360]**{DRAFT} **Execution Context for registering Getters** *[*For the RegisterGetHandler method described in [[SWS_CM_00114](#_bookmark543)] a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by RegisterGetHandler shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)].
 
+> **[SWS_CM_11360]**{草案} **注册Getter的执行上下文** *[*对于在[[SWS_CM_00114](#_bookmark543)]中描述的RegisterGetHandler方法，应提供一个具有额外输入参数的第二个重载。该参数应提供一个执行者对象，其中RegisterGetHandler产生的任何异步计算都将被调用。执行上下文的最低行为在[[SWS_CM_11364](#_bookmark34)]中定义。
+
+
 template\<typename ExecutorT\> ara::core::Result\<void\> RegisterGetHandler(
+
+> template\<typename ExecutorT\> ara::core::Result\<void\> RegisterGetHandler( 
+範本\<typename ExecutorT\> ara::core::Result\<void\> RegisterGetHandler(
 
 std::function\<ara::core::Future\<FieldType\>(
 
 )\> getHandler, ExecutorT&& executor);
 
+
 For the first overload without an execution context argument an implementation defined default execution context (like in previous AUTOSAR releases) shall be used._♩ (RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> 对于第一个没有执行上下文参数的重载，应使用实现定义的默认执行上下文（例如前面的AUTOSAR发行版）。(RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)
+
 
 **[SWS_CM_11361]**{DRAFT} **Error behaviour of provided Execution Context for registering Getters** *[*In case a RegisterGetHandler() cannot be executed with
 
+> **[SWS_CM_11361]**{草案} **提供的执行上下文注册获取器的错误行为** *[*如果无法使用RegisterGetHandler（）执行
+
+
 the provided executor (e.g. because of resource problem) a ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
+
+> 如果提供的执行程序由于资源问题而无法执行，将在任何情况下抛出ComErrc::kCouldNotExecute错误。
+
 
 **[SWS_CM_00115]**{DRAFT} **Existence of RegisterGetHandler method** *[*The existence of RegisterGetHandler as part of the Field class shall be controlled by Field.hasGetter._♩(RS_CM_00218, RS_AP_00114)_
 
+> **[SWS_CM_00115]**{草案} **RegisterGetHandler 方法的存在** *[*Field 类的一部分 RegisterGetHandler 的存在应该由 Field.hasGetter 来控制。_♩(RS_CM_00218, RS_AP_00114)_
+
+
 **[SWS_CM_00014]**{DRAFT} **Re-entrancy and thread-safety RegisterGetHandler** *[*RegisterGetHandler shall be re-entrant and thread-safe for _different_ Field class instances. When called re-entrant or concurrently on the same Field class instance, the behavior is undefined._♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_
+
+> **[SWS_CM_00014]**{草案} **重入和线程安全RegisterGetHandler** *[*RegisterGetHandler应该对_不同_Field类实例是重入和线程安全的。当重入或并发地调用同一个Field类实例时，行为是未定义的。_♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_
 
 ### Registering set handlers for fields
 
+
 For the functional description of the registering set handlers for fields API, see chapter [7.9.6](#registering-set-handlers-for-fields).
+
+> 对于字段API的注册集处理程序的功能描述，请参见第7.9.6章节（注册字段的集合处理程序）。
+
 
 **[SWS_CM_00116] Registering Setters** *[*Inside the specific Field class belonging to the specific ServiceSkeleton class a RegisterSetHandler function shall be provided to give the possibility to register a SetHandler.
 
+> 在特定的ServiceSkeleton类中属于特定的Field类中，应提供一个RegisterSetHandler函数，以提供注册SetHandler的可能性。
+
+
 ara::core::Result\<void\> RegisterSetHandler( std::function\<ara::core::Future\<FieldType\>(
+
+> ara::core::Result\<void\> RegisterSetHandler（std::function\<ara::core::Future\<FieldType\>（
 
 const FieldType& value)\> setHandler);
 
+
 _♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_
+
+> _♩(RS_CM_00218，RS_AP_00114，RS_AP_00120，RS_AP_00138，RS_AP_00128，RS_AP_00127)_
+
 
 **[SWS_CM_11362]**{DRAFT} **Execution Context for registering Setters** *[*For the RegisterSetHandler method described in [[SWS_CM_00116](#_bookmark546)] a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by RegisterSetHandler shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)].
 
+> **[SWS_CM_11362]**{草案} **注册设置器的执行上下文** *[*根据[[SWS_CM_00116](#_bookmark546)]中描述的RegisterSetHandler方法，应提供一个具有附加输入参数的第二个重载。该参数应提供一个执行者对象，其中RegisterSetHandler产生的任何异步计算都将被调用。执行上下文的最低行为定义在[[SWS_CM_11364](#_bookmark34)]中。
+
+
 template\<typename ExecutorT\> ara::core::Result\<void\> RegisterSetHandler(
+
+> template\<typename ExecutorT\> ara::core::Result\<void\> RegisterSetHandler(
+
+模板\<typename ExecutorT\> ara::core::Result\<void\> RegisterSetHandler（
 
 std::function\<ara::core::Future\<FieldType\>(
 
 const FieldType& value)\> setHandler, ExecutorT&& executor);
 
+
 For the first overload without an execution context argument an implementation defined default execution context (like in previous AUTOSAR releases) shall be used._♩ (RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> 对于第一个没有执行上下文参数的重载，应使用实现定义的默认执行上下文（如以前的AUTOSAR发行版）。
+
 
 **[SWS_CM_11363]**{DRAFT} **Error behaviour of provided Execution Context for registering Setters** *[*In case a RegisterGetHandler() cannot be executed with
 
+> **[SWS_CM_11363]**{草案} **提供的执行上下文的错误行为以注册设定器** *[*如果无法使用RegisterGetHandler（）执行
+
+
 the provided executor (e.g. because of resource problem) a ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
+
+> 如果提供的执行者（例如由于资源问题），无论如何都会引发ComErrc::kCouldNotExecute错误。
+
 
 **[SWS_CM_00117]**{DRAFT} **Existence of the RegisterSetHandler method** *[*The existence of RegisterSetHandler as part of the Field class shall be controlled by Field.hasSetter._♩(RS_CM_00218, RS_AP_00114)_
 
+> **[SWS_CM_00117]**{草案} **RegisterSetHandler 方法的存在** *[*Field 类的 RegisterSetHandler 的存在应由 Field.hasSetter 控制。♩(RS_CM_00218, RS_AP_00114)_
+
+
 **[SWS_CM_00015]**{DRAFT} **Re-entrancy and thread-safety RegisterSetHandler** *[*RegisterSetHandler shall be re-entrant and thread-safe for _different_ Field class instances. When called re-entrant or concurrently on the same Field class instance, the behavior is undefined._♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_
+
+> **[SWS_CM_00015]**{草稿} **重入性和线程安全的RegisterSetHandler** *[*RegisterSetHandler对不同的Field类实例应该是重入性和线程安全的。当在同一个Field类实例上重入或并发调用时，行为是未定义的。♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_`
+
+简体中文：**[SWS_CM_00015]**{草案} **重入性和线程安全的RegisterSetHandler** *[*RegisterSetHandler对不同的Field类实例应该具有重入性和线程安全性。当在同一个Field类实例上重入或并发调用时，行为是未定义的。♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127)_`
+
 
 **[SWS_CM_00119]**{DRAFT} **Update Function** *[*Inside the specific Field class belonging to the specific ServiceSkeleton class an Update function shall be provided to initiate the transmission of updated field data to the subscribers. See [[SWS_CM_00162](#sws_cm_00162-send-event-where-application-is-responsible-for-the-data)] for the required behavior. The Update method shall look as follows:
 
+> **[SWS_CM_00119]**{草案} **更新功能** *[*在属于特定ServiceSkeleton类的特定Field类中，应提供一个Update函数来启动将更新的字段数据发送给订阅者的传输。有关所需行为，请参见[[SWS_CM_00162](#sws_cm_00162-send-event-where-application-is-responsible-for-the-data)]。Update方法应如下所示：
+
 ara::core::Result\<void\> Field::Update(const FieldType &value);
+
 
 It shall return void if the connection is successful, or an ara::core::ErrorCode
 
+> 如果连接成功，它将返回空值，否则返回ara::core::ErrorCode。
+
+
 from the ara::com::ComErrorDomain indicating the error if not successful. The following errors from the ara::core::ComErrorDomain are possible:
+
+> 从ara :: com :: ComErrorDomain指示出错如果不成功。以下来自ara :: core :: ComErrorDomain的错误是可能的：
 
 - **kServiceNotOffered:** Service not offered.
 - **kCommunicationLinkError:** Communication link is broken.
+
 - **kCommunicationStackError:** Communication Stack Error, e.g. network stack, network binding, or communication framework reports an error
+
+> 通信堆栈错误：网络堆栈、网络绑定或通信框架报告出现错误。
 
 The Update function shall also update the field's internal value, if:
 
 - If Field.hasGetter is true (according to [[SWS_CM_00132](#_bookmark589)] and
 - no custom Getter has been registered
 
+
 An update notification shall be sent, if hasNotification is true (in accordance to [[SWS_CM_00120](#_bookmark440)]._♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
+> 如果hasNotification为真，则应根据[[SWS_CM_00120](#_bookmark440)]发送更新通知。♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00121)
+
 
 **[SWS_CM_00016]**{DRAFT} **Re-entrancy and thread-safety Update** *[*Update shall be re-entrant and thread-safe for _different_ Field class instances. When called reentrant or concurrently on the same Field class instance, the behavior is undefined._♩ (RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
+> **[SWS_CM_00016]**{草案} **重入和线程安全更新** *[*更新应对不同的Field类实例是可重入和线程安全的。当对同一个Field类实例重入或并发调用时，行为是不确定的。♩ (RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00121)_*
+
 ### Find service
+
 
 For the functional description of the find service API, see chapter [7.9.7](#find-service).
 
+> 对于查找服务API的功能描述，请参见第7.9.7章（查找服务）。
+
+
 The Communication Management shall provide FindService methods as part of the ServiceProxy class to enable applications to find services. To support event-based and time-triggered systems the FindService methods shall be provided in a handler registration and a immediately returned request style.
+
+> 通信管理应提供FindService方法作为ServiceProxy类的一部分，以使应用程序能够找到服务。为了支持基于事件和时间触发的系统，FindService方法应提供处理程序注册和立即返回请求样式。
+
 
 **[SWS_CM_00122]**{DRAFT} **Find service with immediately returned request using Instance ID** *[*The FindService method of the ServiceProxy class with immediately returned request takes an instance ID qualifying the wanted instance of the service as input parameter.
 
+> **[SWS_CM_00122]**{草稿} **使用实例ID查找立即返回请求的服务** *[*ServiceProxy类的FindService方法可以立即返回请求，它的输入参数是一个限定所需服务实例的实例ID。
+
+
 It shall return a result struct encapsulating a container of handles for all matching service instances, or an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error if not successful.
+
+> 它将返回一个结果结构，封装所有匹配服务实例的句柄容器，或者如果不成功，则返回ara :: com :: ComErrorDomain中的ara :: core :: ErrorCode表示错误。
 
 There is one FindService method for using a specified InstanceIdentifier.
 
 static ara::core::Result\<ara::com::ServiceHandleContainer\<
 
+
 \<ProxyClassName\>::HandleType\>\> FindService(ara::com::InstanceIdentifier instance);
 
+> \<ProxyClassName\>::HandleType\>\> 找到服务(ara::com::InstanceIdentifier 实例);
+
+
 where \<ProxyClassName\> is the name of the ServiceProxy class as defined in [[SWS_CM_00004](#_bookmark516)].
+
+> 在[[SWS_CM_00004](#_bookmark516)]中定义的ServiceProxy类的名称为\<ProxyClassName\>。
 
 The following errors from ara::com::ComErrorDomain are possible:
 
@@ -250,7 +485,10 @@ The following errors from ara::com::ComErrorDomain are possible:
 - kGrantEnforcementError: Request was refused by Grant enforcement layer.
 - kPeerIsUnreachable: Transport Layer Security handshake failed.
 
+
 InstanceIdentifier validation errors or allocation failures of the ServiceHandleContainer shall be treated as Violations. ([SWS_CORE_00003], [SWS_CORE_00005])_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00120, RS_AP_00121, RS_AP_00119)_
+
+> 验证错误或分配失败的ServiceHandleContainer应被视为违反([SWS_CORE_00003], [SWS_CORE_00005])_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00120, RS_AP_00121, RS_AP_00119)_。
 
 For the definition of the types used in the FindService signature, see:
 
@@ -258,15 +496,27 @@ For the definition of the types used in the FindService signature, see:
 - [[SWS_CM_00312](#_bookmark471)] for HandleType,
 - [[SWS_CM_00302](#sws_cm_00302draft-instance-identifier-class)] for InstanceIdentifier.
 
+
 **[SWS_CM_00622]**{DRAFT} **Find service with immediately returned request using Instance Specifier** *[*The FindService method of the ServiceProxy class with immediately returned request takes an instance Specifier qualifying the wanted Abstract Network Binding for the instance.
+
+> **[SWS_CM_00622]**{草案}**使用实例指定符查找立即返回请求的服务** *[*ServiceProxy类的FindService方法可以立即返回请求，并且需要一个实例指定符来限定所需的抽象网络绑定的实例。
+
 
 It shall return a result struct encapsulating a container of handles for all matching service instances, or an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error if not successful.
 
+> 它将返回一个结果结构，封装所有匹配服务实例的句柄容器，如果不成功，则将返回ara :: com :: ComErrorDomain中的ara :: core :: ErrorCode表示错误。
+
 static ara::core::Result\<ara::com::ServiceHandleContainer\<
+
 
 \<ProxyClassName\>::HandleType\>\> FindService(ara::core::InstanceSpecifier instance);
 
+> \<ProxyClassName\>::HandleType\>\> 找到服务（ara::core::InstanceSpecifier实例）;
+
+
 where \<ProxyClassName\> is the name of the ServiceProxy class as defined in [[SWS_CM_00004](#_bookmark516)].
+
+> 在[[SWS_CM_00004](#_bookmark516)]中定义的ServiceProxy类的名称为<ProxyClassName>。
 
 The following errors from ara::com::ComErrorDomain are possible:
 
@@ -274,7 +524,10 @@ The following errors from ara::com::ComErrorDomain are possible:
 - kGrantEnforcementError: Request was refused by Grant enforcement layer.
 - kPeerIsUnreachable: Transport Layer Security handshake failed.
 
+
 InstanceSpecifier validation errors, or allocation failures of the ServiceHandleContainer shall be treated as Violations. ([SWS_CORE_00003], [SWS_CORE_00005])_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_
+
+> 验证ServiceHandleContainer的实例规范错误或分配失败应被视为违规行为（[SWS_CORE_00003]，[SWS_CORE_00005]）_♩（RS_CM_00102，RS_AP_00114，RS_AP_00115，RS_AP_00121，RS_AP_00119，RS_AP_00127，RS_AP_00137）_。
 
 For the definition of the types used in the FindService signature, see:
 
@@ -282,17 +535,31 @@ For the definition of the types used in the FindService signature, see:
 - [[SWS_CM_00312](#_bookmark471)] for HandleType,
 - [SWS_CORE_08001] for InstanceSpecifier.
 
+
 **[SWS_CM_00018]**{DRAFT} **Re-entrancy and thread-safety FindService** *[*FindService is neither re-entrant nor thread-safe. When called re-entrant or concurrently, the behavior is undefined._♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_
+
+> **[SWS_CM_00018]**{草稿} **重入和线程安全的FindService** *[*FindService既不是可重入的也不是线程安全的。当重入或并发调用时，行为是未定义的。_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_*
+
+简体中文：**[SWS_CM_00018]**{草稿} **重入和线程安全的FindService** *[*FindService既不具有重入性也不具有线程安全性。当重入或并发调用时，行为是不确定的。_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_*
+
 
 **[SWS_CM_00123]**{DRAFT} **Find service with handler registration using Instance ID** *[*The StartFindService method of the ServiceProxy class with handler registration takes as input parameters a FindServiceHandler, fitting for the corresponding ServiceProxy class which gets called upon detection of a matching service, and an instance ID qualifying the wanted instance of the service. The return value is a result struct encapsulating a FindServiceHandle for this search/find request, or an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error if not successful. The FindServiceHandle is needed to stop the service availability monitoring and related firing of the given handler.
 
+> **[SWS_CM_00123]**{草案} **使用实例ID查找带有处理程序注册的服务** *[*ServiceProxy类的StartFindService方法使用处理程序注册，它以相应ServiceProxy类的FindServiceHandler作为输入参数，在检测到匹配服务时调用此处理程序，以及用于限定所需服务实例的实例ID。返回值是一个结果结构，封装了此搜索/查找请求的FindServiceHandle，或ara :: core :: ErrorCode（来自ara :: com :: ComErrorDomain），指示如果不成功则出错。需要FindServiceHandle来停止服务可用性监视和相关的处理程序触发。
+
+
 There is one StartFindService method for using a specified InstanceIdentifier.
+
+> 有一个StartFindService方法可以用来使用指定的InstanceIdentifier。
 
 ```
 static ara::core::Result\<ara::com::FindServiceHandle\> StartFindService( ara::com::FindServiceHandler\<\<ProxyClassName\>::HandleType\> handler, ara::com::InstanceIdentifier instance);
 ```
 
+
 where \<ProxyClassName\> is the name of the ServiceProxy class as defined in [[SWS_CM_00004](#_bookmark516)].
+
+> 在[[SWS_CM_00004](#_bookmark516)]中定义的ServiceProxy类的名称为\<ProxyClassName\>。
 
 The following errors from ara::com::ComErrorDomain are possible:
 
@@ -300,36 +567,70 @@ The following errors from ara::com::ComErrorDomain are possible:
 - kGrantEnforcementError: Request was refused by Grant enforcement layer.
 - kPeerIsUnreachable: Transport Layer Security handshake failed.
 
+
 InstanceIdentifier validation errors or allocation failures of the ServiceHandleContainer shall be treated as Violations. ([SWS_CORE_00003], [SWS_CORE_00005])
+
+> 实例标识符验证错误或服务句柄容器的分配失败应视为违规行为([SWS_CORE_00003], [SWS_CORE_00005])。
+
 
 _♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00120, RS_AP_00121, RS_AP_00119)_
 
+> _♩(RS_CM_00102，RS_AP_00114，RS_AP_00115，RS_AP_00120，RS_AP_00121，RS_AP_00119)_
+
+
 For the definition of the types used in the StartFindService signature, see:
+
+> 查看StartFindService签名中使用的类型的定义，请参阅：
 
 - [[SWS_CM_00303](#_bookmark470)] for FindServiceHandle,
 - [[SWS_CM_00383](#_bookmark476)] for FindServiceHandler,
 - [[SWS_CM_00312](#_bookmark471)] for HandleType,
 - [[SWS_CM_00302](#sws_cm_00302draft-instance-identifier-class)] for InstanceIdentifier.
 
+
 Note: StartFindService is an asynchronous indication of availability and not to be abused for liveness monitoring.
+
+> 注意：StartFindService 是一种异步的可用性指示，不应该被滥用用于存活性监控。
+
 
 **[SWS_CM_11352]**{DRAFT} **Execution Context for finding service with handler registration using Instance ID** *[*For the StartFindService method described in [[SWS_CM_00123](#_bookmark552)] a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by StartFindService shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)].
 
+> **[SWS_CM_11352]**{草案} **使用实例ID进行服务查找的执行上下文** *[*在[[SWS_CM_00123](#_bookmark552)]中描述的StartFindService方法中，应提供一个具有额外输入参数的第二个重载版本。该参数应提供一个执行者对象，其中StartFindService生成的任何异步计算都应被调用。最小行为的执行上下文定义在[[SWS_CM_11364](#_bookmark34)]中。
+
+简体中文：**[SWS_CM_11352]**{草案} **使用实例ID查找服务的执行上下文** *[*在[[SWS_CM_00123](#_bookmark552)]中描述的StartFindService方法中，应提供一个具有额外输入参数的第二个重载版本。该参数应提供一个执行者对象，其中StartFindService生成的任何异步计算都应被调用。最小行为的执行上下文定义在[[SWS_CM_11364](#_bookmark34)]中。
+
 template\<typename ExecutorT\>
+
 
 static ara::com::FindServiceHandle StartFindService( ara::com::FindServiceHandler\<\<ProxyClassName\>::HandleType\> handler, ara::com::InstanceIdentifier instance, ExecutorT&& executor);
 
+> 静态ara::com::FindServiceHandle开始查找服务（ara::com::FindServiceHandler<ProxyClassName>::HandleType>处理程序，ara::com::InstanceIdentifier实例，ExecutorT&&执行者）；
+
+
 For the first overload without an execution context argument an implementation defined default execution context (like in previous AUTOSAR releases) shall be used._♩ (RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00120, RS_AP_00121, RS_AP_00119)_
+
+> 对于第一个不带执行上下文参数的重载，应使用实现定义的默认执行上下文（类似于以前的AUTOSAR版本）。（RS_CM_00102，RS_AP_00114，RS_AP_00115，RS_AP_00120，RS_AP_00121，RS_AP_00119）
+
 
 **[SWS_CM_11353]**{DRAFT} **Error behavior of provided Execution Context for finding service with handler registration using Instance ID** *[*In case a StartFindService() cannot be executed with the provided executor (e.g. because of resource problem) an ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
 
+> **[SWS_CM_11353]**{草案} **使用实例ID注册处理程序查找服务的提供执行上下文的错误行为** *[*如果StartFindService()无法使用提供的执行器执行（例如，由于资源问题），则在所有情况下都会引发ComErrc::kCouldNotExecute错误。_♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
+
+简体中文：**[SWS_CM_11353]**{草案} **使用实例ID注册处理程序查找服务时提供的执行上下文的错误行为** *[*如果无法使用提供的执行器执行StartFindService()（例如，由于资源问题），则在所有情况下都会引发ComErrc::kCouldNotExecute错误。_♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
+
+
 **[SWS_CM_00623]**{DRAFT} **Find service with handler registration using Instance Specifier** *[*The StartFindService method of the ServiceProxy class with handler registration takes as input parameters a FindServiceHandler, fitting for the corresponding ServiceProxy class which gets called upon detection of a matching service, and an instance Specifier qualifying the wanted Abstract Network Binding of the instance of the service. The return value is a result struct encapsulating a FindServiceHandle for this search/find request, or an ara::core::ErrorCode from the ara::com::ComErrorDomain indicating the error if not successful. The FindServiceHandle is needed to stop the service availability monitoring and related firing of the given handler.
+
+> [SWS_CM_00623]{草案} 使用实例说明符查找带有处理程序注册的服务*[*ServiceProxy类的StartFindService方法具有处理程序注册，它接受作为输入参数的FindServiceHandler，该参数适用于相应的ServiceProxy类，在检测到匹配的服务时被调用，以及限定所需服务实例的抽象网络绑定的实例说明符。返回值是一个封装了此搜索/查找请求的FindServiceHandle的结果结构，或ara :: com :: ComErrorDomain中的ara :: core :: ErrorCode表示如果不成功则表示错误。 FindServiceHandle需要停止服务可用性监视并相关联的触发给定的处理程序。
 
 ```
 static ara::core::Result\<ara::com::FindServiceHandle\> StartFindService( ara::com::FindServiceHandler\<\<ProxyClassName\>::HandleType\> handler, ara::core::InstanceSpecifier instance);
 ```
 
+
 where \<ProxyClassName\> is the name of the ServiceProxy class as defined in [[SWS_CM_00004](#_bookmark516)].
+
+> 在[[SWS_CM_00004](#_bookmark516)]中定义的ServiceProxy类的名称为\<ProxyClassName\>。
 
 The following errors from ara::com::ComErrorDomain are possible:
 
@@ -337,22 +638,39 @@ The following errors from ara::com::ComErrorDomain are possible:
 - kGrantEnforcementError: Request was refused by Grant enforcement layer.
 - kPeerIsUnreachable: Transport Layer Security handshake failed.
 
+
 InstanceSpecifier validation errors, or allocation failures of the ServiceHandleContainer should be treated as Violations. ([SWS_CORE_00003], [SWS_CORE_00005])_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_
 
+> 错误的服务句柄容器实例规范检查或分配失败应被视为违规行为（[SWS_CORE_00003]，[SWS_CORE_00005]）（RS_CM_00102，RS_AP_00114，RS_AP_00115，RS_AP_00121，RS_AP_00119，RS_AP_00127，RS_AP_00137）。
+
+
 For the definition of the types used in the StartFindService signature, see:
+
+> 查看StartFindService签名中使用的类型定义，请参阅：
 
 - [[SWS_CM_00303](#_bookmark470)] for FindServiceHandle,
 - [[SWS_CM_00383](#_bookmark476)] for FindServiceHandler,
 - [[SWS_CM_00312](#_bookmark471)] for HandleType,
 - [SWS_CORE_08001] for InstanceSpecifier.
 
+
 Note: StartFindService is an asynchronous indication of availability and not to be abused for liveness monitoring.
+
+> 注意：StartFindService 是异步表明可用性的指示，不能被滥用用于存活性监控。
 
 ### [SWS_CM_00019] {DRAFT} Re-entrancy and thread-safety StartFindService
 
+
 *[*StartFindService is neither re-entrant nor thread-safe. When called re-entrant or concurrently, the behavior is undefined._♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_
 
+> *[*StartFindService 不是可重入的也不是线程安全的。如果重入调用或并发调用，行为是不确定的。_♩(RS_CM_00102, RS_AP_00114, RS_AP_00115, RS_AP_00121, RS_AP_00119, RS_AP_00127, RS_AP_00137)_
+
+简体中文：StartFindService既不支持重入也不支持线程安全，如果重入调用或并发调用，行为是不可预测的。
+
+
 **[SWS_CM_00125]**{DRAFT} **Stop find service** *[*To stop receiving further notifications the ServiceProxy class shall provide a StopFindService method. The FindServiceHandle returned by the FindService method with handler registration has to be provided as input parameter.
+
+> **[SWS_CM_00125]**{草案} **停止查找服务** *[*要停止接收进一步的通知，ServiceProxy类必须提供一个StopFindService方法。由FindService方法返回的带有处理程序注册的FindServiceHandle必须作为输入参数提供。
 
 ```
 void StopFindService(ara::com::FindServiceHandle handle)
@@ -360,139 +678,271 @@ void StopFindService(ara::com::FindServiceHandle handle)
 
 _♩(RS_CM_00102, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
+
 See [[SWS_CM_00303](#_bookmark470)] for the type definition of FindServiceHandle.
 
+> 请参阅[[SWS_CM_00303](#_bookmark470)]以获取FindServiceHandle的类型定义。
+
+
 **[SWS_CM_00020]**{DRAFT} **Re-entrancy and thread-safety StopFindService** *[*StopFindService shall be re-entrant and thread-safe for _different_ ara::com::FindServiceHandles. When called re-entrant or concurrently with the same ara::com::FindServiceHandle, the behavior is undefined._♩(RS*CM_00102, RS_AP*-_
+
+> **[SWS_CM_00020]**{草案} **重入性和线程安全的StopFindService** *[*StopFindService应该对_不同_ara::com::FindServiceHandles具有重入性和线程安全性。 当使用相同的ara::com::FindServiceHandle重入或并发调用时，行为是未定义的。_♩(RS*CM_00102, RS_AP*-_
 
 _00114, RS_AP_00120, RS_AP_00121)_
 
 ### Service proxy creation
 
+
 For the functional description of the service proxy creation API, see chapter [7.9.8](#service-proxy-creation).
 
+> 对于服务代理创建API的功能描述，请参见第7.9.8章（服务代理创建）。
+
+
 **[SWS_CM_00131]**{DRAFT} **Creation of service proxy** *[*The Communication Management shall provide a constructor for each specific ServiceProxy class taking a handle returned by any FindService method of the ServiceProxy class to get a valid ServiceProxy based on the handles returned by FindService.
+
+> 通信管理应提供每个特定ServiceProxy类的构造函数，该构造函数接受ServiceProxy类的任何FindService方法返回的句柄，以根据FindService返回的句柄获取有效的ServiceProxy。
 
 explicit ServiceProxy::ServiceProxy(const HandleType &handle);
 
 _♩(RS_CM_00102, RS_AP_00114, RS_AP_00121, RS_AP_00145)_
 
+
 **[SWS_CM_10438]**{DRAFT} **Exception-less creation of service proxy** *[*The Communication Management shall provide a non-throwing constructor for each specific ServiceProxy class using the Named Constructor idiom according to [[SWS_CM_11326](#_bookmark520)]. The Named Constructor shall be called Create() and shall take a handle returned by any FindService method of the ServiceProxy class as argument.
+
+> 通信管理应按照[[SWS_CM_11326](#_bookmark520)]的要求，使用命名构造函数模式为每个特定的ServiceProxy类提供一个不抛出异常的构造函数。该命名构造函数应被称为Create()，并且应该接受ServiceProxy类的任何FindService方法返回的句柄作为参数。
+
 
 static ara::core::Result\<ServiceProxy\> Create( const HandleType &handle) noexcept;
 
+> 静态ara::core::Result<ServiceProxy> Create(const HandleType& handle) noexcept;
+
+
 In case the handle returned from FindService is corrupt, an error code kErroneousFileHandle shall be returned in the Result.
+
+> 如果从FindService返回的句柄损坏，则会在结果中返回错误代码kErroneousFileHandle。
+
 
 In case of a Grant enforcement failure, an error code ComErrc::kGrantEnforcementError shall be returned in the Result. See [[SWS_CM_90006](#_bookmark294)].
 
+> 在授权执行失败的情况下，将在结果中返回错误代码ComErrc::kGrantEnforcementError。请参见[[SWS_CM_90006](#_bookmark294)]。
+
+
 _♩(RS_CM_00102, RS_AP_00114, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139, RS_AP_00145)_
 
+> _♩(RS_CM_00102，RS_AP_00114，RS_AP_00121，RS_AP_00139，RS_AP_00128，RS_AP_00132，RS_AP_00127，RS_AP_00139，RS_AP_00145)_
+
+
 **[SWS_CM_10383]**{DRAFT} **GetHandle function to return the proxy instance creation handle** *[*The Communication Management shall provide a GetHandle method for each specific ServiceProxy class to get the handle from which the ServiceProxy instance has been created.
+
+> **[SWS_CM_10383]**{草案} **获取句柄函数以返回代理实例创建句柄** *[*通信管理应为每个特定的ServiceProxy类提供一个GetHandle方法，以获取创建ServiceProxy实例的句柄。
 
 HandleType ServiceProxy::GetHandle() const;
 
 _♩(RS_CM_00107, RS_AP_00114, RS_AP_00119)_
 
+
 See [[SWS_CM_00312](#_bookmark471)] for the type definition of HandleType.
+
+> 请参阅[[SWS_CM_00312](#_bookmark471)]以获取HandleType的类型定义。
+
 
 **[SWS_CM_00021]**{DRAFT} **Re-entrancy and thread-safety GetHandle** *[*GetHandle shall be re-entrant and thread-safe irrespective of the ServiceProxy class instance. i.e. GetHandle shall be re-entrant and thread-safe for the same ServiceProxy class instance and for _different_ ServiceProxy class instances._♩ (RS_CM_00107, RS_AP_00114, RS_AP_00119)_
 
+> **[SWS_CM_00021]**{草案}**重入和线程安全GetHandle** *[*GetHandle无论是对于同一个ServiceProxy类实例还是不同的ServiceProxy类实例，都应该是可重入的和线程安全的。♩ (RS_CM_00107，RS_AP_00114，RS_AP_00119)_*
+
+
 **[SWS_CM_00136]**{DRAFT} **Copy semantics of service proxy class** *[*The Communication Management shall disable the generation of the copy constructor and the copy assignment operator for each specific ServiceProxy class.
+
+> **[SWS_CM_00136]**{草案} **服务代理类的复制语义** *[*通信管理应为每个特定的ServiceProxy类禁用生成复制构造函数和复制赋值运算符。
+
 
 ServiceProxy(const ServiceProxy&) = delete; ServiceProxy& operator=(const ServiceProxy&) = delete;
 
+> 服务代理（const ServiceProxy&）=删除; 服务代理&运算符=（const ServiceProxy&）=删除;
+
 _♩(RS_CM_00102, RS_AP_00114, RS_AP_00145, RS_AP_00147)_
 
+
 **[SWS_CM_00137]**{DRAFT} **Move semantics of service proxy class** *[*The Communication Management shall provide the possibility to move construct and move assign a ServiceProxy instance from another instance.
+
+> **[SWS_CM_00137]**{草稿} **服务代理类的移动语义** *[*通信管理应提供从另一实例移动构造和移动赋值ServiceProxy实例的可能性。
 
 ServiceProxy(ServiceProxy &&); ServiceProxy& operator=(ServiceProxy &&);
 
 _♩(RS_CM_00102, RS_AP_00114, RS_AP_00145, RS_AP_00147)_
 
+
 **[SWS_CM_00821]**{DRAFT} **Service location scenarios** *[*Service proxy creation shall react according to the location of the service provided by the handle type class information, these scenarios are:
 
+> **[SWS_CM_00821]**{草案} **服务位置场景** *[*根据句柄类型类信息提供的服务位置，服务代理创建应做出反应，这些场景是：
+
 - The found service is located on a different node on the network
+
 - The found service is located within a different application on the same node (within the same AP infrastructure)
+
+> 找到的服务位于同一节点上的另一个应用程序（在同一AP基础架构中）
+
 - The found service is located within the same process and allow multiple scenarios at the same time.
+
+> 找到的服务位于同一进程中，同时允许多种场景。
 
 _♩()_
 
 ### Service event subscription
 
+
 For the functional description of the service event subscription API, see chapter [7.9.10](#service-event-subscription).
 
+> 对于服务事件订阅API的功能描述，请参见第7.9.10章（服务事件订阅）。
+
+
 **[SWS_CM_00141] Method to subscribe to a service event** *[*Inside the specific Event class belonging to the specific ServiceProxy class a Subscribe method shall be provided to start subscription of the corresponding event. As input parameter the cacheSize of the subscription needs to be specified.
+
+> 在特定的服务代理类中，应提供一个Subscribe方法，用于订阅相应的事件。作为输入参数，需要指定订阅的缓存大小。
 
 ara::core:Result\<void\> Event::Subscribe( std::size_t maxSampleCount
 
 );
 
+
 If the Event is already subscribed to at the time of the call, and the provided maxSampleCount value is the same as for the current subscription, Subscribe() shall return silently without any action.
+
+> 如果事件在调用时已订阅，且提供的maxSampleCount值与当前订阅相同，Subscribe()将静默地返回而不采取任何操作。
+
 
 If the Event is already subscribed to at the time of the call, and the provided maxSampleCount value is different from the value for the current subscription, Subscribe () shall return the error code ComErrc::kMaxSampleCountNotRealizable in the Result._♩(RS_CM_00103, RS_AP_00114, RS_AP_00120)_
 
+> 如果在调用时事件已经被订阅，且提供的maxSampleCount值与当前订阅的值不同，Subscribe（）将在Result中返回错误代码ComErrc::kMaxSampleCountNotRealizable。（RS_CM_00103，RS_AP_00114，RS_AP_00120）
+
+
 **[SWS_CM_00022]**{DRAFT} **Re-entrancy and thread-safety Subscribe** *[*Subscribe shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00103, RS_AP_00114, RS_AP_00120)_
+
+> **[SWS_CM_00022]**{草稿} **重入性和线程安全订阅** *[*订阅应该对不同的事件类实例具有重入性和线程安全性。当在同一个事件类实例上重入地或并发地调用时，行为是未定义的。♩(RS_CM_00103, RS_AP_00114, RS_AP_00120)_
+
 
 **[SWS_CM_00151] Method to unsubscribe from a service event** *[*Inside the specific Event class belonging to the specific ServiceProxy class a Unsubscribe method shall be provided to allow for unsubscribing from previously subscribed events.
 
+> 在特定的ServiceProxy类中的特定事件类中，应提供一个Unsubscribe方法，以允许取消对先前订阅的事件的订阅。
+
 void Event::Unsubscribe();
+
 
 If the Event is not subscribed to at the time of the call, Unsubscribe() shall return silently without any action._♩(RS_CM_00104, RS_AP_00114, RS_AP_00120)_
 
+> 如果在调用时没有订阅该事件，Unsubscribe（）将静默地返回而不采取任何行动。
+
+
 **[SWS_CM_00023]**{DRAFT} **Re-entrancy and thread-safety Unsubscribe** *[*Unsubscribe shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00104, RS_AP_00114, RS_AP_00120)_
 
+> **[SWS_CM_00023]**{草稿}**重入和线程安全取消订阅** *[*取消订阅应对不同的事件类实例具有重入性和线程安全性。 当在同一个事件类实例上重入地或并发地调用时，行为是不确定的。♩(RS_CM_00104，RS_AP_00114，RS_AP_00120)_*
+
+
 **[SWS_CM_00316] Query Subscription State** *[*The Communication Management shall provide an API GetSubscriptionState which returns the subscription state of an event. The conditions for the Subscription state being returned by GetSubscriptionState shall be the same as for the SubscriptionStateChangeHandler described in [[SWS_CM_00311](#_bookmark483)], [[SWS_CM_00313](#_bookmark425)] and [[SWS_CM_00314](#_bookmark426)].
+
+> 通信管理应提供一个API GetSubscriptionState，该API返回事件的订阅状态。GetSubscriptionState返回的订阅状态的条件应与[[SWS_CM_00311](#_bookmark483)], [[SWS_CM_00313](#_bookmark425)]和[[SWS_CM_00314](#_bookmark426)]中描述的SubscriptionStateChangeHandler相同。
 
 1 ara::com::SubscriptionState GetSubscriptionState() const;
 
 _♩(RS_CM_00106, RS_AP_00114, RS_AP_00115, RS_AP_00120, RS_AP_00119)_
 
+
 **[SWS_CM_00024]**{DRAFT} **Re-entrancy and thread-safety GetSubscriptionState** *[*GetSubscriptionState shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00106, RS_AP_00114, RS_AP_00115, RS_AP_00120, RS_AP_00119)_
+
+> **[SWS_CM_00024]**{草案}**重入和线程安全的GetSubscriptionState** *[*GetSubscriptionState必须对不同的Event类实例是重入和线程安全的。 当在同一个Event类实例上重入或并发调用时，行为是未定义的。♩（RS_CM_00106，RS_AP_00114，RS_AP_00115，RS_AP_00120，RS_AP_00119）_
 
 ### [SWS_CM_00333] Set Subscription State change handler _[_
 
+
 The Communication Management shall provide an API SetSubscriptionStateChangeHandler to give the possibility to set a subscription state change handler.
+
+> 通信管理部门应提供一个API SetSubscriptionStateChangeHandler，以提供设置订阅状态变化处理程序的可能性。
+
 
 1 ara::core::Result\<void\> SetSubscriptionStateChangeHandler(ara::com:: SubscriptionStateChangeHandler handler);
 
+> 1 ara::core::Result<void> 设置订阅状态变化处理程序（ara::com::SubscriptionStateChangeHandler 处理程序）;
+
 _♩(RS_CM_00106, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
 
 **[SWS_CM_11354]**{DRAFT} **Execution Context for setting Subscription State change handler** *[*For the SetSubscriptionStateChangeHandler method described in [[SWS_CM_00333](#sws_cm_00333-set-subscription-state-change-handler)] a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by SetSubscriptionStateChangeHandler shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)].
 
+> **[SWS_CM_11354]**{草案} **设置订阅状态变更处理程序的执行上下文** *[*对于在[[SWS_CM_00333](#sws_cm_00333-set-subscription-state-change-handler)]中描述的SetSubscriptionStateChangeHandler方法，应提供一个具有附加输入参数的第二个重载。此参数应提供一个执行程序对象，其中SetSubscriptionStateChangeHandler生成的任何异步计算都应被调用。执行上下文的最小行为在[[SWS_CM_11364](#_bookmark34)]中定义。
+
 template\<typename ExecutorT\>
+
 
 ara::core::Result\<void\> SetSubscriptionStateChangeHandler( ara::com::SubscriptionStateChangeHandler handler, ExecutorT&& executor);
 
+> ara::core::Result<void> 设置订阅状态变更处理程序（ara::com::SubscriptionStateChangeHandler处理程序，ExecutorT&&执行者）;
+
+
 For the first overload without an execution context argument an implementation defined default execution context (like in previous AUTOSAR releases) shall be used._♩ (RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> 对于第一个没有执行上下文参数的重载，应使用实现定义的默认执行上下文（如以前的AUTOSAR发行版）。
+
 
 **[SWS_CM_11355]**{DRAFT} **Error behaviour of provided Execution Context for setting Subscription State change handler** *[*In case a SetSubscriptionStateChangeHandler() cannot be executed with the provided executor (e.g. because of resource problem) an ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
 
+> **[SWS_CM_11355]**{草案} **提供的执行上下文的错误行为以设置订阅状态更改处理程序** *[*如果无法使用提供的执行程序执行SetSubscriptionStateChangeHandler（）（例如，由于资源问题），则在所有情况下都会引发ComErrc::kCouldNotExecute错误。_♩（RS_CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP_00127）_
+
+
 **[SWS_CM_00025]**{DRAFT} **Re-entrancy and thread-safety SetSubscriptionStateChangeHandler** *[*SetSubscriptionStateChangeHandler shall be reentrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00106, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
+> **[SWS_CM_00025]**{草案} **重入性和线程安全的SetSubscriptionStateChangeHandler** *[*SetSubscriptionStateChangeHandler 对于不同的事件类实例应该是重入性和线程安全的。当重入或者在同一个事件类实例上并发调用时，行为是未定义的。♩(RS_CM_00106, RS_AP_00114, RS_AP_00120, RS_AP_00121)_*
+
+
 **[SWS_CM_00334] Unset Subscription State change handler** *[*The Communication Management shall provide an API UnsetSubscriptionStateChangeHandler to give the possibility to unset the subscription state change handler.
+
+> [SWS_CM_00334] 取消订阅状态更改处理程序
+通信管理应提供一个API UnsetSubscriptionStateChangeHandler来提供取消订阅状态更改处理程序的可能性。
 
 1 void UnsetSubscriptionStateChangeHandler();
 
 _♩(RS_CM_00106, RS_AP_00114, RS_AP_00120)_
 
+
 **[SWS_CM_00026]**{DRAFT} **Re-entrancy and thread-safety UnsetSubscriptionStateChangeHandler** *[*UnsetSubscriptionStateChangeHandler shall be re-entrant and thread-safe for _different_ Event class instances. When called reentrant or concurrently on the same Event class instance, the behavior is undefined._♩ (RS_CM_00106, RS_AP_00114, RS_AP_00120)_
+
+> **[SWS_CM_00026]**{草案} **重入性和线程安全的UnsetSubscriptionStateChangeHandler** *[*UnsetSubscriptionStateChangeHandler必须是_不同_事件类实例的重入性和线程安全的。如果在同一个事件类实例上重入或并发调用，行为是未定义的。♩（RS_CM_00106，RS_AP_00114，RS_AP_00120）_*
 
 ### Receive event
 
+
 For the functional description of the event receiving API, see chapter [7.9.11](#receive-event).
+
+> 对于事件接收API的功能描述，请参见第7.9.11章（接收事件）。
+
 
 Inside the specific Event class belonging to the specific ServiceProxy class, a GetNewSamples and a GetFreeSampleCount method shall be provided to allow for access of received events.
 
+> 在属于特定ServiceProxy类的特定Event类中，应提供GetNewSamples和GetFreeSampleCount方法，以允许访问接收到的事件。
+
+
 **[SWS_CM_00701] Method to update the event cache** *[*The Communication Management shall provide an GetNewSamples method as part of the Event class to update the event cache with the meanwhile received data samples. As input parameters the GetNewSamples method expects a Callable f and allows to specify a maxNumberOfSamples to restrict the number of received data samples being processed in this call.
+
+> [SWS_CM_00701]更新事件缓存的方法*[*通信管理应提供一个GetNewSamples方法作为Event类的一部分，以更新事件缓存中收到的数据样本。GetNewSamples方法作为输入参数预期一个可调用的f，并允许指定maxNumberOfSamples以限制此调用中处理的接收到的数据样本的数量。
 
 template \<typename F\> ara::core::Result\<std::size_t\> GetNewSamples(
 
 F&& f,
 
+
 std::size_t maxNumberOfSamples = std::numeric_limits\<std::size_t\>::max());
+
+> std::size_t 最大样本数 = std::numeric_limits<std::size_t>::max());
+
 
 _♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00127, RS_AP_00139)_
 
+> _♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00127, RS_AP_00139)_
+
+♩(RS_CM_00202、RS_AP_00114、RS_AP_00120、RS_AP_00121、RS_AP_00139、RS_AP_00128、RS_AP_00127、RS_AP_00139)♩
+
+
 **[SWS_CM_00702] Signature of Callable f** *[*The user provided Callable f has to comply with the following signature:
+
+> **[SWS_CM_00702] 用户提供的可调用函数f必须符合以下签名：**
 
 void(ara::com::SamplePtr\<SampleType const\>)
 
@@ -502,139 +952,304 @@ For the definition of the types used in the signature of f, see:
 
 _♩(RS_CM_00202, RS_AP_00114)_
 
+
 **[SWS_CM_00704]**{DRAFT} **Return Value** *[*The returned ara::core::Result either contains a
+
+> 返回值：ara::core::Result 包含一个
+
 
 - size_t indicating the total number of data samples passed to f in the context of the GetNewSamples call.
 
+> size_t用于指示在GetNewSamples调用的上下文中传递给f的数据样本总数。
+
 or
+
 
 - a ara::core::ErrorCode (see [SWS_CORE_00501]) where the error domain is set to ara::com::ComErrorDomain with the value kMaxSamplesExceeded indicating, that applications SamplePtrs count has been exceeded. This means that all SamplePtrs are currently held by the application and no more samples can be delivered.
 
+> 一个ara::core::ErrorCode（参见[SWS_CORE_00501]），其中错误域被设置为ara::com::ComErrorDomain，值为kMaxSamplesExceeded，表明应用程序SamplePtrs计数已超出。这意味着所有SamplePtrs目前都由应用程序持有，无法提供更多样本。
+
 _♩(RS_CM_00202, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
+
 
 Note: This means that maxSampleCount, which is given in the Subscribe() method is exceeded
 
+> 注意：这意味着在Subscribe（）方法中给出的maxSampleCount已超出。
+
+
 **[SWS_CM_11358]**{DRAFT} **Execution Context to update the event cache** *[*For the GetNewSamples method described in [[SWS_CM_00701](#_bookmark570)] a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by GetNewSamples shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)].
+
+> **[SWS_CM_11358]**{草案} **更新事件缓存的执行上下文** *[*在[[SWS_CM_00701](#_bookmark570)]中描述的GetNewSamples方法中，应提供一个具有附加输入参数的第二个重载版本。该参数应提供一个执行者对象，其中GetNewSamples产生的任何异步计算都将被调用。执行上下文的最小行为在[[SWS_CM_11364](#_bookmark34)]中定义。
+
+简体中文：**[SWS_CM_11358]**{草案} **更新事件缓存的执行上下文** *[*在[[SWS_CM_00701](#_bookmark570)]中描述的GetNewSamples方法中，应提供一个具有附加输入参数的第二个重载版本。该参数应提供一个执行者对象，其中GetNewSamples产生的任何异步计算都将被调用。执行上下文的最小行为在[[SWS_CM_11364](#_bookmark34)]中定义。
 
 template \<typename F, typename ExecutorT\>
 
+
 ara::core::Result\<std::size_t\> GetNewSamples(F&& f, ExecutorT&& executor, std::s
 
+> ara::core::Result<std::size_t> GetNewSamples(F&& f, ExecutorT&& executor, std::s）：从F&& f，ExecutorT&& executor中获取新的样本大小std::s
+
+
 For the first overload without an execution context argument an implementation defined default execution context (like in previous AUTOSAR releases) shall be used._♩ (RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> 对于第一个没有执行上下文参数的重载，应使用实现定义的默认执行上下文（如先前的AUTOSAR发行版中）。
+
 
 **[SWS_CM_11359]**{DRAFT} **Error behaviour of provided Execution Context to update the event cache** *[*In case a GetNewSamples() cannot be executed with the provided executor (e.g. because of resource problem) an ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS_CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP_00127)_
 
+> **[SWS_CM_11359]**{草案} **提供的执行上下文更新事件缓存的错误行为** *[*如果无法使用提供的执行器执行GetNewSamples（）（例如由于资源问题），则在所有情况下都应引发ComErrc::kCouldNotExecute错误。_♩（RS_CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP_00127）_
+
+
 **[SWS_CM_00714] Re-entrancy and thread-safety GetNewSamples** *[*GetNewSamples shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined. (If required, the application shall implement the locks)._♩ (RS_CM_00202, RS_AP_00114)_
+
+> **[SWS_CM_00714] 重入和线程安全GetNewSamples** *[*GetNewSamples必须对不同的Event类实例具有重入和线程安全性。当在同一个Event类实例上重入或并发调用时，行为是未定义的。（如果需要，应用程序应实现锁）。♩ （RS_CM_00202，RS_AP_00114）
+
 
 **[SWS_CM_00705] Query Free Sample Slots** *[*The Communication Management shall provide a GetFreeSampleCount method as part of the Event class to query the number of free/unused slots for event sample data.
 
+> [SWS_CM_00705] 查询空闲样本槽位
+通信管理应提供一个GetFreeSampleCount方法作为事件类的一部分，用于查询事件样本数据的空闲/未使用槽位数。
+
 std::size_t GetFreeSampleCount() const noexcept;
+
 
 _♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139)_
 
+> _♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139)_
+
+♩(RS_CM_00202、RS_AP_00114、RS_AP_00120、RS_AP_00139、RS_AP_00128、RS_AP_00132、RS_AP_00127、RS_AP_00139)
+
+
 **[SWS_CM_00706] Return Value of GetFreeSampleCount** *[*The returned size*t indicates the number of free/unused slots for event sample data in the local cache.*♩ (RS*CM_00202, RS_AP_00114, RS_AP_00119, RS_AP_00139, RS_AP_00128, RS_AP_00127)*
+
+> **[SWS_CM_00706] 获取FreeSampleCount的返回值** *[*返回的大小t表示本地缓存中事件样本数据的可用/未使用的槽数。*♩（RS_CM_00202，RS_AP_00114，RS_AP_00119，RS_AP_00139，RS_AP_00128，RS_AP_00127）*
+
 
 **[SWS_CM_00027]**{DRAFT} **Re-entrancy and thread-safety GetFreeSampleCount** *[*GetFreeSampleCount shall be re-entrant and thread-safe irrespective of the Event class instance i.e. GetFreeSampleCount shall be re-entrant and thread-safe for the same Event class instance and for _different_ Event class instances._♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139)_
 
+> [SWS_CM_00027]{草案} **重入性和线程安全GetFreeSampleCount** *[*GetFreeSampleCount无论是对于同一个Event类实例还是_不同_Event类实例都应该是重入性和线程安全的。♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139)_
+
+[SWS_CM_00027]{草案} **GetFreeSampleCount的重入性和线程安全** *[*GetFreeSampleCount无论是对于同一个Event类实例还是不同的Event类实例都应该是重入性和线程安全的。♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00139, RS_AP_00128, RS_AP_00132, RS_AP_00127, RS_AP_00139)_
+
 ### Receive event by getting triggered
+
 
 For the functional description of the receive event by getting triggered API, see chapter [7.9.11.2](#receive-event-by-getting-triggered).
 
+> 对于接收被触发API触发的事件的功能描述，请参见第7.9.11.2章（接收被触发事件）。
+
+
 **[SWS_CM_00181]**{DRAFT} **Enable service event trigger** *[*To enable that applications get triggered upon receiving of an event inside the specific Event class belonging to the specific ServiceProxy class a SetReceiveHandler method shall be provided to allow for specifying the function to call upon event arrival. Therefore, it takes as input parameter handler a pointer to the respective function.
+
+> **[SWS_CM_00181]**{草案} **启用服务事件触发** *[*要使应用程序在接收到属于特定ServiceProxy类的特定事件类中的事件时被触发，应提供SetReceiveHandler方法以允许指定在事件到达时调用的函数。因此，它将作为输入参数处理程序指向相应的函数。
+
 
 ara::core::Result\<void\> Event::SetReceiveHandler( ara::com::EventReceiveHandler handler);
 
+> ara::core::结果\<void\> 事件::设置接收处理程序（ara::com::事件接收处理程序处理程序）;
+
+
 The EventReceiveHandler constitutes a function without parameters and has to use the GetNewSamples method of the specific Event class to access the retrieved event data. See [[SWS_CM_00309](#_bookmark481)] for its definition.
+
+> 事件接收处理程序构成一个没有参数的函数，必须使用特定事件类的GetNewSamples方法来访问检索到的事件数据。有关其定义，请参见[[SWS_CM_00309](#_bookmark481)]。
+
 
 In case SetReceiveHandler() fails, ComErrc::kSetHandlerNotSet shall be returned in the Result._♩(RS_CM_00203, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
 
+> 如果SetReceiveHandler()失败，将会在结果中返回ComErrc::kSetHandlerNotSet。
+
+
 **[SWS_CM_11356]**{DRAFT} **Execution Context for enabling service event trigger** *[*For the SetReceiveHandler method described in [[SWS_CM_00181](#_bookmark573)] a second overload with an additional input parameter shall be provided. This parameter shall provide an executioner object in which any asynchronous computation spawn by SetReceiveHandler shall be invoked. The minimum behavior of the Execution Context is defined in [[SWS_CM_11364](#_bookmark34)].
+
+> **[SWS_CM_11356]**{草案} **为启用服务事件触发器的执行上下文** *[*在[[SWS_CM_00181](#_bookmark573)]中描述的SetReceiveHandler方法中，应提供具有附加输入参数的第二个重载。此参数应提供一个执行者对象，其中SetReceiveHandler产生的任何异步计算都将被调用。执行上下文的最低行为在[[SWS_CM_11364](#_bookmark34)]中定义。
+
 
 template\<typename ExecutorT\> ara::core::Result\<void\> Event::SetReceiveHandler(
 
+> template\<typename ExecutorT\> ara::core::Result\<void\> Event::SetReceiveHandler(
+
+模板\<typename ExecutorT\> ara::core::Result\<void\> Event::SetReceiveHandler（
+
 ara::com::EventReceiveHandler handler, ExecutorT&& executor);
+
 
 For the first overload without an execution context argument an implementation defined default execution context (like in previous AUTOSAR releases) shall be used._♩ (RS_CM_00211, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
 
+> 对于第一个没有执行上下文参数的重载，应使用实现定义的默认执行上下文（如先前AUTOSAR发布版本中的）。
+
+
 **[SWS_CM_11357]**{DRAFT} **Error behaviour of provided Execution Context for enabling service event trigger** *[*In case a SetReceiveHandler() cannot be executed with the provided executor (e.g. because of resource problem) an ComErrc::kCouldNotExecute error shall be raised in all cases._♩(RS*CM_00211, RS_CM_00212, RS_CM_00213, RS_CM_00214, RS_AP_00114, RS_AP_00119, RS_AP*-_
+
+> **[SWS_CM_11357]**{草案}**提供的执行上下文的错误行为以启用服务事件触发** *[*如果无法使用提供的执行器执行SetReceiveHandler（）（例如由于资源问题），则在所有情况下都会引发ComErrc::kCouldNotExecute错误。_♩（RS * CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP * -_
+
+简体中文：**[SWS_CM_11357]**{草案}**提供的执行上下文的错误行为以启用服务事件触发** *[*如果无法使用提供的执行器执行SetReceiveHandler（）（例如由于资源问题），则在所有情况下都会引发ComErrc::kCouldNotExecute错误。_♩（RS * CM_00211，RS_CM_00212，RS_CM_00213，RS_CM_00214，RS_AP_00114，RS_AP_00119，RS_AP * -_
 
 _00127)_
 
+
 **[SWS_CM_00028]**{DRAFT} **Re-entrancy and thread-safety SetReceiveHandler** *[*SetReceiveHandler shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00203, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
+> **[SWS_CM_00028]**{草案} **重入性和线程安全的SetReceiveHandler** *[*SetReceiveHandler必须对_不同_的Event类实例具有重入性和线程安全性。 当对同一Event类实例重入或并发调用时，行为是未定义的。_♩(RS_CM_00203, RS_AP_00114, RS_AP_00120, RS_AP_00121)_` 
+简体中文：**[SWS_CM_00028]**{草案} **重入性和线程安全的SetReceiveHandler** *[*SetReceiveHandler必须对_不同_的Event类实例具有重入性和线程安全性。 当对同一Event类实例重入或并发调用时，行为是未定义的。_♩(RS_CM_00203, RS_AP_00114, RS_AP_00120, RS_AP_00121)_`
+
 
 **[SWS_CM_00183]**{DRAFT} **Disable service event trigger** *[*To disable the triggering of the application upon receiving of an event inside the specific Event class belonging to the specific ServiceProxy class an UnsetReceiveHandler method shall be provided to allow for disabling of triggering the application.
 
+> **[SWS_CM_00183]**{草稿} **禁用服务事件触发器** *[*为了禁用在接收特定服务代理类中的特定事件类收到事件时触发应用程序，应提供UnsetReceiveHandler方法来允许禁用触发应用程序。
+
 ara::core::Result\<void\> Event::UnsetReceiveHandler();
+
 
 In case UnsetReceiveHandler() fails, ComErrc::kUnsetFailure shall be returned in the Result.
 
+> 如果UnsetReceiveHandler()失败，将会返回ComErrc::kUnsetFailure作为结果。
+
 _♩(RS_CM_00203, RS_AP_00114, RS_AP_00120)_
+
 
 **[SWS_CM_00029]**{DRAFT} **Re-entrancy and thread-safety UnsetReceiveHandler** *[*UnsetReceiveHandler shall be re-entrant and thread-safe for _different_ Event class instances. When called re-entrant or concurrently on the same Event class instance, the behavior is undefined._♩(RS_CM_00203, RS_AP_00114, RS_AP_00120)_
 
+> **[SWS_CM_00029]**{草案} **重入性和线程安全的UnsetReceiveHandler** *[*UnsetReceiveHandler应该对_不同_的事件类实例具有重入性和线程安全性。 当在同一个事件类实例上重入调用或并发调用时，行为是未定义的。_♩(RS_CM_00203, RS_AP_00114, RS_AP_00120)_`  简体中文：**[SWS_CM_00029]**{草案} **UnsetReceiveHandler的重入性和线程安全性** *[*UnsetReceiveHandler应该对_不同_的事件类实例具有重入性和线程安全性。 当在同一个事件类实例上重入调用或并发调用时，行为是未定义的。_♩(RS_CM_00203, RS_AP_00114, RS_AP_00120)_`
+
 ### Service Trigger subscription
+
 
 For the functional description of the service trigger subscription API, see chapter [7.9.12](#service-trigger-subscription).
 
+> 对于服务触发订阅API的功能描述，请参见第7.9.12章（服务触发订阅）。
+
+
 **[SWS_CM_00723]**{DRAFT} **Method to subscribe to a service trigger** *[*Inside the specific Trigger class belonging to the specific ServiceProxy class a Subscribe method shall be provided to start subscription of the corresponding trigger.
+
+> **[SWS_CM_00723]**{草稿} **订阅服务触发器的方法** *[*特定服务代理类中的特定触发器类将提供一个订阅方法来开始订阅相应的触发器。
 
 ara::core::Result\<void\> Trigger::Subscribe();
 
+
 If the Trigger is already subscribed to at the time of the call, and Subscribe() is invoked, it shall return silently without any action._♩(RS_CM_00103, RS_AP_00114, RS_AP_00120)_
+
+> 如果触发器在调用时已经订阅，并且调用了Subscribe()，它将静默地返回而不采取任何行动。
+
 
 **[SWS_CM_00724]**{DRAFT} **Re-entrancy and thread-safety Subscribe** *[*Subscribe shall be re-entrant and thread-safe for different Trigger class instances. When called re-entrant or concurrently on the same Trigger class instance, the behavior is undefined._♩(RS_CM_00103, RS_AP_00114, RS_AP_00120)_
 
+> **[SWS_CM_00724]**{草案} **重入和线程安全订阅** *[*订阅应对不同的触发器类实例具有重入性和线程安全性。当在同一触发器类实例上重入或同时调用时，行为是未定义的。_♩(RS_CM_00103，RS_AP_00114，RS_AP_00120)_
+
+
 **[SWS_CM_00810]**{DRAFT} **Method to unsubscribe from a service trigger** *[*Inside the specific Trigger class belonging to the specific ServiceProxy class a Unsubscribe method shall be provided to allow for unsubscribing from previously subscribed triggers.
+
+> **[SWS_CM_00810]**{草案} **取消订阅服务触发器的方法** *[*在特定服务代理类的特定触发器类中应提供一个取消订阅方法，以允许取消先前订阅的触发器。
 
 void Trigger::Unsubscribe();
 
+
 If the Trigger is not subscribed to at the time of the call, Unsubscribe() shall return silently without any action._♩(RS_CM_00104, RS_AP_00114, RS_AP_00120)_
+
+> 如果触发器在调用时没有订阅，Unsubscribe() 将静默地返回而不会有任何动作。(RS_CM_00104，RS_AP_00114，RS_AP_00120)
+
 
 **[SWS_CM_00035]**{DRAFT} **Re-entrancy and thread-safety Unsubscribe** *[*Unsubscribe shall be re-entrant and thread-safe for different Trigger class instances. When called re-entrant or concurrently on the same Trigger class instance, the behavior is undefined._♩(RS_CM_00104, RS_AP_00114, RS_AP_00120)_
 
+> **[SWS_CM_00035]**{草稿} **重入和线程安全的取消订阅** *[*取消订阅对不同的触发器类实例应该是重入和线程安全的。当在同一个触发器类实例上重入或并发调用时，行为是未定义的。_♩(RS_CM_00104, RS_AP_00114, RS_AP_00120)_
+
 ### Receive Trigger
+
 
 For the functional description of the trigger receiving API, see chapter [7.9.13](#receive-trigger).
 
+> 对于触发器接收API的功能描述，请参见第7.9.13章（接收触发器）。
+
+
 Inside the specific Trigger class belonging to the specific ServiceProxy class, a
+
+> 在特定的ServiceProxy类中属于特定的Trigger类内
+
 
 GetNewTriggers method shall be provided to allow for access of received triggers.
 
+> 提供GetNewTriggers方法以允许访问收到的触发器。
+
+
 **[SWS_CM_00226]**{DRAFT} **Method to update the trigger counter** *[*The Communication Management shall provide an GetNewTriggers method as part of the Trigger class to update the trigger counter.
+
+> **[SWS_CM_00226]**{草案} **更新触发器计数器的方法** *[*通信管理应提供一个GetNewTriggers方法作为触发器类的一部分，以更新触发器计数器。
 
 std::size_t GetNewTriggers();
 
+
 _♩(RS_CM_00202, RS_AP_00114, RS_AP_00120, RS_AP_00121, RS_AP_00139, RS_AP_00128, RS_AP_00127, RS_AP_00139)_
+
+> _♩（RS_CM_00202，RS_AP_00114，RS_AP_00120，RS_AP_00121，RS_AP_00139，RS_AP_00128，RS_AP_00127，RS_AP_00139）_
+
 
 **[SWS_CM_00228]**{DRAFT} **Return Value** *[*The returned size*t indicates the number of triggers occurred since the last call to GetNewTriggers (Zero value means that there is no new triggers received).*♩(RS*CM_00202, RS_AP_00114, RS_AP_00119, RS_AP_00127)*
 
+> **[SWS_CM_00228]**{草稿} **返回值** *[*返回的大小*t表示自上次调用GetNewTriggers以来发生的触发器数量（零值表示没有收到新的触发器）。*♩（RS * CM_00202，RS_AP_00114，RS_AP_00119，RS_AP_00127）*
+
+
 **[SWS_CM_11251]**{DRAFT} **Re-entrancy and thread-safety GetNewTriggers** *[*GetNewTriggers shall be re-entrant and thread-safe for different Trigger class instances. When called concurrently on the same Trigger class instance, the behavior is undefined._♩(RS_CM_00202, RS_AP_00114)_
+
+> **[SWS_CM_11251]**{草案} **重入和线程安全GetNewTriggers** *[*GetNewTriggers必须对不同的触发器类实例具有重入性和线程安全性。 当在同一触发器类实例上并发调用时，行为是未定义的。_♩（RS_CM_00202，RS_AP_00114）_
 
 ### Receive trigger by getting triggered
 
+
 For the functional description of the receive trigger by getting triggered API, see [[SWS_CM_00182](#_bookmark431)] and chapter [7.9.13.1](#receive-trigger-by-getting-triggered).
+
+> 对于接收触发器被触发API的功能描述，请参见[[SWS_CM_00182](#_bookmark431)]和第7.9.13.1章[接收触发器被触发]。
+
 
 **[SWS_CM_00249]**{DRAFT} **Enable service Trigger trigger** *[*To enable that applications get triggered upon receiving of a trigger inside the specific Trigger class
 
+> **[SWS_CM_00249]**{草稿} **启用服务触发器触发器** *[*以便在特定触发器类中接收触发器时启动应用程序
+
+
 belonging to the specific ServiceProxy class a SetReceiveHandler method shall be provided to allow for specifying the function to call upon trigger arrival. Therefore, it takes as input parameter handler a pointer to the respective function.
+
+> 特定的ServiceProxy类应提供一个SetReceiveHandler方法，以允许指定触发到达时调用的函数。因此，它将处理程序作为输入参数，该参数是指向相应函数的指针。
+
 
 ara::core::Result\<void\> Trigger::SetReceiveHandler( ara::com::TriggerReceiveHandler handler);
 
+> ara::core::结果<void> Trigger::SetReceiveHandler（ara::com::TriggerReceiveHandler处理程序）;
+
+
 The TriggerReceiveHandler constitutes a function without parameters and has to use the GetNewTriggers method of the specific Trigger class to access the retrieved trigger counter. See [[SWS_CM_00351](#_bookmark485)] for its definition. In case SetReceiveHandler() fails, ComErrc::kSetHandlerNotSet shall be returned in the Result._♩(RS_CM_00203, RS_AP_00114, RS_AP_00120, RS_AP_00121)_
+
+> 触发接收处理程序构成一个没有参数的函数，必须使用特定触发器类的GetNewTriggers方法来访问检索的触发器计数器。有关其定义，请参见[[SWS_CM_00351](#_bookmark485)]。如果SetReceiveHandler（）失败，则ComErrc :: kSetHandlerNotSet将在结果中返回。
 
 ### Call a service method
 
+
 For the functional description of the call a service method API, see chapter [7.9.14](#call-a-service-method).
+
+> 对于调用服务方法API的功能描述，请参阅[7.9.14](#call-a-service-method)章节。
+
 
 **[SWS_CM_00196]**{DRAFT} **Initiate a method call** *[*For each service method (i.e., ServiceInterface.method with ClientServerOperation.fireAndForget set to false) of a ServiceInterface a specific Method class named by the ServiceInterface.method.shortName shall be provided inside the specific ServiceProxy class of the ServiceInterface.
 
+> **[SWS_CM_00196]**{草案}**发起一个方法调用** *[*对于每个服务方法（即，ServiceInterface.method，ClientServerOperation.fireAndForget设置为false），ServiceInterface.method.shortName命名的特定Method类应该提供在ServiceInterface的特定ServiceProxy类中。
+
+
 Within this Method class, a dedicated method Output type combining the possible output parameters (ClientServerOperation.arguments with ArgumentDataPrototype.direction set to out or inout) shall be provided.
+
+> 在这个Method类中，应提供一种专用的输出类型，它将可能的输出参数（ClientServerOperation.arguments与ArgumentDataPrototype.direction设置为out或inout）组合起来。
+
 
 Additionally the operator() shall be provided inside the specific Method class to allow the call of a method provided by a server.
 
+> 此外，应在特定的Method类中提供operator（），以允许调用由服务器提供的方法。
+
+
 As input parameters, the operator() shall take the respective input parameters ( ClientServerOperation.arguments with ArgumentDataPrototype.direction set to in or inout) of the provided method.
 
+> 作为输入参数，操作符()应接受提供方法的各自输入参数（将ArgumentDataPrototype.direction设置为in或inout的ClientServerOperation.arguments）。
+
+
 The operator() shall return an ara::core::Future object wrapping the dedicated method Output type.
+
+> 操作符() 应返回一个ara::core::Future对象，包装专用方法的输出类型。
 
 class Method { struct Output {
 
@@ -644,7 +1259,10 @@ TypeOutputParameter1 output1; TypeOutputParameter2 output2;
 
 };
 
+
 ara::core::Future\<Output\> operator()( TypeInputParameter1 input1, TypeInputParameter2 input2,
+
+> ara::core::未来<输出>操作符()（TypeInputParameter1输入1，TypeInputParameter2输入2）
 
 \...
 
@@ -652,19 +1270,37 @@ ara::core::Future\<Output\> operator()( TypeInputParameter1 input1, TypeInputPar
 
 };
 
+
 _♩(RS_CM_00212, RS_CM_00213, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> _(RS_CM_00212、RS_CM_00213、RS_AP_00114、RS_AP_00120、RS_AP_00138、RS_AP_00128、RS_AP_00127、RS_AP_00138)_
+
 
 The method call according to [[SWS_CM_00196](#_bookmark586)] will return immediately. The caller's selection of a synchronous or asynchronous behavior to get the method output is achieved by the use of the returned ara::core::Future object which is used to query for method completion and result including possible error.
 
+> 根据[[SWS_CM_00196](#_bookmark586)]的方法调用将立即返回。调用者通过返回的ara::core::Future对象来选择同步或异步行为以获取方法输出，该对象用于查询方法完成和结果（包括可能的错误）。
+
+
 **[SWS_CM_00032]**{DRAFT} **Re-entrancy and thread-safety Method call operator** *[*operator() shall be re-entrant and thread-safe irrespective of the Method class instance i.e. operator() shall be re-entrant and thread-safe for the same Method class instance and for _different_ Method class instances._♩(RS*CM_00212, RS_CM_00213, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP*-_
+
+> **[SWS_CM_00032]**{草案} **重入和线程安全的方法调用运算符** *[*operator()应该是重入和线程安全的，不论是哪个方法类实例，也就是说，对于相同的方法类实例和不同的方法类实例，operator()都应该是重入和线程安全的。♩(RS*CM_00212, RS_CM_00213, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP*-_
 
 _00127, RS_AP_00138)_
 
+
 **[SWS_CM_90435]**{DRAFT} **Initiate a Fire and Forget method call** *[*For each fire and forget service method (i.e., ServiceInterface.method with ClientServerOperation.fireAndForget set to true) of a ServiceInterface a specific FireAndForgetMethod class named by the ServiceInterface. method.shortName shall be provided inside the specific ServiceProxy class of the ServiceInterface.
+
+> 为每个火箭式服务方法（即ServiceInterface.method，其中ClientServerOperation.fireAndForget设置为true）提供一个特定的FireAndForgetMethod类，该类由ServiceInterface.method.shortName命名，并位于ServiceInterface的特定ServiceProxy类中。
+
 
 Within this FireAndForgetMethod class, the operator() shall be provided to allow the call of a fire and forget method provided by a server.
 
+> 在这个FireAndForgetMethod类中，提供operator()以允许调用由服务器提供的火放式和忘记方法。
+
+
 As input parameters, the operator() shall take the respective input parameters ( ClientServerOperation.arguments with ArgumentDataPrototype.direction set to in) of the provided fire and forget method.
+
+> 作为输入参数，操作符()应接受所提供的无返回值方法的各自输入参数（将ArgumentDataPrototype.direction设置为in的ClientServerOperation.arguments）。
 
 The operator() shall not have return values.
 
@@ -682,30 +1318,62 @@ _♩(RS_CM_00225, RS_AP_00114, RS_AP_00120)_
 
 ### Get method for fields
 
+
 **[SWS_CM_00112] Method to get the value of a field** *[*The Communication Management shall provide a Get method as part of the Field class to offer a service to request the current value of the service provider.
+
+> 通信管理应提供Field类的Get方法，以提供请求服务提供者当前值的服务。
 
 ara::core::Future\<FieldType\> Get();
 
+
 _♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> _(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+简体中文：_(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
 
 **[SWS_CM_00132]**{DRAFT} **Existence of getter method** *[*The existence of the Get method as part of the Field class shall be controlled by Field.hasGetter._♩(RS_CM_00218, RS_AP_00114)_
 
+> **[SWS_CM_00132]**{草稿} **Getter方法的存在** *[*Field类的一部分，Get方法的存在应由Field.hasGetter控制。_♩(RS_CM_00218, RS_AP_00114)_
+
+
 **[SWS_CM_00030]**{DRAFT} **Re-entrancy and thread-safety Get** *[*Get shall be reentrant and thread-safe irrespective of the Field class instance i.e. Get shall be reentrant and thread-safe for the same Field class instance and for _different_ Field class instances._♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
+
+> **[SWS_CM_00030]**{草案} **重入和线程安全Get** *[*Get应该是可重入的和线程安全的，不管是哪种Field类实例，也就是说，无论是相同的Field类实例还是不同的Field类实例，Get都应该是可重入的和线程安全的。♩(RS_CM_00218, RS_AP_00114, RS_AP_00120, RS_AP_00138, RS_AP_00128, RS_AP_00127, RS_AP_00138)_
 
 ### Set method for fields
 
+
 **[SWS_CM_00113] Method to set the value of a field** *[*The Communication Management shall provide a Set method as part of the Field class to offer a service to the applications to request the setting of a new value within the service provider.
+
+> 通信管理应提供一种Set方法作为Field类的一部分，以向应用程序提供服务，以请求在服务提供者内设置新值。
 
 ara::core::Future\<FieldType\> Set(const FieldType& value);
 
+
 _♩(RS_CM_00217, RS_AP_00114, RS_AP_00120, RS_AP_00121, RS_AP_00138, RS_AP_00138, RS_AP_00127, RS_AP_00138)_
+
+> _♩(RS_CM_00217，RS_AP_00114，RS_AP_00120，RS_AP_00121，RS_AP_00138，RS_AP_00138，RS_AP_00127，RS_AP_00138)_
+
 
 **[SWS_CM_00133]**{DRAFT} **Existence of the set method** *[*The existence of the set method as part of the Field class shall be controlled by Field.hasSetter._♩(RS_CM_00218, RS_AP_00114)_
 
+> **[SWS_CM_00133]**{草案} **设置方法的存在** *[*Field类的一部分，设置方法的存在将由Field.hasSetter控制。_♩(RS_CM_00218, RS_AP_00114)_
+
+
 **Note:** There is no need to have Get method itself return [Application Errors] errors when getting a field value (as there are no errors possible when getting a field value). The Set-Method may return [Application Errors], but does so via returning a value different from the one passed in the request parameter.
+
+> **注意：** 在获取字段值时，不需要让Get方法本身返回[应用程序错误]错误（因为在获取字段值时不可能出现错误）。Set-Method可以返回[应用程序错误]，但是通过返回与请求参数中传入的值不同的值来实现。
+
 
 **[SWS_CM_00031]**{DRAFT} **Re-entrancy and thread-safety Set** *[*Set shall be reentrant and thread-safe irrespective of the Field class instance i.e. Set shall be reentrant and thread-safe for the same Field class instance and for _different_ Field class instances._♩(RS_CM_00217, RS_AP_00114, RS_AP_00120, RS_AP_00121, RS_AP_00138, RS_AP_00138, RS_AP_00127, RS_AP_00138)_
 
+> **[SWS_CM_00031]**{草案} **重入性和线程安全集** *[*集应该无论Field类实例如何都是重入性和线程安全的，即对于相同的Field类实例和不同的Field类实例，集都是重入性和线程安全的。♩(RS_CM_00217, RS_AP_00114, RS_AP_00120, RS_AP_00121, RS_AP_00138, RS_AP_00138, RS_AP_00127, RS_AP_00138)_
+
 ### Instance Specifier Translation
 
+
 For the functional description of the Instance Specifier Translation API, see chapter [7.9.16](#instance-specifier-translation).
+
+> 对于实例规范翻译API的功能描述，请参见第7.9.16章（实例规范翻译）。
