@@ -149,20 +149,18 @@ We strongly encourage both groups of readers to read this document at hand befor
 
 # Acronyms and Abbreviations
 
-The glossary below includes acronyms and abbreviations relevant to the explanation of ara::com API.
+The glossary below includes acronyms and abbreviations relevant to the explanation of `ara::com` API.
 
-> 以下词汇表包括与 ara::com API 解释相关的缩略词和缩写。
+> 以下词汇表包括与 `ara::com` API 解释相关的缩略词和缩写。
 
 # 3. Introduction
 
 ## 1. Approach
 
 Why did AUTOSAR invent yet another communication middleware API/technology, while there are dozens on the market --the more so as one of the guidelines of Adaptive Platform was to reuse existing and field proven technology?
-
-> 为什么 AUTOSAR 发明了另一种通信中间件 API/技术，而市场上已经有几十种了，更何况 Adaptive Platform 的一个准则是重用现有和经过验证的技术呢？
-
 Before coming up with a new middleware design, we did evaluate existing technologies, which --at first glance --seemed to be valid candidates. Among those were:
 
+> 为什么 AUTOSAR 发明了另一种通信中间件 API/技术，而市场上已经有几十种了，更何况 Adaptive Platform 的一个准则是重用现有和经过验证的技术呢？
 > 在设计新的中间件之前，我们确实评估了现有技术，乍一看似乎是合理的候选项。其中包括：
 
 - ROS API
@@ -172,23 +170,17 @@ Before coming up with a new middleware design, we did evaluate existing technolo
 
 The final decision to come up with a new and AUTOSAR-specific Communication Management API was made due to the fact, that not all of our key requirements were met by existing solutions:
 
-> 最终决定推出新的和 AUTOSAR 专用的通信管理 API 是由于现有解决方案未能满足我们的所有关键要求：
+> 最终决定推出新的和 AUTOSAR 专用的通信管理 API 是由于**现有解决方案未能满足我们的所有关键要求**：
 
 - We need a Communication Management, which is NOT bound to a concrete network communication protocol. It has to support the SOME/IP protocol but there has to be flexibility to exchange that.
-
-> 我们需要一个不局限于具体网络通信协议的通信管理系统。它必须支持 SOME/IP 协议，但也必须有可替换的灵活性。
-
-- The AUTOSAR service model, which defines services as a collection of provided methods, events and fields shall be supported naturally/straight forward.
-
-> AUTOSAR 服务模型，它将服务定义为提供的方法、事件和字段的集合，应自然/直接支持。
-
+- The AUTOSAR service model, which defines services as a collection of provided **methods, events and fields** shall be supported naturally/straight forward.
 - The API shall support an event-driven and a polling model to get access to communicated data equally well. The latter one is typically needed by real-time applications to avoid unnecessary context switches, while the former one is much more convenient for applications without real-time requirements.
-
-> API 应该同样支持事件驱动和轮询模型来获取通信数据。后者通常被实时应用程序需要，以避免不必要的上下文切换，而前者则对于没有实时要求的应用程序来说更加方便。Possibility for seamless integration of end-to-end protection to fulfill ASIL requirements.
-
 - Support for static (preconfigured) and dynamic (runtime) selection of service instances to communicate with.
 
-> 支持静态(预先配置)和动态(运行时)选择要与之通信的服务实例。
+> - 我们需要一个**不局限于具体网络通信协议的通信管理系统**。它**必须支持 SOME/IP 协议，但也必须有可替换的灵活性**。
+> - AUTOSAR 服务模型，它将服务定义为提供的方法、事件和字段的集合，应自然/直接支持。
+> - API 应该同样**支持事件驱动**和**轮询模型**来获取通信数据。后者通常被实时应用程序需要，以避免不必要的上下文切换，而前者则对于没有实时要求的应用程序来说更加方便。Possibility for seamless integration of end-to-end protection to fulfill ASIL requirements.
+> - 支持静态(预先配置)和动态(运行时)选择要与之通信的服务实例。
 
 So in the final [ara::com] API specification, the reader will find concepts (which we will describe in-depth in the upcoming chapters), which might be familiar for him from technologies, we have evaluated or even from the existing Classic Platform:
 
