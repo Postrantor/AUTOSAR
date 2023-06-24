@@ -207,7 +207,8 @@ AUTOSAR is in the course of extending the naming scheme for files and specificat
 > 1. 架构：FO 弹性平台标准采用了基于 API 的服务架构，这样做的好处是开发者可以利用和整合平台提供的服务，而不必了解底层实现。
 > 2. 运行时环境：FO 弹性平台提供了一种适应不同硬件和网络的运行时环境，使得执行 AUTOSAR 应用程序的硬件和网络更加灵活。
 > 3. 安全性：FO 弹性平台要求系统必须具有一定的安全性能力，以防止跨车和跨领域攻击，所以被设计成支持安全通信。
->    FO 标准的出现，是为了应对越来越多的现代、高级的车载应用程序设计需求，包括自动驾驶、车联网等。基于 FO 标准的 AUTOSAR Adaptive Platform 可以更好地支持这些应用程序，并更好地促进了 AUTOSAR 技术的发展。
+>
+> FO 标准的出现，是为了应对越来越多的现代、高级的车载应用程序设计需求，包括自动驾驶、车联网等。基于 FO 标准的 AUTOSAR Adaptive Platform 可以更好地支持这些应用程序，并更好地促进了 AUTOSAR 技术的发展。
 
 From R22-11 onwards, specification items in newly introduced specifications follow the new naming scheme. In R22-11, file names are not yet changed.
 From R23-11 onwards, the names of all files that are part of the release will follow the new naming scheme.
@@ -271,16 +272,12 @@ The life cycle state of a specification item is found after the specification it
 > 规格项目的生命周期状态是由大括号括起来的规格项目 ID 后面发现的。状态有：
 
 - {Valid}: This indicates that the related entity is a valid part of the document. This is the default and also applies if no dedicated life cycle status is annotated for the related entity.
-
-> 这表明相关实体是文档的有效部分。这是默认设置，如果没有为相关实体注释专用生命周期状态，也适用。
-
 - {Draft}: This indicates that the related entity is newly introduced but still experimental. This information is published but is subject to change without backward compatibility guarantee.
-
-> 这表明相关实体是新引入的，但仍处于试验阶段。此信息已发布，但可能会更改，而无需向后兼容性保证。
-
 - {Obsolete}: This indicates that the related entity is subject to be removed in one of the following releases without further notice.
 
-> 这表明相关实体在接下来的发布版本中可能会被删除，而不再另行通知。
+> - 这表明相关实体是文档的有效部分。这是默认设置，如果没有为相关实体注释专用生命周期状态，也适用。
+> - 这表明相关实体是新引入的，但仍处于试验阶段。此信息已发布，但可能会更改，而无需向后兼容性保证。
+> - 这表明相关实体在接下来的发布版本中可能会被删除，而不再另行通知。
 
 The life cycle state of a requirement is found in the attribute \"type\". The states are the same as the specification item states.
 
@@ -448,7 +445,7 @@ The following concepts in [2.1.1.1.1](#macsec) [2.1.1.1.5](#someip-harmonization
 
 Media Access Controller Security (MACsec) and MACsec Key Agreement (MKA) protocols:
 
-> 媒体访问控制器安全(MACsec)和 MACsec 密钥协商(MKA)协议
+> 媒体访问控制器安全(MACsec)和 MACsec 密钥协商(MKA)协议：
 
 The concept defines and includes in AUTOSAR the Modules needed for using and configuring the security protocol in Layer 2 MACsec and its related Key Agreement Protocol MKA.
 
@@ -474,7 +471,7 @@ The concept introduces a firewall to inspect and filter Ethernet traffic based o
 
 SOVD (Service-oriented Vehicle Diagnostics) allows the usage of the \"ASAM SOVD\" standard in the context of AUTOSAR Adaptive. This covers the use cases for HCP diagnostics as well as the UDS adapter to access ECUs using AUTOSAR Classic.
 
-> SOVD(服务导向车辆诊断)允许在 AUTOSAR Adaptive 的上下文中使用“ASAM SOVD”标准。这涵盖了 HCP 诊断的用例以及使用 AUTOSAR Classic 访问 ECU 的 UDS 适配器。
+> **SOVD(服务导向车辆诊断)**允许在 AUTOSAR Adaptive 的上下文中使用“ASAM SOVD”标准。这涵盖了 HCP 诊断的用例以及使用 AUTOSAR Classic 访问 ECU 的 UDS 适配器。
 
 ### SOME/IP Harmonization
 
@@ -504,9 +501,9 @@ The following concepts have been validated:
 
 - CAN XL
 
-  1. ### Specifications
+### Specifications
 
-     1. []{#\_bookmark37 .anchor}**New Specifications**
+1. []{#\_bookmark37 .anchor}**New Specifications**
 
 The following new specifications have been introduced via concepts:
 
@@ -519,7 +516,7 @@ In addition to the above listed new specifications, the following documents have
 
 - none
 
-  1. ### Migrated Specifications
+### Migrated Specifications
 
 With this release, the following specifications have been moved from AUTOSAR Adaptive Platform to the AUTOSAR Foundation standard:
 
@@ -527,17 +524,16 @@ With this release, the following specifications have been moved from AUTOSAR Ada
 
 - Explanation of Safety Overview (UID 895, EXP)
 
-  1. ### Obsolete Specifications
+### Obsolete Specifications
 
 The following specification has been set to status \"obsolete\" in this release:
 
-> 此版本中，以下规格已被设置为“过时”状态：
-
 - Guidelines for the use of the C++14 language in critical and safety-related systems (UID 839, RS)
 
+> 此版本中，以下规格已被设置为“过时”状态：
 > 指南：在关键和安全相关系统中使用 C++14 语言(UID 839，RS)
 
-1. ### Removed Specifications
+### Removed Specifications
 
 The following specification has been set to status \"removed\" in this release:
 
@@ -545,33 +541,31 @@ The following specification has been set to status \"removed\" in this release:
 
 - Specification of RESTful Communication (UID 876, SWS)
 
-  1. ### Reworked Specifications
+### Reworked Specifications
 
 The following specifications have been changed fundamentally in R22-11
 
 - none
 
-  1. ### Moved Specification parts
+### Moved Specification parts
 
 The following specification parts have been moved to other documents in R22-11.
 
-> 以下规范部分已被移动到 R22-11 的其他文档中。
-
 - Requirements on Security Management for Adaptive Platform (UID 881, RS) to Explanation of Security Overview (UID 1077, EXP)
-
-> 要求安全管理的自适应平台(UID 881，RS)到安全概览的解释(UID 1077，EXP)
-
 - Explanation of Adaptive Platform Software Architectural Decisions (UID 983, EXP) to Explanation of Adaptive and Classic Platform Software Architectural Decisions (UID 1078, EXP)
 
-> 解释自适应和经典平台软件架构决策(UID 1078，EXP)
+> 以下规范部分已被移动到 R22-11 的其他文档中。
+>
+> - 要求安全管理的自适应平台(UID 881，RS)到安全概览的解释(UID 1077，EXP)
+> - 解释自适应和经典平台软件架构决策(UID 1078，EXP)
 
-1. ### Renamed Specifications
+### Renamed Specifications
 
 The following specification has been renamed in this release:
 
 - none
 
-  1. ### Life Cycle State of Metamodel
+### Life Cycle State of Metamodel
 
 The life cycle of several Adaptive Platform elements in the Metamodel were kept in \"draft\" until release R21-11. Due to increasing market demands to keep AUTOSAR's XML schema stable, these parts of the model have been set to \"valid\" in this release. This has an impact on the TPS_Manifest specification [2](#_bookmark1).
 
@@ -579,7 +573,7 @@ The life cycle of several Adaptive Platform elements in the Metamodel were kept 
 
 Please be aware that according to [1](#_bookmark0), only the life cycle states \"valid\" and \"candidate\" are used within the Metamodel.
 
-> 请注意，根据[1]](#\_bookmark0)，只有生命周期状态“有效”和“候选”在元模型中使用。
+> 请注意，根据[1](#_bookmark0)，只有生命周期状态“有效”和“候选”在元模型中使用。
 
 ### Release Documentation
 
@@ -620,24 +614,15 @@ The following technical deficiencies are to be mentioned, where clicking on the 
 > 以下技术缺陷需要提及，点击相关节可以带您至相应文件：
 
 ```
-
 ---
-
 Document UID   Long Name                                                     Document Type   Section Reference
-
 ---
-
 851            Specification of Platform Health Management                   SWS             [4.1](#specification-of-platform-health-management-uid-851-sws)
-
 880            Specification of Time Synchronization                         SWS             [4.2](#specification-of-time-synchronization-uid-880-sws)
-
 888            Specification of Update and Configuration Management          SWS             [4.3](#specification-of-update-and-configuration-management-uid-888-sws)
-
 908            Specification of State Management                             SWS             [4.4](#specification-of-state-management-uid-908-sws)
-
 994            Specification of Language Binding for modeled AP data types   SWS             [4.5](#specification-of-language-binding-for-modeled-ap-data-types-uid-994-sws)
 ------------------------------------------------------------------------------------------------
-
 ```
 
 ## Specification of Platform Health Management (UID 851, SWS)
@@ -647,6 +632,8 @@ Document UID   Long Name                                                     Doc
 > 目前本文档发布版本不支持代芽链接(即将监督状态、检查点或健康通道信息转发到 PHM 之外的实体或另一个 PHM 实例)。
 
 - Interface with the Diagnostic Manager is not specified in this release
+
+> 本版本未指定与诊断管理器的接口
 
 - The configuration attribute for the alive notification cycle time (with respect to PHM sending AliveNotification to watchdog interface) is not specified for this release.
 
@@ -665,6 +652,8 @@ Document UID   Long Name                                                     Doc
 > 当全局监督状态达到 kStopped 状态时，目前指定的通知状态管理的机制不足以应对多次故障。可能会发生全局监督状态保持在 kStopped 状态而没有进一步通知状态管理关于连续故障的情况，从而可能会阻碍恢复。
 
 - \"PowerMode\" dependent Supervision configuration is not supported in this release
+
+> \"powermode\"依赖监督配置在此版本中不支持
 
 - Supervision is not supported for non-reporting processes. Rationale: Supervision depends on process states. Non-reporting process is not expected to report its Execution State to Execution Management. Hence, Platform Health Management cannot be informed about the necessary process states by Execution Management
 
@@ -687,61 +676,33 @@ Note: It is not intended to remove this feature from AUTOSAR Adaptive Platform o
 > 注意：这不是为了从 AUTOSAR Adaptive Platform 整体上移除此功能(由于清晰的行业用例)。而是一个架构问题(此功能属于哪个功能集群)，预计将在下一个版本中解决：
 
 **--** SWS_PHM_00010
-
 **--** SWS_PHM_01328
-
 **--** SWS_PHM_01329
-
 **--** SWS_PHM_01330
-
 **--** SWS_PHM_00102
-
 **--** SWS_PHM_01113
-
 **--** SWS_PHM_01114
-
 **--** SWS_PHM_01115
-
 **--** SWS_PHM_01118
-
 **--** SWS_PHM_01119
-
 **--** SWS_PHM_01129
-
 **--** SWS_PHM_01122
-
 **--** SWS_PHM_01139
-
 **--** SWS_PHM_00457
-
 **--** SWS_PHM_01222
-
 **--** SWS_PHM_01224
-
 **--** SWS_PHM_01128
-
 **--** SWS_PHM_01221
-
 **--** SWS_PHM_01223
-
 **--** SWS_PHM_01225
-
 **--** SWS_PHM_01231
-
 **--** SWS_PHM_01233
-
 **--** SWS_PHM_01234
-
 **--** SWS_PHM_01235
-
 **--** SWS_PHM_01236
-
 **--** SWS_PHM_01232
-
 **--** SWS_PHM_01237
-
 **--** SWS_PHM_01238
-
 **--** SWS_PHM_01239
 
 ## Specification of Time Synchronization (UID 880, SWS)
@@ -780,7 +741,7 @@ Note: Secured Time Synchronization messages received in AP ECUs works without ve
 
 UCM is not responsible to initiate the update process. UCM realizes a service interface to achieve this operation. The user of this service interface is responsible to verify that the vehicle is in a updatable state before executing a software update procedure on demand. It is also in the responsibility of the user to communicate with other AUTOSAR Adaptive Platforms or AUTOSAR Classic Platforms within the vehicle. The UCM receives a locally available software package for processing. The software package is usually downloaded from the OEM backend. The download of the software packages has to be done by another application, i.e. UCM does not manage the connection to the OEM backend. Prior to triggering their processing, the software packages have to be transferred to UCM by using the provided ara::com interface. The UCM update process is designed to cover updates on use case with single AUTOSAR Adaptive Platform. UCM can update Adaptive Applications, the AUTOSAR Adaptive Platform itself, including all functional clusters and the underlying OS.
 
-> UCM 不负责启动更新过程。UCM 提供服务接口来实现此操作。此服务接口的用户负责在执行软件更新程序之前验证车辆是否处于可更新状态。用户也负责与车辆内的其他 AUTOSAR Adaptive Platforms 或 AUTOSAR Classic Platforms 进行通信。UCM 接收本地可用的软件包进行处理。软件包通常从 OEM 后端下载。下载软件包必须由另一个应用程序完成，即 UCM 不管理连接到 OEM 后端。在触发处理之前，必须使用提供的 ara :: com 接口将软件包传输到 UCM。UCM 更新过程旨在覆盖单个 AUTOSAR Adaptive Platform 的更新用例。UCM 可以更新 Adaptive Applications，包括所有功能集群和基础 OS 的 AUTOSAR Adaptive Platform 本身。
+> UCM 不负责启动更新过程。UCM 提供服务接口来实现此操作。此服务接口的用户负责在执行软件更新程序之前验证车辆是否处于可更新状态。用户也负责与车辆内的其他 AUTOSAR Adaptive Platforms 或 AUTOSAR Classic Platforms 进行通信。UCM 接收本地可用的软件包进行处理。软件包通常从 OEM 后端下载。下载软件包必须由另一个应用程序完成，即 UCM 不管理连接到 OEM 后端。在触发处理之前，必须使用提供的 `ara::com` 接口将软件包传输到 UCM。UCM 更新过程旨在覆盖单个 AUTOSAR Adaptive Platform 的更新用例。UCM 可以更新 Adaptive Applications，包括所有功能集群和基础 OS 的 AUTOSAR Adaptive Platform 本身。
 
 The UCM is not responsible for enforcing authentication and access control to the provided interfaces. The document currently does not provide any mechanism for the confidentiality protection as well as measures against denial of service attacks. The assumption is that the platform preserves the integrity of parameters exchanged between UCM and its user.
 
@@ -792,7 +753,7 @@ The possibility to restart a specific application instead of a Machine reboot de
 
 UCM does only support updates of ARA::COM and UDS (ISO-14229) compliant ECUs. UCM is not controlling any action done by diagnostic tool directly updating a Classic platform. For instance UCM cannot protect against downgrading of a Software Cluster in a Classic platform by a diagnostic tool.
 
-> UCM 只支持 ARA :: COM 和 UDS(ISO-14229)兼容的 ECU 的更新。 UCM 不会直接控制诊断工具对经典平台进行的任何操作。例如，UCM 无法防止诊断工具在经典平台上降级软件集群。
+> UCM 只支持 `ARA::COM` 和 UDS(ISO-14229)兼容的 ECU 的更新。 UCM 不会直接控制诊断工具对经典平台进行的任何操作。例如，UCM 无法防止诊断工具在经典平台上降级软件集群。
 
 ## Specification of State Management (UID 908, SWS)
 
@@ -803,7 +764,3 @@ The State Machine API is a subject for rework in a future release.
 Although future versions of this specification may add further Language Bindings, the primary focus of the AP (and therefore this specification) is a binding to the C++ language.
 
 > 虽然未来的版本可能会添加更多的语言绑定，但 AP(因此本规范)的主要重点是对 C++语言的绑定。
-
-```
-
-```
