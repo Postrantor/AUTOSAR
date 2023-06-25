@@ -3,47 +3,47 @@ tip: translate by openai@2023-06-23 12:52:36
 ...
 
 - [Building Block View](#building-block-view)
-  - [Overview](#overview)
-    - [Description pattern](#description-pattern)
-  - [Runtime](#runtime)
-    - [Execution Management](#execution-management)
-    - [State Management](#state-management)
-    - [Log and Trace](#log-and-trace)
-    - [Core](#core)
-    - [Operating System Interface](#operating-system-interface)
-  - [Communication](#communication)
-    - [Communication Management](#communication-management)
-    - [Network Management](#network-management)
-    - [Time Synchronization](#time-synchronization)
-  - [Storage](#storage)
-    - [Persistency](#persistency)
-  - [Security](#security)
-    - [Cryptography](#cryptography)
+  [Overview](#overview)
+  [Description pattern](#description-pattern)
+  [Runtime](#runtime)
+  [Execution Management](#execution-management)
+  [State Management](#state-management)
+  [Log and Trace](#log-and-trace)
+  [Core](#core)
+  [Operating System Interface](#operating-system-interface)
+  [Communication](#communication)
+  [Communication Management](#communication-management)
+  [Network Management](#network-management)
+  [Time Synchronization](#time-synchronization)
+  [Storage](#storage)
+  [Persistency](#persistency)
+  [Security](#security)
+  [Cryptography](#cryptography)
 - [Runtime View](#runtime-view)
-  - [Vehicle Software Deployment](#vehicle-software-deployment)
-  - [Deployment of Software Packages on a Machine](#deployment-of-software-packages-on-a-machine)
+  [Vehicle Software Deployment](#vehicle-software-deployment)
+  [Deployment of Software Packages on a Machine](#deployment-of-software-packages-on-a-machine)
 - [Cross-cutting Concepts](#cross-cutting-concepts)
-  - [Overview of Platform Entities](#overview-of-platform-entities)
-  - [Function Group](#function-group)
-  - [Function Group State](#function-group-state)
-  - [Software Cluster](#software-cluster)
-  - [Machine](#machine)
-  - [Manifest](#manifest)
-  - [Application Design](#application-design)
-  - [Execution Manifest](#execution-manifest)
-  - [Error Handling](#error-handling)
-  - [Trusted Platform](#trusted-platform)
-  - [Secure Communication](#secure-communication)
+  [Overview of Platform Entities](#overview-of-platform-entities)
+  [Function Group](#function-group)
+  [Function Group State](#function-group-state)
+  [Software Cluster](#software-cluster)
+  [Machine](#machine)
+  [Manifest](#manifest)
+  [Application Design](#application-design)
+  [Execution Manifest](#execution-manifest)
+  [Error Handling](#error-handling)
+  [Trusted Platform](#trusted-platform)
+  [Secure Communication](#secure-communication)
 - [Risks and Technical Debt](#risks-and-technical-debt)
-    - [Risk List](#risk-list)
-  - [Technical Debt](#technical-debt)
+  [Risk List](#risk-list)
+  [Technical Debt](#technical-debt)
 - [References](#references)
 
 # Contents
 
 # Introduction
 
-This explanatory document provides detailed technical description of the software ar- chitecture of the AUTOSAR Adaptive Platform standard with the main focus on the architecture model.
+This explanatory document provides detailed technical description of the software architecture of the AUTOSAR Adaptive Platform standard with the main focus on the architecture model.
 
 > 这份说明文件详细描述了 AUTOSAR Adaptive Platform 标准的软件架构，重点介绍了架构模型。
 
@@ -56,20 +56,20 @@ This document is an architecture description of the AUTOSAR Adaptive Platform in
 - Provide definitions for all used **architecture viewpoints** and a **mapping of all stakeholder concerns to those viewpoints**.
 - Provide an **architecture view** and its **architecture models** for each architecture viewpoint used in this architecture description.
 - Provide **correspondence rules** and **correspondences** among the contents of this architecture description.
-- Provide an **architecture rationale** (explanation, justification, reasoning for de- cisions made) on a high level. A more in-depth documentation of decisions is provided in \[[2](#_bookmark324), EXP_SWArchitecturalDecisions\].
+- Provide an **architecture rationale** (explanation, justification, reasoning for decisions made) on a high level. A more in-depth documentation of decisions is provided in \[[2](#_bookmark324), EXP_SWArchitecturalDecisions\].
 - Provide a **record of known inconsistencies and gaps** among the architecture description.
 
 > 本文档是根据[1]和 ISO/IEC 42010 的自适应 AUTOSAR 平台的架构描述，具有以下主要目标：
 >
-> - 确定 Autosar 自适应平台的**利益相关者**及其**concerns**。
-> - 识别系统范围并提供 AUTOSAR Adaptive Platform 的概览信息。
-> - 为所有使用的**架构视图**提供定义，并将所有利益相关者的关切与这些视图建立映射关系。
-> - 提供用于此架构描述的每个架构视图的**架构视图**及其**架构模型**。
-> - 提供本体结构描述中内容之间的**对应规则**和**对应关系**。
-> - 提供一个**架构基础**(解释、理由、决定的原因)的高水平概述。更详细的决定文档可以在 [2] 中找到。
-> - 在体系结构描述中提供已知不一致和差距的记录。
+> 确定 Autosar 自适应平台的**利益相关者**及其**concerns**。
+> 识别系统范围并提供 AUTOSAR Adaptive Platform 的概览信息。
+> 为所有使用的**架构视图**提供定义，并将所有利益相关者的关切与这些视图建立映射关系。
+> 提供用于此架构描述的每个架构视图的**架构视图**及其**架构模型**。
+> 提供本体结构描述中内容之间的**对应规则**和**对应关系**。
+> 提供一个**架构基础**(解释、理由、决定的原因)的高水平概述。更详细的决定文档可以在 [2] 中找到。
+> 在体系结构描述中提供已知不一致和差距的记录。
 
-There is some potential for ambiguity about the term \"architecture\". Association with this term is quite different e.g., for a mass production project in contrast with Adap- tive Platform standardization. For system development of an automotive embedded computer the software architecture usually defines the details of the structural and the behavioral architecture views down to module level. In contrast the architecture of AU- TOSAR Adaptive Platform lacks such details deliberately to provide more degrees of freedom for stack vendors in their solution design.
+There is some potential for ambiguity about the term \"architecture\". Association with this term is quite different e.g., for a mass production project in contrast with Adaptive Platform standardization. For system development of an automotive embedded computer the software architecture usually defines the details of the structural and the behavioral architecture views down to module level. In contrast the architecture of AUTOSAR Adaptive Platform lacks such details deliberately to provide more degrees of freedom for stack vendors in their solution design.
 
 > 有关“架构”一词存在一定的模糊性。与这一术语的联想在大规模生产项目与 Adaptive Platform 标准化之间存在很大的不同。对于汽车嵌入式计算机的系统开发，软件架构通常定义结构和行为架构视图的细节，直至模块级别。相比之下，AUTOSAR Adaptive Platform 的架构故意缺乏这样的细节，以为堆栈供应商在其解决方案设计中提供更多的自由度。
 
@@ -83,13 +83,13 @@ This document describes the original architectural design of the AUTOSAR Adaptiv
 
 1. **Scope**
 
-This explanatory document applies to the AUTOSAR Adaptive Platform. It is recom- mended to get an overview of the AUTOSAR Adaptive Platform for all members of the working groups, stack vendors, and application developers.
+This explanatory document applies to the AUTOSAR Adaptive Platform. It is recommended to get an overview of the AUTOSAR Adaptive Platform for all members of the working groups, stack vendors, and application developers.
 
 > 这份说明文件适用于 AUTOSAR Adaptive 平台。建议所有工作小组成员、堆栈供应商和应用程序开发人员都对 AUTOSAR Adaptive 平台有一个概览。
 
 2. **Document Structure**
 
-This document is organized as follows. Section [4](#_bookmark8) provides an overview of the main requirements for the AUTOSAR Adaptive Platform, the top quality goals of its architec- ture, and a list of stakeholders that are affected by it. Section [5](#_bookmark12) lists requirements that constrain design and implementation decisions or decisions about the development process.
+This document is organized as follows. Section [4](#_bookmark8) provides an overview of the main requirements for the AUTOSAR Adaptive Platform, the top quality goals of its architecture, and a list of stakeholders that are affected by it. Section [5](#_bookmark12) lists requirements that constrain design and implementation decisions or decisions about the development process.
 
 > 此文档的组织结构如下：第 4 节提供了 AUTOSAR Adaptive Platform 的主要要求、其架构的最高质量目标以及受其影响的利益相关者列表。第 5 节列出了限制设计和实施决策或关于开发过程的决策的要求。
 
@@ -97,7 +97,7 @@ Section [6](#_bookmark15) is the base for discovering trade-offs and sensitivity
 
 > 第 [6] 节通过引入质量属性树以及最重要的质量场景，为发现 AUTOSAR Adaptive Platform 架构中的折衷点和敏感点提供了基础。第 7 节概述了 AUTOSAR Adaptive Platform 被预期用于的系统上下文。第 8 节总结了形成 AUTOSAR Adaptive Platform 架构的基本决策和解决方案，如技术决策或要使用的体系结构模式。
 
-Sections [9](#building-block-view) to [12](#_bookmark293) explain the software architecture from different view points. First, sec- tion [9](#building-block-view) explains the decomposition of the AUTOSAR Adaptive Platform into Functional Clusters and their interdependencies. Then, section [11](#runtime-view) demonstrates how the main use cases are realized using the Functional Clusters in the AUTOSAR Adaptive Plat- form. Section [12](#_bookmark293) shows different scenarios how applications based on the AUTOSAR Adaptive Platform may be deployed.
+Sections [9](#building-block-view) to [12](#_bookmark293) explain the software architecture from different view points. First, section [9](#building-block-view) explains the decomposition of the AUTOSAR Adaptive Platform into Functional Clusters and their interdependencies. Then, section [11](#runtime-view) demonstrates how the main use cases are realized using the Functional Clusters in the AUTOSAR Adaptive Platform. Section [12](#_bookmark293) shows different scenarios how applications based on the AUTOSAR Adaptive Platform may be deployed.
 
 > 章节[9]到[12]解释了不同视角下的软件架构。首先，第[9]节解释了 AUTOSAR Adaptive Platform 的分解成功能簇及其相互依赖性。然后，第[11]节演示了如何使用 AUTOSAR Adaptive Platform 中的功能簇来实现主要用例。第[12]节展示了基于 AUTOSAR Adaptive Platform 的应用程序可以如何部署的不同场景。
 
@@ -127,45 +127,48 @@ This section lists terms that are specific to this document. A list of general t
 
 > 此部分列出了专用于此文件的术语。 AUTOSAR 的一般术语列表可在[3]，词汇表中找到。
 
-```
-
-```
+| Term               | Description                                                                                                                                                                                                                                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Functional Cluster | A logical group of functionality within the AUTOSAR Adaptive Platform. Functional Clusters are the second level of abstraction in the building block view (cf. Chapter 9). They are also subject of the individual specification documents that make up the AUTOSAR Adaptive Platform standard. |
+| Function Group     | A set of modeled Processes. See Section 13.2 for details.                                                                                                                                                                                                                                       |
+| Thread             | The smallest sequence of instructions the can be managed independently by a scheduler. Multiple Threads can be executed concurrently within one Process sharing resources such as memory.                                                                                                       |
+| Watchdog           | An external component that supervises execution of the AUTOSAR Adaptive Platform. See Section 7.2.3 for details.                                                                                                                                                                                |
 
 2.3. **Related Documentation**
 
-This document provides a high-level overview of the AUTOSAR Adaptive Platform ar- chitecture. It is closely related to general requirements for AUTOSAR Adaptive Plat- form specified in \[[4](#_bookmark326), RS_Main\] and \[[5](#_bookmark327), RS_General\], and the architectural decisions documented in \[[2](#_bookmark324), EXP_SWArchitecturalDecisions\].
+This document provides a high-level overview of the AUTOSAR Adaptive Platform architecture. It is closely related to general requirements for AUTOSAR Adaptive Platform specified in \[[4](#_bookmark326), RS_Main\] and \[[5](#_bookmark327), RS_General\], and the architectural decisions documented in \[[2](#_bookmark324), EXP_SWArchitecturalDecisions\].
 
 > 此文档提供了 AUTOSAR Adaptive Platform 架构的高级概述。它与[4]，RS_Main 和[5]，RS_General 中指定的 AUTOSAR Adaptive Platform 的一般要求以及[2]，EXP_SWArchitecturalDecisions 中记录的架构决策密切相关。
 
-The individual building blocks of the architecture (Functional Clusters) are spec- ified in separate documents. Each Functional Cluster defines one or more requirements specification(s) (RS document), one or more software specification(s) (SWS document) and one or more explanatory document(s) (EXP document). Please refer to these documents for any details on the AUTOSAR Adaptive Platform standard.
+The individual building blocks of the architecture (Functional Clusters) are specified in separate documents. Each Functional Cluster defines one or more requirements specification(s) (RS document), one or more software specification(s) (SWS document) and one or more explanatory document(s) (EXP document). Please refer to these documents for any details on the AUTOSAR Adaptive Platform standard.
 
-> 软件架构的个体组件(功能群)在单独的文档中进行规定。每个功能群定义一个或多个需求规范(RS 文档)、一个或多个软件规范(SWS 文档)和一个或多个解释文档(EXP 文档)。有关 AUTOSAR Adaptive Platform 标准的任何细节，请参阅这些文档。
+> 软件架构的个体组件(功能群)在单独的文档中进行规定。**每个功能群定义一个或多个需求规范(RS 文档)、一个或多个软件规范(SWS 文档)和一个或多个解释文档(EXP 文档)**。有关 AUTOSAR Adaptive Platform 标准的任何细节，请参阅这些文档。
 
 2.4. **Overview and Goals**
 
-In conventional automotive systems ECUs are used to replace or augment electro- mechanical systems. Those resource constrained, deeply-embedded ECUs typically perform basic control functions by creating electrical output signals (e.g. for actors) based on input signals (e.g. from sensors) and information from other ECUs con- nected to the vehicle network. Much of the control software is specifically designed and implemented for the target vehicle and does not change significantly during vehi- cle lifetime. The AUTOSAR Classic Platform standard addresses the needs of these deeply-embedded systems.
+In conventional automotive systems ECUs are used to replace or augment electromechanical systems. Those resource constrained, deeply-embedded ECUs typically perform basic control functions by creating electrical output signals (e.g. for actors) based on input signals (e.g. from sensors) and information from other ECUs connected to the vehicle network. Much of the control software is specifically designed and implemented for the target vehicle and does not change significantly during vehicle lifetime. The AUTOSAR Classic Platform standard addresses the needs of these deeply-embedded systems.
 
-> 在传统汽车系统中，ECU 用于取代或增强电子机械系统。<font color=Red><b>**这些资源受限的深度嵌入式 ECU 通常通过根据输入信号(例如来自传感器)和来自连接到车辆网络的其他 ECU 的信息来执行基本控制功能(例如创建电气输出信号)**</b></font>。大部分控制软件是专门为目标车辆设计和实施的，在车辆使用寿命期间不会显着改变。 AUTOSAR Classic Platform 标准解决了这些深度嵌入式系统的需求。
+> 在传统汽车系统中，ECU 用于取代或增强电子机械系统。<font color=Red><b>**这些资源受限的深度嵌入式 ECU 通常通过根据输入信号(例如来自传感器)和来自连接到车辆网络的其他 ECU 的信息来执行基本控制功能(例如创建电气输出信号)**</b></font>。大部分控制软件是专门为目标车辆设计和实施的，在车辆使用寿命期间不会显着改变。AUTOSAR Classic Platform 标准解决了这些深度嵌入式系统的需求。
 
-Recent and future vehicle functions, such as highly automated driving, will introduce complex and computing resource demanding software that shall fulfill strict safety, in- tegrity and security requirements. Such software performs for example, environment perception and behavior planning, and interacts with external backend and infrastruc- ture systems. The software in the vehicle regularly needs to be updated during the life-cycle of the vehicle, due to evolving external systems, improved or added function- ality, or security problems. The AUTOSAR Classic Platform standard cannot fulfill the needs of such systems. Therefore, AUTOSAR specifies a second software platform, the AUTOSAR Adaptive Platform. It provides high-performance computing and com- munication mechanisms as well as a flexible software configuration, for example, to support software update over-the-air. Features that are specifically defined for the AU- TOSAR Classic Platform, such as access to electrical signals and automotive specific bus systems, can be integrated into the AUTOSAR Adaptive Platform but is not in the focus of standardization.
+Recent and future vehicle functions, such as highly automated driving, will introduce complex and computing resource demanding software that shall fulfill strict safety, integrity and security requirements. Such software performs for example, environment perception and behavior planning, and interacts with external backend and infrastructure systems. The software in the vehicle regularly needs to be updated during the life-cycle of the vehicle, due to evolving external systems, improved or added functionality, or security problems. The AUTOSAR Classic Platform standard cannot fulfill the needs of such systems. Therefore, AUTOSAR specifies a second software platform, the AUTOSAR Adaptive Platform. It provides high-performance computing and communication mechanisms as well as a flexible software configuration, for example, to support software update over-the-air. Features that are specifically defined for the AUTOSAR Classic Platform, such as access to electrical signals and automotive specific bus systems, can be integrated into the AUTOSAR Adaptive Platform but is not in the focus of standardization.
 
 > 近期和未来的车辆功能，如高度自动驾驶，将引入复杂且计算资源要求严格的安全、完整性和安全性要求的软件。例如，该软件执行环境感知和行为规划，并与外部后端和基础设施系统进行交互。车辆中的软件在车辆的使用寿命中需要定期更新，以应对演变的外部系统、改进或添加功能，或安全问题。AUTOSAR Classic Platform 标准无法满足这些系统的需求。因此，AUTOSAR 指定了第二个软件平台，即 AUTOSAR Adaptive Platform。它提供了高性能计算和通信机制，以及灵活的软件配置，例如支持软件空中更新。特别为 AUTOSAR Classic Platform 定义的功能，如访问电信号和汽车特定总线系统，可以集成到 AUTOSAR Adaptive Platform 中，但不是标准化的重点。
 
 1. **Requirements Overview**
 
-This section provides an overview of the basic requirements for the AUTOSAR Adap- tive Platform that impact its architecture. The corresponding requirement identifiers are provided in square brackets. Please refer to \[[4](#_bookmark326), RS_Main\] and \[[5](#_bookmark327), RS_General\] for any details, rationale or intended use-cases of these requirements.
+This section provides an overview of the basic requirements for the AUTOSAR Adaptive Platform that impact its architecture. The corresponding requirement identifiers are provided in square brackets. Please refer to \[[4](#_bookmark326), RS_Main\] and \[[5](#_bookmark327), RS_General\] for any details, rationale or intended use-cases of these requirements.
 
 > 这一部分概述了对 AUTOSAR 自适应平台架构有影响的基本要求，相应的要求标识符用方括号括起来。有关这些要求的任何细节、基本原理或预期用例，请参考[4，RS_Main]和[5，RS_General]。
 
 **Support of state-of-the-art Technology**(支持最先进的技术)
 
-The AUTOSAR Adaptive Platform aims to support resource-intensive (memory, cpu) applications on state-of-the-art hardware. Therefore, the AUTOSAR Adaptive Platform shall support high performance computing platforms \[RS_Main_00002\] as well as vir- tualized environments \[RS_Main_00511\]. The AUTOSAR Adaptive Platform shall be able to run multiple applications in parallel \[RS_Main_00049\], each with concurrent application internal control flows \[RS_Main_00050\].
+The AUTOSAR Adaptive Platform aims to support resource-intensive (memory, cpu) applications on state-of-the-art hardware. Therefore, the AUTOSAR Adaptive Platform shall support high performance computing platforms \[RS_Main_00002\] as well as virtualized environments \[RS_Main_00511\]. The AUTOSAR Adaptive Platform shall be able to run multiple applications in parallel \[RS_Main_00049\], each with concurrent application internal control flows \[RS_Main_00050\].
 
 > **AUTOSAR 自适应平台旨在支持在最新硬件上的资源密集型(内存、CPU)应用程序**。因此，AUTOSAR 自适应平台应支持高性能计算平台\[RS_Main_00002\]以及虚拟化环境\[RS_Main_00511\]。AUTOSAR 自适应平台应能够并行运行多个应用程序\[RS_Main_00049\]，每个应用程序都具有并发的应用内控制流\[RS_Main_00050\]。
 
 **Software Update and Configuration**(软件更新与配置)
 
-The AUTOSAR Adaptive Platform shall support a flexible (configuration) data and soft- ware update. Hereby, AUTOSAR Adaptive Platform shall support up- and download of such update packages \[RS_Main_00650\] and change of communication and applica- tion software at runtime \[RS_Main_00503\].
+The AUTOSAR Adaptive Platform shall support a flexible (configuration) data and software update. Hereby, AUTOSAR Adaptive Platform shall support upand download of such update packages \[RS_Main_00650\] and change of communication and application software at runtime \[RS_Main_00503\].
 
 > AUTOSAR Adaptive Platform 需要支持灵活的(配置)数据和软件更新。因此，AUTOSAR Adaptive Platform 需要支持这些更新包的上传和下载[RS_Main_00650]以及运行时更改通信和应用程序软件[RS_Main_00503]。
 
@@ -181,7 +184,7 @@ The AUTOSAR Adaptive Platform shall support the development of secure systems \[
 
 **Safety**
 
-The AUTOSAR Adaptive Platform shall support the development of safety related systems \[RS_Main_00010\] that are reliable \[RS_Main_00011\] and highly available \[RS_Main_00012\]. The AUTOSAR Adaptive Platform specifications shall be analyz- able and support methods to demonstrate the achievement of safety related properties accordingly \[RS_Main_00350\].
+The AUTOSAR Adaptive Platform shall support the development of safety related systems \[RS_Main_00010\] that are reliable \[RS_Main_00011\] and highly available \[RS_Main_00012\]. The AUTOSAR Adaptive Platform specifications shall be analyzable and support methods to demonstrate the achievement of safety related properties accordingly \[RS_Main_00350\].
 
 > AUTOSAR 自适应平台应支持开发可靠[RS_Main_00011]和高可用性[RS_Main_00012]的安全相关系统[RS_Main_00010]。AUTOSAR 自适应平台规范应可分析，并且支持相应的方法以证明安全相关属性的实现[RS_Main_00350]。
 
@@ -193,7 +196,7 @@ The AUTOSAR Adaptive Platform shall support standardized interoperability with n
 
 **Communication**
 
-The AUTOSAR Adaptive Platform shall support standardized automotive communica- tion protocols \[RS_Main_00280\] for intra ECU communication \[RS_Main_01001\] with different network topologies \[RS_Main_00230\].
+The AUTOSAR Adaptive Platform shall support standardized automotive communication protocols \[RS_Main_00280\] for intra ECU communication \[RS_Main_01001\] with different network topologies \[RS_Main_00230\].
 
 > AUTOSAR Adaptive 平台应支持标准汽车通信协议[RS_Main_00280]用于 ECU 内部通信[RS_Main_01001]，支持不同的网络拓扑[RS_Main_00230]。
 
@@ -216,13 +219,14 @@ This section lists the stakeholders of the AUTOSAR Adaptive Platform architectur
 > 这一节列出了 AUTOSAR 自适应平台架构的利益相关者及其主要期望。
 
 ```
+
 ```
 
 **Table 4.1: Stakeholder table with roles and expectations**
 
 5. **Architecture Constraints**(架构约束)
 
-AUTOSAR is a worldwide development partnership of vehicle manufacturers, suppli- ers, service providers and companies from the automotive electronics, semiconductor and software industry. AUTOSAR standardizes the AUTOSAR Adaptive Platform au- tomotive middleware. The AUTOSAR Adaptive Platform is not a concrete implemen- tation. The AUTOSAR Adaptive Platform standard leaves a certain degree of freedom to implementers of the standard, as most standards do. On the one hand, more free- dom enables competition among the different implementations and a broader choice of properties for users of the AUTOSAR Adaptive Platform. On the other hand, a more strict standardization makes the different implementations compatible and exchange- able (within the standardized scope). Naturally, those attributes are in conflict. It is usually a choice of the standardization organization to evaluate the attributes and de- fine the desired level of strictness.
+AUTOSAR is a worldwide development partnership of vehicle manufacturers, suppliers, service providers and companies from the automotive electronics, semiconductor and software industry. AUTOSAR standardizes the AUTOSAR Adaptive Platform automotive middleware. The AUTOSAR Adaptive Platform is not a concrete implementation. The AUTOSAR Adaptive Platform standard leaves a certain degree of freedom to implementers of the standard, as most standards do. On the one hand, more freedom enables competition among the different implementations and a broader choice of properties for users of the AUTOSAR Adaptive Platform. On the other hand, a more strict standardization makes the different implementations compatible and exchangeable (within the standardized scope). Naturally, those attributes are in conflict. It is usually a choice of the standardization organization to evaluate the attributes and define the desired level of strictness.
 
 > AUTOSAR 是一个全球性的汽车制造商、供应商、服务提供商和汽车电子、半导体和软件行业公司的发展合作伙伴关系。AUTOSAR 标准化了 AUTOSAR 自适应平台汽车中间件。AUTOSAR 自适应平台不是一个具体的实现。AUTOSAR 自适应平台标准给实施者提供了一定程度的自由，就像大多数标准一样。一方面，更多的自由可以在不同的实现之间展开竞争，为 AUTOSAR 自适应平台的用户提供更多的选择。另一方面，更严格的标准化使不同的实现兼容并可交换(在标准化范围内)。自然，这些属性是相互冲突的。标准化组织通常需要评估这些属性，并确定所需的严格程度。
 
@@ -240,7 +244,7 @@ First, the existence of internal interfaces and their usage by other building bl
 
 > 首先，内部接口的存在及其被其他构建块使用通常是一个建议，反映了标准作者的原始设计方法。同样适用于本文档中描述的任何使用此类内部接口的交互。
 
-Second, some quality attributes may be hard to ensure in general by the architec- ture of the standard. Additional measures like security or safety considerations lack well-defined inputs such as data flows or specifications of interdependencies. Con- sequently, a more thorough design phase is required when an AUTOSAR Adaptive Platform stack is implemented.
+Second, some quality attributes may be hard to ensure in general by the architecture of the standard. Additional measures like security or safety considerations lack well-defined inputs such as data flows or specifications of interdependencies. Consequently, a more thorough design phase is required when an AUTOSAR Adaptive Platform stack is implemented.
 
 > 第二，一些质量属性可能很难通过标准架构来确保。像安全或安全性考虑等额外的措施缺乏明确的输入，如数据流或相互依赖关系的规范。因此，当实施 AUTOSAR 自适应平台堆栈时，需要进行更彻底的设计阶段。
 
@@ -250,33 +254,33 @@ Standardization of the AUTOSAR Adaptive Platform is a worldwide distributed effo
 
 > 标准化 AUTOSAR 自适应平台是一项全球性的分布式努力。各个构建模块由专门的工作组在独立的文件中指定，以便在分布式环境中进行缩放。这会影响本文档中 AUTOSAR 自适应平台体系结构的描述。
 
-First, this document shows interfaces on an architectural level only. This document does not specify details of interfaces such as individual operations. This keeps redun- dancies and thus dependencies between this document and the documents actually specifying the individual building blocks manageable. Another consequence is that the interactions shown in this document are not based on actual operations specified in the interfaces but rather on an architectural level as well.
+First, this document shows interfaces on an architectural level only. This document does not specify details of interfaces such as individual operations. This keeps redundancies and thus dependencies between this document and the documents actually specifying the individual building blocks manageable. Another consequence is that the interactions shown in this document are not based on actual operations specified in the interfaces but rather on an architectural level as well.
 
 > 首先，本文件仅以架构层面显示接口。本文件不指定接口的详细信息，如单独操作。这样可以保持冗余并且使本文件与实际指定各个构建块的文件之间的依赖性可控制。另一个结果是，本文件中显示的交互不是基于实际操作指定的接口，而是以架构层面。
 
-Second, this document aims to provide guidance for the working groups in specify- ing the individual building blocks by defining patterns and concepts to solve common problems. This guidance should help to build a uniform and consistent standard from ground up.
+Second, this document aims to provide guidance for the working groups in specifying the individual building blocks by defining patterns and concepts to solve common problems. This guidance should help to build a uniform and consistent standard from ground up.
 
 > 第二，本文件旨在为工作组提供指导，以通过定义模式和概念来解决常见问题来确定各个构建块。这种指导应有助于从基础建立统一和一致的标准。
 
 6. **Quality Requirements**(质量要求)
 
-Quality requirements define the expectations of AUTOSAR Adaptive Platform stake- holders for the quality and the attributes of the AUTOSAR Adaptive Platform standard that indicate whether the quality factors are satisfied or not. Section [6.1](#_bookmark16) starts by list- ing the quality attributes that, in the end, are used to assess whether the AUTOSAR Adaptive Platform and its software architecture satisfies the expected quality factors or not. Section [6.2](#_bookmark20) then provides quality scenarios that operationalize quality attributes and turn them into measurable quantities by describing the reaction of the system to a stimulus in a certain situation.
+Quality requirements define the expectations of AUTOSAR Adaptive Platform stakeholders for the quality and the attributes of the AUTOSAR Adaptive Platform standard that indicate whether the quality factors are satisfied or not. Section [6.1](#_bookmark16) starts by listing the quality attributes that, in the end, are used to assess whether the AUTOSAR Adaptive Platform and its software architecture satisfies the expected quality factors or not. Section [6.2](#_bookmark20) then provides quality scenarios that operationalize quality attributes and turn them into measurable quantities by describing the reaction of the system to a stimulus in a certain situation.
 
 > 质量要求定义 AUTOSAR 自适应平台参与者对质量和 AUTOSAR 自适应平台标准属性的期望，以指示质量因素是否得到满足。第 6.1 节开始列出质量属性，最终用于评估 AUTOSAR 自适应平台及其软件架构是否满足预期的质量因素。第 6.2 节提供质量场景，通过描述系统对某种情况下刺激的反应，将质量属性操作化并转化为可测量的数量。
 
 6.1. **Quality Attributes**
 
-The AUTOSAR Adaptive Platform has many stakeholders with different concerns. Thus, this document uses the following three quality attribute categories that corre- spond to the three main stakeholder groups in order to make the requirements and their impact on the architecture more comprehensible:
+The AUTOSAR Adaptive Platform has many stakeholders with different concerns. Thus, this document uses the following three quality attribute categories that correspond to the three main stakeholder groups in order to make the requirements and their impact on the architecture more comprehensible:
 
 > AUTOSAR Adaptive Platform 拥有许多具有不同关切的利益相关者。因此，本文档使用以下三个质量属性类别，以便使需求及其对架构的影响更加易懂，这三个主要利益相关者组分别如下：
 
-- **AUTOSAR Adaptive Platform Standard:** Quality requirements for the AU- TOSAR standard itself. These requirements may directly affect the architecture of the AUTOSAR Adaptive Platform.
-- **AUTOSAR Adaptive Platform Stack:** Quality requirements for an implementa- tion of the AUTOSAR standard as an AUTOSAR stack. These requirements may indirectly affect the architecture of the AUTOSAR Adaptive Platform.
-- **AUTOSAR Adaptive Application:** Quality requirements for an application based on an AUTOSAR stack. These requirements may transitively affect the architec- ture of the AUTOSAR Adaptive Platform.
+- **AUTOSAR Adaptive Platform Standard:** Quality requirements for the AUTOSAR standard itself. These requirements may directly affect the architecture of the AUTOSAR Adaptive Platform.
+- **AUTOSAR Adaptive Platform Stack:** Quality requirements for an implementation of the AUTOSAR standard as an AUTOSAR stack. These requirements may indirectly affect the architecture of the AUTOSAR Adaptive Platform.
+- **AUTOSAR Adaptive Application:** Quality requirements for an application based on an AUTOSAR stack. These requirements may transitively affect the architecture of the AUTOSAR Adaptive Platform.
 
-> - **AUTOSAR 自适应平台标准：**针对 AUTOSAR 标准本身的质量要求。这些要求可能直接影响 AUTOSAR 自适应平台的架构。
-> - **AUTOSAR 自适应平台堆栈：**对作为 AUTOSAR 堆栈实现 AUTOSAR 标准的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的体系结构。
-> - **AUTOSAR 自适应应用：** 基于 AUTOSAR 栈的应用程序的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的架构。
+> **AUTOSAR 自适应平台标准：**针对 AUTOSAR 标准本身的质量要求。这些要求可能直接影响 AUTOSAR 自适应平台的架构。
+> **AUTOSAR 自适应平台堆栈：**对作为 AUTOSAR 堆栈实现 AUTOSAR 标准的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的体系结构。
+> **AUTOSAR 自适应应用：** 基于 AUTOSAR 栈的应用程序的质量要求。这些要求可能会间接影响 AUTOSAR 自适应平台的架构。
 
 The quality attributes are organized according to the Architecture Tradeoff Analysis Method (ATAM) \[[6](#_bookmark328)\] as a tree, one for each of the quality attribute categories. The leafs of those trees are the individual quality attributes.
 
@@ -286,33 +290,33 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 - Functional suitability
 
-  - The software architecture shall reflect the project objectives (POs) and be the consistent source for all specifications (here: completeness with respect to the PO; see also usability below).
+  The software architecture shall reflect the project objectives (POs) and be the consistent source for all specifications (here: completeness with respect to the PO; see also usability below).
 
-> 软件架构应反映项目目标(POs)，并成为所有规格的一致源(即：相对于 PO 的完整性；另见下文的可用性)。
+  > 软件架构应反映项目目标(POs)，并成为所有规格的一致源(即：相对于 PO 的完整性；另见下文的可用性)。
 
 - The standard shall not contain elements that are not traceable to POs, change requests (CRs), or concepts.
 
-> 标准不应包含无法追溯到采购订单，变更请求(CRs)或概念的元素。
+  > 标准不应包含无法追溯到采购订单，变更请求(CRs)或概念的元素。
 
 - The standard shall contain at least one element derived from each PO, CR, or concept.
 - Performance efficiency
 
-  - The specification shall allow for a run-time efficient implementation. Run- time efficiency refers to all resource consumption, CPU, RAM, ROM.
+  The specification shall allow for a run-time efficient implementation. Runtime efficiency refers to all resource consumption, CPU, RAM, ROM.
 
 > 要求规范应允许实现运行时高效的实现。运行时效率指的是所有资源消耗，包括 CPU，RAM，ROM。
 
 - Compatibility
 
-  - The standard shall retain older versions of its elements in the face of change.
+  The standard shall retain older versions of its elements in the face of change.
 
-  - The standard shall be interoperable with pre-existing standards, especially the AUTOSAR Classic Platform. Pre-existing standards means network pro- tocols and the like.
+  The standard shall be interoperable with pre-existing standards, especially the AUTOSAR Classic Platform. Pre-existing standards means network protocols and the like.
 
-> 标准应与现有标准互操作，特别是 AUTOSAR Classic Platform。现有标准指网络协议等。
+  > 标准应与现有标准互操作，特别是 AUTOSAR Classic Platform。现有标准指网络协议等。
 
 - The standard shall adopt new versions of pre-existing standards only after an impact analysis.
 - Usability
 
-  - The use of the standard shall be as easy as possible for suppliers and appli- cation developers. Easy means: not much material and resources required.
+  The use of the standard shall be as easy as possible for suppliers and application developers. Easy means: not much material and resources required.
 
   > 使用标准应该尽可能容易，对供应商和应用程序开发者来说。容易意味着：所需的材料和资源较少。
 
@@ -321,7 +325,7 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 - The standard shall contain documentation of the use cases for its elements.
 - The standard shall document the semantics of its elements.
 
-- The standard shall document its decisions, consequences, and implemen- tation restrictions (both for stack & apps) including their rationale.
+- The standard shall document its decisions, consequences, and implementation restrictions (both for stack & apps) including their rationale.
 
 > 标准应记录其决定、后果和实施限制(包括堆栈和应用程序)及其基本原理。
 
@@ -333,7 +337,7 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 - The standard shall be as stable as possible.
 
-- AUTOSAR standards shall not change disruptive but rather evolve evolution- ary (for example, backward-compatibility can be a help).
+- AUTOSAR standards shall not change disruptive but rather evolve evolutionary (for example, backward-compatibility can be a help).
 
 > AUTOSAR 标准不应发生破坏性变化，而应该演化(例如，向后兼容性可以提供帮助)。
 
@@ -343,7 +347,7 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 - Reliability
 
-  - The standard shall classify its elements with respect to safety relevance (that is, functional clusters shall be marked if they participate in safety critical operations of the platform).
+  The standard shall classify its elements with respect to safety relevance (that is, functional clusters shall be marked if they participate in safety critical operations of the platform).
 
 > 标准应根据安全相关性对其元素进行分类(即，如果功能簇参与平台的安全关键操作，则应标记该功能簇)。
 
@@ -351,13 +355,13 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 > 标准应该规定元素之间的控制流限制，以实现免受干扰的自由。
 
-- The standard shall contain use case driven argumentation for safety sce- narios that can be used to build a safety case. (This should help the stack implementers in getting a certification, if they follow the standard.)
+- The standard shall contain use case driven argumentation for safety scenarios that can be used to build a safety case. (This should help the stack implementers in getting a certification, if they follow the standard.)
 
 > 标准应包含基于用例的论证，用于构建安全案例的安全场景。(如果遵循标准，这将有助于堆栈实现者获得认证。)
 
 - Security
 
-  - The standard shall specify data flow restrictions between its elements, and between applications.
+  The standard shall specify data flow restrictions between its elements, and between applications.
 
 > 标准应规定它的元素之间以及应用程序之间的数据流限制。
 
@@ -365,13 +369,13 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 > 标准应根据安全敏感性对其元素进行分类(即，如果处理敏感数据，则应标记功能簇)。
 
-- The standard shall contain use case driven argumentation for security sce- narios that can be used to build a security case. (This should help the stack implementers in getting a certification, if they follow the standard.)
+- The standard shall contain use case driven argumentation for security scenarios that can be used to build a security case. (This should help the stack implementers in getting a certification, if they follow the standard.)
 
 > 标准应包含基于用例的安全场景论证，以便用于构建安全案例。(如果遵循标准，这将有助于堆栈实施者获得认证。)
 
 - Maintainability
 
-  - It shall be possible in an efficient way to maintain AUTOSAR Adaptive Plat- form without preventing the introduction of new technologies (efficient in terms of effort on the modification of the standard).
+  It shall be possible in an efficient way to maintain AUTOSAR Adaptive Platform without preventing the introduction of new technologies (efficient in terms of effort on the modification of the standard).
 
 > 可以以有效的方式维护 AUTOSAR Adaptive Platform，而不会阻碍新技术的引入(在标准修改方面的努力是有效的)。
 
@@ -379,7 +383,7 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 - The standard shall be structured in a way that minimizes change impact.
 - It shall be possible to drop/deprecate elements of the standard.
 
-- It shall be easy to add new features/needs without breaking the maintain- ability or the need to redesign the software architecture. Easy means quick, with low effort, local changes only and no heavy side effects.
+- It shall be easy to add new features/needs without breaking the maintainability or the need to redesign the software architecture. Easy means quick, with low effort, local changes only and no heavy side effects.
 
 > 它应该很容易添加新功能/需求而不破坏可维护性或需要重新设计软件架构。容易意味着快速，低成本，仅局部更改，没有重大的副作用。
 
@@ -395,18 +399,14 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 - Portability
 
-  - Applications shall be portable between different stack implementations and different machines.
-  - It shall be possible to scale the software architecture to the given project needs.
+  Applications shall be portable between different stack implementations and different machines.
+  It shall be possible to scale the software architecture to the given project needs.
 
-    1. []{#\_bookmark18 .anchor}**AUTOSAR Adaptive Platform Stack**
-
-```{=html}
-<!-- -->
-```
+1. **AUTOSAR Adaptive Platform Stack**
 
 - Compatibility
 
-  - An AUTOSAR Adaptive Platform stack implementation shall be capable to offer multiple versions of the same service.
+  An AUTOSAR Adaptive Platform stack implementation shall be capable to offer multiple versions of the same service.
 
 > 一个 AUTOSAR 自适应平台堆栈实现必须能够提供相同服务的多个版本。
 
@@ -416,13 +416,13 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 - Usability
 
-  - An AUTOSAR Adaptive Platform stack implementation shall explicitly doc- ument restrictions on the application development that go beyond the stan- dard.
+  An AUTOSAR Adaptive Platform stack implementation shall explicitly document restrictions on the application development that go beyond the standard.
 
 > 一个 AUTOSAR 自适应平台堆栈实现应该明确文档化超出标准的应用程序开发的限制。
 
 - Maintainability
 
-  - An AUTOSAR Adaptive Platform stack implementation shall be traceable to the contents of the standard.
+  An AUTOSAR Adaptive Platform stack implementation shall be traceable to the contents of the standard.
 
 > 一个 AUTOSAR 自适应平台堆栈实现应该可以追溯到标准内容。
 
@@ -432,267 +432,201 @@ The quality attributes are organized according to the Architecture Tradeoff Anal
 
 - Portability
 
-  - An AUTOSAR Adaptive Platform stack shall be portable to a different custom hardware.
-  - An AUTOSAR Adaptive Platform stack shall provide mechanisms to replace parts.
+  An AUTOSAR Adaptive Platform stack shall be portable to a different custom hardware.
+  An AUTOSAR Adaptive Platform stack shall provide mechanisms to replace parts.
 
-    1. []{#\_bookmark19 .anchor}**AUTOSAR Adaptive Application**
-
-```{=html}
-<!-- -->
-```
+1. **AUTOSAR Adaptive Application**
 
 - Usability
 
-  - _No Goal:_ An application developer shall be able to supply custom implemen- tation for pre-defined platform functionality.
+  _No Goal:_ An application developer shall be able to supply custom implementation for pre-defined platform functionality.
 
 > 无目标：应用程序开发人员应能够为预定义的平台功能提供自定义实现。
 
 - Maintainability
 
-  - An application shall explicitly state which parts of the standard it uses.
+  An application shall explicitly state which parts of the standard it uses.
 
 - Portability
 
-  - An application entirely based on AUTOSAR Adaptive Platform (i.e. with- out custom extensions) shall be portable to another AUTOSAR Adaptive Platform stack of the same version without modifications to the application source code itself (source code compatibility).
+  An application entirely based on AUTOSAR Adaptive Platform (i.e. without custom extensions) shall be portable to another AUTOSAR Adaptive Platform stack of the same version without modifications to the application source code itself (source code compatibility).
 
 > 一个完全基于 AUTOSAR Adaptive Platform(即不带自定义扩展)的应用程序应该可以在同一版本的另一个 AUTOSAR Adaptive Platform 栈上无需修改应用程序源代码(源代码兼容性)而进行移植。
 
-1. []{#\_bookmark20 .anchor}**Quality Scenarios**
-
-> **质量场景**
+1. **Quality Scenarios**
 
 There are currently no quality scenarios defined for the AUTOSAR Adaptive Platform.
 
 > 目前尚未为 AUTOSAR Adaptive Platform 定义任何质量场景。
 
-7. []{#\_bookmark21 .anchor}**System Scope and Context**
+7. **System Scope and Context**(系统范围和上下文)
 
-> **系统范围和上下文**
-
-This chapter provides an overview of the AUTOSAR Adaptive Platform system context by separating the AUTOSAR Adaptive Platform and its communication partners (e.g., external systems). Considering Figure [7.1](#_bookmark22), there are three categories of communica- tion partners for the AUTOSAR Adaptive Platform.
+This chapter provides an overview of the AUTOSAR Adaptive Platform system context by separating the AUTOSAR Adaptive Platform and its communication partners (e.g., external systems). Considering Figure [7.1](#_bookmark22), there are three categories of communication partners for the AUTOSAR Adaptive Platform.
 
 > 本章概述了 AUTOSAR Adaptive 平台系统的上下文，将 AUTOSAR Adaptive 平台及其通信伙伴(例如，外部系统)分开。考虑[7.1]图，AUTOSAR Adaptive 平台有三类通信伙伴。
 
-![](./media/image1.png)
-![](./media/image2.png)
-![](./media/image1.png)
-**Figure 7.1:** []{#\_bookmark22 .anchor}**Overview of AUTOSAR Adaptive Platform and its context**
+**Figure 7.1:** Overview of AUTOSAR Adaptive Platform and its context
 
 The AUTOSAR Adaptive Platform is conceptually a middleware. AUTOSAR Adaptive Platform provides services to [Adaptive Application](#_bookmark24)s beyond those available from the underlying operating system, drivers, and extensions (cf. Section [7.2](#_bookmark25)). Section
 
-> AUTOSAR Adaptive 平台在概念上是一个中间件。AUTOSAR Adaptive 平台为(参见 7.2 节)超出底层操作系统、驱动程序和扩展程序所提供的服务提供给自适应应用程序。
+> <font color=Red><b> **AUTOSAR Adaptive 平台在概念上是一个中间件。AUTOSAR Adaptive 平台为(参见 7.2 节)超出底层操作系统、驱动程序和扩展程序所提供的服务提供给自适应应用程序。**</b></font>
 
-[7.3](#_bookmark31) describes the third category that are external systems communicating with (an
-
-> [7.3](#_bookmark31)描述了与之通信的第三类外部系统。
-
-[Adaptive Application](#_bookmark24) via) AUTOSAR Adaptive Platform.
+[7.3] describes the third category that are external systems communicating with (an [Adaptive Application](#_bookmark24) via) AUTOSAR Adaptive Platform.
 
 > 通过 AUTOSAR 自适应平台实现自适应应用。
 
-1. []{#\_bookmark23 .anchor}**Adaptive Application**
+1. **Adaptive Application**
 
-> **自适应应用**
-
-[]{#\_bookmark24 .anchor}[Adaptive Application](#_bookmark24)s are built on the functionality provided by the AUTOSAR Adaptive Platform. They directly use the various interfaces provided by the individual building blocks of AUTOSAR Adaptive Platform described in more detail in chapter [9](#building-block-view).
+[Adaptive Application]s are built on the functionality provided by the AUTOSAR Adaptive Platform. They directly use the various interfaces provided by the individual building blocks of AUTOSAR Adaptive Platform described in more detail in chapter [9](#building-block-view).
 
 > 自适应应用程序建立在 AUTOSAR 自适应平台提供的功能之上。它们直接使用 AUTOSAR 自适应平台各个构建块提供的各种接口，具体内容可参见第 9 章(构建块视图)。
 
-2. []{#\_bookmark25 .anchor}**Dependencies**
-
-> **依赖**
-
-1.  []{#\_bookmark26 .anchor}**Crypto Provider**
-
-> 加密提供商
+2. **Dependencies**
+1. **Crypto Provider**(加密提供商)
 
 Crypto Provider is a component that provides implementations of cryptographic routines and hash functions to the AUTOSAR Adaptive Platform.
 
 > 加密提供商是一个组件，它为 AUTOSAR 自适应平台提供加密程序和哈希函数的实现。
 
-2. []{#\_bookmark27 .anchor}**Operating System**
+2. **Operating System**
 
-> **操作系统**
-
-[]{#\_bookmark28 .anchor}The [Operating System](#_bookmark28) is the main component that AUTOSAR Adaptive Plat- form uses to provide its services. The [Operating System](#_bookmark28) controls processes and threads, and provides inter-process communication facilities. The [Operating Sys-](#_bookmark28) [tem](#_bookmark28) also provides access to network interfaces, protocols like TCP/IP, and access to non-volatile storage.
+The [Operating System] is the main component that AUTOSAR Adaptive Platform uses to provide its services. The [Operating System] controls processes and threads, and provides inter-process communication facilities. The [Operating Sys-] [tem] also provides access to network interfaces, protocols like TCP/IP, and access to non-volatile storage.
 
 > 操作系统是 AUTOSAR Adaptive Platform 提供服务的主要组件。操作系统控制进程和线程，并提供进程间通信设施。操作系统还提供对网络接口、TCP/IP 等协议的访问，以及对非易失性存储的访问。
 
-3. []{#\_bookmark29 .anchor}**Watchdog**
+3. **Watchdog**
 
-> 监督者
-
-[]{#\_bookmark30 .anchor}The [Watchdog](#_bookmark30) is a component to control the hardware watchdog of the machine an AUTOSAR Adaptive Platform runs on.
+The [Watchdog](#_bookmark30) is a component to control the hardware watchdog of the machine an AUTOSAR Adaptive Platform runs on.
 
 > 监督者(Watchdog)是一个控制 AUTOSAR Adaptive Platform 运行所在机器硬件看门狗的组件。
 
-3. []{#\_bookmark31 .anchor}**External Systems**
-
-> 外部系统
-
-![](./media/image3.png)
+3. **External Systems**
 
 **Figure 7.2: Overview of the AUTOSAR Adaptive Platform and external systems**
 
-The AUTOSAR Adaptive Platform supports applications that are operated in heteroge- neous environments. This section lists the external systems that AUTOSAR Adaptive Platform is intended to interface.
+The AUTOSAR Adaptive Platform supports applications that are operated in heterogeneous environments. This section lists the external systems that AUTOSAR Adaptive Platform is intended to interface.
 
 > AUTOSAR Adaptive Platform 支持在异构环境中运行的应用程序。本节列出 AUTOSAR Adaptive Platform 旨在与之接口的外部系统。
 
-1. []{#\_bookmark32 .anchor}**AUTOSAR Adaptive Application**
+1. **AUTOSAR Adaptive Application**
 
-> **AUTOSAR 自适应应用**
+There may be many [Adaptive Application](#_bookmark24)s deployed in a vehicle on different Machines. An [Adaptive Application](#_bookmark24) that does not run on the current instance of the AUTOSAR Adaptive Platform is therefore an external system to the AUTOSAR Adaptive Platform. Such [Adaptive Application](#_bookmark24)s may exchange data such as sensor or status information by means of ara::com service interfaces.
 
-There may be many [Adaptive Application](#_bookmark24)s deployed in a vehicle on different Ma- chines. An [Adaptive Application](#_bookmark24) that does not run on the current instance of the AUTOSAR Adaptive Platform is therefore an external system to the AUTOSAR Adap- tive Platform. Such [Adaptive Application](#_bookmark24)s may exchange data such as sensor or status information by means of ara::com service interfaces.
+> 可能会在车辆上部署许多[自适应应用程序](#_bookmark24)，这些应用程序都运行在不同的机器上。因此，不运行在 AUTOSAR 自适应平台当前实例上的[自适应应用程序](#_bookmark24)就是 AUTOSAR 自适应平台的外部系统。这类[自适应应用程序](#_bookmark24)可以通过 `ara::com` 服务接口交换数据，如传感器或状态信息。
 
-> 可能会在车辆上部署许多[自适应应用程序](#_bookmark24)，这些应用程序都运行在不同的机器上。因此，不运行在 AUTOSAR 自适应平台当前实例上的[自适应应用程序](#_bookmark24)就是 AUTOSAR 自适应平台的外部系统。这类[自适应应用程序](#_bookmark24)可以通过 ara :: com 服务接口交换数据，如传感器或状态信息。
+2. **AUTOSAR Classic Platform**
 
-2. []{#\_bookmark33 .anchor}**AUTOSAR Classic Platform**
-
-> **AUTOSAR 经典平台**
-
-[]{#\_bookmark34 .anchor}The [AUTOSAR Classic Platform](#_bookmark34) is the main platform for deeply-embedded appli- cations such as sensor/actor systems. [Adaptive Application](#_bookmark24)s may require ac- cess for example to sensor data provided by an [AUTOSAR Classic Platform](#_bookmark34) ECU and vice versa.
+[]{#\_bookmark34 .anchor}The [AUTOSAR Classic Platform](#_bookmark34) is the main platform for deeply-embedded applications such as sensor/actor systems. [Adaptive Application](#_bookmark24)s may require access for example to sensor data provided by an [AUTOSAR Classic Platform](#_bookmark34) ECU and vice versa.
 
 > AUTOSAR 经典平台是深度嵌入式应用(如传感器/执行器系统)的主要平台。自适应应用可能需要访问 AUTOSAR 经典平台 ECU 提供的传感器数据，反之亦然。
 
-3. []{#\_bookmark35 .anchor}**Third-party Platform**
+3. **Third-party Platform**
 
-> 三方平台
-
-Besides the both platforms (AUTOSAR Adaptive Platform and [AUTOSAR Classic](#_bookmark34) [Platform](#_bookmark34)) provided by AUTOSAR, there may be ECUs in a vehicle and other sys- tems that are built on different platforms that need to communicate with an [Adaptive](#_bookmark24) [Application](#_bookmark24) via AUTOSAR Adaptive Platform.
+Besides the both platforms (AUTOSAR Adaptive Platform and [AUTOSAR Classic](#_bookmark34) [Platform](#_bookmark34)) provided by AUTOSAR, there may be ECUs in a vehicle and other systems that are built on different platforms that need to communicate with an [Adaptive](#_bookmark24) [Application](#_bookmark24) via AUTOSAR Adaptive Platform.
 
 > 除了 AUTOSAR 提供的两个平台(AUTOSAR Adaptive Platform 和 AUTOSAR Classic Platform)外，车辆中可能还有基于不同平台构建的 ECU 和其他系统，它们需要通过 AUTOSAR Adaptive Platform 与 Adaptive Application 进行通信。
 
-4. []{#\_bookmark36 .anchor}**Diagnostic Client**
+4. **Diagnostic Client**
 
-> **诊断客户端**
-
-[]{#\_bookmark37 .anchor}A [Diagnostic Client](#_bookmark37) uses the diagnostic services provided by the AUTOSAR Adaptive Platform.
+A [Diagnostic Client](#_bookmark37) uses the diagnostic services provided by the AUTOSAR Adaptive Platform.
 
 > 一个诊断客户端使用 AUTOSAR Adaptive Platform 提供的诊断服务。
 
-5. []{#\_bookmark38 .anchor}**Backend**
+5. **Backend**(后端)
 
-> 后端
-
-[]{#\_bookmark39 .anchor}A [Backend](#_bookmark39) system provides Software Packages for download and controls the update process via [Update and Configuration Management](#_bookmark200).
+A [Backend](#_bookmark39) system provides Software Packages for download and controls the update process via [Update and Configuration Management](#_bookmark200).
 
 > 系统提供软件包供下载，并通过更新和配置管理来控制更新过程。
 
-8. []{#\_bookmark40 .anchor}**Solution Strategy**
-
-> 解决方案策略
+8. **Solution Strategy**
 
 The AUTOSAR Adaptive Platform is a standard for an automotive middleware. It is not a concrete implementation. The AUTOSAR Adaptive Platform standard leaves a certain degree of freedom to its implementers by defining requirements and software specifications that need to be fulfilled without specifying how.
 
 > AUTOSAR 自适应平台是一种汽车中间件标准。它不是一个具体的实现。AUTOSAR 自适应平台标准通过定义需要满足的要求和软件规范而给实施者留下一定的自由度，但没有指定具体的实现方式。
 
-1. []{#\_bookmark41 .anchor}**Architectural Approach**
+1. **Architectural Approach**(架构方法)
 
-> 架构方法
+To support the complex applications, while allowing maximum flexibility and scalability in processing distribution and compute resource allocations, AUTOSAR Adaptive Platform follows the concept of a service-oriented architecture (SOA). In a serviceoriented architecture a system consists of a set of services, in which one may use another in turn, and applications that use one or more of the services depending on its needs. Often service-oriented architectures exhibit system-of-system characteristics, which AUTOSAR Adaptive Platform also has. A service, for instance, may reside on a local ECU that an application also runs, or it can be on a remote ECU, which is also running another instance of AP. The application code is the same in both cases the communication infrastructure will take care of the difference providing transparent communication. Another way to look at this architecture is that of distributed computing, communicating over some form of message passing. At large, all these represent the same concept. This message passing, communication-based architecture can also benefit from the rise of fast and high-bandwidth communication such as Ethernet.
 
-To support the complex applications, while allowing maximum flexibility and scalabil- ity in processing distribution and compute resource allocations, AUTOSAR Adaptive Platform follows the concept of a service-oriented architecture (SOA). In a service- oriented architecture a system consists of a set of services, in which one may use another in turn, and applications that use one or more of the services depending on its needs. Often service-oriented architectures exhibit system-of-system characteris- tics, which AUTOSAR Adaptive Platform also has. A service, for instance, may reside on a local ECU that an application also runs, or it can be on a remote ECU, which is also running another instance of AP. The application code is the same in both cases - the communication infrastructure will take care of the difference providing transparent communication. Another way to look at this architecture is that of distributed comput- ing, communicating over some form of message passing. At large, all these represent the same concept. This message passing, communication-based architecture can also benefit from the rise of fast and high-bandwidth communication such as Ethernet.
+> 为了支持复杂的应用，同时允许在处理分配和计算资源分配方面最大限度的灵活性和可扩展性，AUTOSAR Adaptive Platform 遵循服务导向架构(SOA)的概念。在服务导向架构中，系统由一组服务组成，其中一个可以反过来使用另一个，而应用程序可以根据其需求使用其中的一个或多个服务。通常，服务导向架构具有系统系统特性，AUTOSAR Adaptive Platform 也具有这些特性。例如，服务可以位于应用程序也运行的本地 ECU 上，也可以位于运行另一个 AP 实例的远程 ECU 上。应用程序代码在两种情况下是相同的 通信基础架构将处理差异，提供透明通信。另一种查看此架构的方法是分布式计算，通过某种形式的消息传递进行通信。总的来说，所有这些都代表相同的概念。这种基于消息传递的通信架构也可以从 Ethernet 等快速高带宽通信中受益。
 
-> 为了支持复杂的应用，同时允许在处理分配和计算资源分配方面最大限度的灵活性和可扩展性，AUTOSAR Adaptive Platform 遵循服务导向架构(SOA)的概念。在服务导向架构中，系统由一组服务组成，其中一个可以反过来使用另一个，而应用程序可以根据其需求使用其中的一个或多个服务。通常，服务导向架构具有系统系统特性，AUTOSAR Adaptive Platform 也具有这些特性。例如，服务可以位于应用程序也运行的本地 ECU 上，也可以位于运行另一个 AP 实例的远程 ECU 上。应用程序代码在两种情况下是相同的 - 通信基础架构将处理差异，提供透明通信。另一种查看此架构的方法是分布式计算，通过某种形式的消息传递进行通信。总的来说，所有这些都代表相同的概念。这种基于消息传递的通信架构也可以从 Ethernet 等快速高带宽通信中受益。
+2. **Decomposition Strategy**(分解策略)
 
-2. []{#\_bookmark42 .anchor}**Decomposition Strategy**
+The building blocks of the AUTOSAR Adaptive Platform architecture are refined stepby-step in this document according to the model depicted in figure [8.1](#_bookmark43). The top-level categories are chosen to give an overview from a users perspective what kind of functionality the AUTOSAR Adaptive Platform provides. A category contains one or more Functional Clusters. The Functional Clusters of the AUTOSAR Adaptive Platform are defined to group a specific coherent technical functionality. Functional Clusters themselves specify a set of interfaces and components to provide and realize that technical functionality. The building block view also contains information of the Functional Clusters interdependencies based on interfaces from other Functional Clusters they use. However, note that these interdependencies are recommendations rather than strict specifications because they would constrain implementations.
 
-> **分解策略**
+> 这份文件根据图 8.1 所示的模型，逐步细化了 AUTOSAR 自适应平台体系结构的构建块。顶级类别的选择是为了让用户从宏观角度了解 AUTOSAR 自适应平台提供的功能。一个类别包含一个或多个功能集群。<font color=red><b>**AUTOSAR 自适应平台的功能集群被定义为把特定的相关技术功能分组起来。功能集群本身指定一组接口和组件，以提供和实现该技术功能。构建块视图还包含基于其他功能集群使用的接口的功能集群之间相互依赖关系的信息。**</b></font>但是，请注意，这些相互依赖关系仅是建议，而不是严格的规范，因为它们会制约实施。
 
-The building blocks of the AUTOSAR Adaptive Platform architecture are refined step- by-step in this document according to the model depicted in figure [8.1](#_bookmark43). The top-level categories are chosen to give an overview from a users perspective what kind of func- tionality the AUTOSAR Adaptive Platform provides. A category contains one or more Functional Clusters. The Functional Clusters of the AUTOSAR Adaptive Platform are defined to group a specific coherent technical functionality. Functional Clusters themselves specify a set of interfaces and components to provide and real- ize that technical functionality. The building block view also contains information of the Functional Clusters interdependencies based on interfaces from other Func- tional Clusters they use. However, note that these interdependencies are recom- mendations rather than strict specifications because they would constrain implementa- tions.
+**Figure 8.1: Type model of building blocks**
 
-> 这份文件根据图 8.1 所示的模型，逐步细化了 AUTOSAR 自适应平台体系结构的构建块。顶级类别的选择是为了让用户从宏观角度了解 AUTOSAR 自适应平台提供的功能。一个类别包含一个或多个功能集群。AUTOSAR 自适应平台的功能集群被定义为把特定的相关技术功能分组起来。功能集群本身指定一组接口和组件，以提供和实现该技术功能。构建块视图还包含基于其他功能集群使用的接口的功能集群之间相互依赖关系的信息。但是，请注意，这些相互依赖关系仅是建议，而不是严格的规范，因为它们会制约实施。
+3. **UML Profile**
 
-![](./media/image8.png)![](./media/image9.png)![](./media/image10.png)1..\*
+The UML diagrams presented in this document use a UML profile to provide a more precise semantics of the elements and relationships. Table [8.1](#_bookmark45) provides an overview of the stereotypes in that profile and their semantics. The names of all stereotypes that are specific to the AUTOSAR architecture are prefixed with _aap_ (short for AUTOSAR Architecture Profile) to make them easily distinguishable from standard UML stereotypes and keywords.
 
-**Figure 8.1:** []{#\_bookmark43 .anchor}**Type model of building blocks**
-
-3. []{#\_bookmark44 .anchor}**UML Profile**
-
-> **UML 轮廓**
-
-The UML diagrams presented in this document use a UML profile to provide a more precise semantics of the elements and relationships. Table [8.1](#_bookmark45) provides an overview of the stereotypes in that profile and their semantics. The names of all stereotypes that are specific to the AUTOSAR architecture are prefixed with _aap_ (short for AUTOSAR Architecture Profile) to make them easily distinguishable from standard UML stereo- types and keywords.
-
-> 本文档中提供的 UML 图使用 UML 配置文件来提供元素和关系的更精确的语义。表[8.1]提供了该配置文件中的特定类型的概述及其语义。所有特定于 AUTOSAR 架构的特定类型的名称都加上*aap*(AUTOSAR 架构配置文件的简称)前缀，以便与标准 UML 特定类型和关键字进行区分。
-
-```
-
-```
+> 本文档中提供的 UML 图使用 UML 配置文件来提供元素和关系的更精确的语义。表[8.1]提供了该配置文件中的特定类型的概述及其语义。所有特定于 AUTOSAR 架构的特定类型的名称都加上 _aap_ (AUTOSAR 架构配置文件的简称)前缀，以便与标准 UML 特定类型和关键字进行区分。
 
 **Table 8.1: Overview of Stereotypes**
 
-> 表 8.1：刻板印象概览
+4. **Technology**
 
-4. []{#\_bookmark46 .anchor}**Technology**
+### Implementation Language
 
-> **技术**
+C++ is the programming language of choice for the AUTOSAR Adaptive Platform and [Adaptive Application](#_bookmark24)s. C++ was chosen due to its safer programming model (compared to C) and availability of certified compilers that produce highly optimized machine code. Such properties are especially important for safetyand performancecritical, real-time applications (such as typical [Adaptive Application](#_bookmark24)s) where C++ has become more and more popular in the software industry and academics.
 
-1.  ### Implementation Language
-
-> ### 实施语言
-
-C++ is the programming language of choice for the AUTOSAR Adaptive Platform and [Adaptive Application](#_bookmark24)s. C++ was chosen due to its safer programming model (compared to C) and availability of certified compilers that produce highly optimized machine code. Such properties are especially important for safety- and performance- critical, real-time applications (such as typical [Adaptive Application](#_bookmark24)s) where C++ has become more and more popular in the software industry and academics.
-
-> C++是 AUTOSAR Adaptive 平台和[自适应应用](#_bookmark24)的编程语言。C++之所以被选择，是因为它比 C 更安全的编程模型，以及可以生成高度优化的机器码的认证编译器。这些属性对于安全性和性能关键的实时应用(如典型的[自适应应用](#_bookmark24))尤为重要，C++在软件行业和学术界越来越受欢迎。
+> C++是 AUTOSAR Adaptive 平台和[自适应应用]的编程语言。**C++之所以被选择，是因为它比 C 更安全的编程模型，以及可以生成高度优化的机器码的认证编译器**。这些属性对于安全性和性能关键的实时应用(如典型的[自适应应用])尤为重要，C++在软件行业和学术界越来越受欢迎。
 
 ### Parallel Processing
 
 Although the design for AUTOSAR Adaptive Platform as a service-oriented architecture inherently leverages parallel processing, the advancement of (heterogeneous) many-
 
-> 尽管 AUTOSAR Adaptive Platform 的设计作为面向服务的架构本质上利用并行处理，但(异构)多核处理的进展仍然是一个挑战。
+> 尽管 AUTOSAR Adaptive Platform 的设计**作为面向服务的架构本质上利用并行处理**，但(异构)多核处理的进展仍然是一个挑战。
 
-core processors offers additional opportunities. The AUTOSAR Adaptive Platform is designed to scale its functionality and performance as (heterogeneous) many-core technologies advance. Hardware and platform interface specifications are one part of that equation. However, advancements in operating system and hypervisor tech- nologies as well as development tools (for example automatic parallelization) are also crucial and are to be fulfilled by AUTOSAR Adaptive Platform providers, the software industry, and academics.
+core processors offers additional opportunities. The AUTOSAR Adaptive Platform is designed to scale its functionality and performance as (heterogeneous) many-core technologies advance. Hardware and platform interface specifications are one part of that equation. However, advancements in operating system and hypervisor technologies as well as development tools (for example automatic parallelization) are also crucial and are to be fulfilled by AUTOSAR Adaptive Platform providers, the software industry, and academics.
 
 > 核心处理器提供了额外的机会。AUTOSAR Adaptive 平台旨在随着(异构)多核技术的发展而扩展其功能和性能。硬件和平台接口规范是其中一部分。然而，操作系统和虚拟机技术以及开发工具(例如自动并行化)的进步也至关重要，并且由 AUTOSAR Adaptive 平台提供商、软件行业和学术界来实现。
 
 ## Design Principles
 
-The architecture of the AUTOSAR Adaptive Platform is based on several design prin- ciples that are outlined below.
+The architecture of the AUTOSAR Adaptive Platform is based on several design principles that are outlined below.
 
 > AUTOSAR 自适应平台的架构基于以下概述的设计原则。
 
 ### Leveraging existing standards
 
-AUTOSAR Adaptive Platform aims to leverage existing standards and specifications wherever possible. For example, AUTOSAR Adaptive Platform ist built on the existing and open C++ standard (cf. Section [8.4.1](#implementation-language)) to facilitate a faster development of the AUTOSAR Adaptive Platform itself and benefiting from the eco-systems of such stan- dards. It is, therefore, a critical focus in developing the AUTOSAR Adaptive Platform specification not to casually introduce a new replacement functionality that an existing standard already offers. For instance, no new interfaces are casually introduced just because an existing standard provides the functionality required but the interface is superficially hard to understand.
+AUTOSAR Adaptive Platform aims to leverage existing standards and specifications wherever possible. For example, AUTOSAR Adaptive Platform ist built on the existing and open C++ standard (cf. Section [8.4.1](#implementation-language)) to facilitate a faster development of the AUTOSAR Adaptive Platform itself and benefiting from the eco-systems of such standards. It is, therefore, a critical focus in developing the AUTOSAR Adaptive Platform specification not to casually introduce a new replacement functionality that an existing standard already offers. For instance, no new interfaces are casually introduced just because an existing standard provides the functionality required but the interface is superficially hard to understand.
 
 > AUTOSAR Adaptive Platform 旨在尽可能利用现有的标准和规范。例如，AUTOSAR Adaptive Platform 建立在现有的开放式 C++标准(参见第 8.4.1 节)上，以便更快地开发 AUTOSAR Adaptive Platform 本身，并从这种标准的生态系统中受益。因此，在开发 AUTOSAR Adaptive Platform 规范时，关键的重点是不要轻易地引入一种新的替代功能，因为现有的标准已经提供了所需的功能，但界面表面上很难理解。
 
 ### SOLID principles
 
-The SOLID principles \[[7](#_bookmark329)\] are a central part of the design principles of AUTOSAR. While these five principles are all valid, only the Single-responsibility Principle, the Interface Segregation Principle and the Dependency Inversion Principle are relevant on the ab- straction level of this document. Therefore, they are elaborated in the following.
+The SOLID principles \[[7](#_bookmark329)\] are a central part of the design principles of AUTOSAR. While these five principles are all valid, only the Single-responsibility Principle, the Interface Segregation Principle and the Dependency Inversion Principle are relevant on the abstraction level of this document. Therefore, they are elaborated in the following.
 
-> SOLID 原则\[[7](#_bookmark329)\]是 AUTOSAR 设计原则的核心部分。虽然这五个原则都是有效的，但只有单一职责原则、接口隔离原则和依赖倒置原则与本文抽象层次有关。因此，它们将在下面进行详细阐述。
+> SOLID 原则[7]是 AUTOSAR 设计原则的核心部分。虽然这五个原则都是有效的，但只有单一职责原则、接口隔离原则和依赖倒置原则与本文抽象层次有关。因此，它们将在下面进行详细阐述。
 
-1. **Single-responsibility Principle**
+1. **Single-responsibility Principle**(单一职责)
 
-> 原则：单一职责
+The single-responsibility principle (SRP,SWEBOK3) \[[7](#_bookmark329)\] states that a component or class should be responsible for a single part of the overall functionality provided by the software. That responsibility should be encapsulated by the component or class. The services provided by the component or class (via its interface(s)) should be closely aligned with its responsibility.
 
-The single-responsibility principle (SRP,SWEBOK3) \[[7](#_bookmark329)\] states that a component or class should be responsible for a single part of the overall functionality provided by the soft- ware. That responsibility should be encapsulated by the component or class. The services provided by the component or class (via its interface(s)) should be closely aligned with its responsibility.
-
-> 原则(SRP，SWEBOK3)\[[7](#_bookmark329)\]规定，一个组件或类应该负责软件提供的整体功能的一部分。该责任应由组件或类封装。组件或类提供的服务(通过其接口)应与其责任密切相关。
+> 原则(SRP，SWEBOK3)[7]规定，一个组件或类应该负责软件提供的整体功能的一部分。该责任应由组件或类封装。组件或类提供的服务(通过其接口)应与其责任密切相关。
 
 The single-responsibility principle minimizes the reasons (i.e. a change to the single responsibility) that require a change to its interface. Thus, it minimizes impact on clients of such an interface and leads to a more maintainable architecture (or code).
 
 > 原则中的单一职责最大限度地减少了需要更改其接口的原因(即对单一职责的更改)。因此，它最大限度地减少了对此类接口客户的影响，并导致更可维护的架构(或代码)。
 
-2. **Interface Segregation Principle**
+2. **Interface Segregation Principle**(接口隔离原则)
 
-> 原则 2：接口隔离原则
+The interface segregation principle (ISP) \[[7](#_bookmark329)\], \[[8](#_bookmark330)\] states that clients should not be forced to depend on methods that they don't use. As a consequence of the interface segregation principle, interfaces should be split up to reflect different roles of clients.
 
-The interface segregation principle (ISP) \[[7](#_bookmark329)\], \[[8](#_bookmark330)\] states that clients should not be forced to depend on methods that they don't use. As a consequence of the interface segre- gation principle, interfaces should be split up to reflect different roles of clients.
+> 接口隔离原则(ISP)[7]，[8]规定**客户端不应被迫依赖他们不使用的方法**。作为接口分离原则的结果，接口应该被分割以反映客户端的不同角色。
 
-> 接口隔离原则(ISP)[[7]]，[[8]]规定客户端不应被迫依赖他们不使用的方法。作为接口分离原则的结果，接口应该被分割以反映客户端的不同角色。
-
-Similar to the single-responsibility principle, the segregation of interfaces reduce the impact of a change to an interface to the clients and suppliers of an segregated inter- face.
+Similar to the single-responsibility principle, the segregation of interfaces reduce the impact of a change to an interface to the clients and suppliers of an segregated interface.
 
 > 类似于单一职责原则，接口的隔离减少了对隔离接口的客户和供应商更改的影响。
 
-3. **Dependency Inversion Principle**
+3. **Dependency Inversion Principle**(依赖倒置原则)
 
-> 依赖倒置原则
+The dependency inversion principle (DIP) \[[7](#_bookmark329)\], \[[8](#_bookmark330)\] states that high-level building blocks should not depend on low-level building blocks. Both should depend on abstractions (e.g. interfaces). Furthermore, the dependency inversion principle states that abstractions (e.g. interfaces) should not depend on details. Details (e.g. a concrete implementation) should depend on abstractions.
 
-The dependency inversion principle (DIP) \[[7](#_bookmark329)\], \[[8](#_bookmark330)\] states that high-level building blocks should not depend on low-level building blocks. Both should depend on abstractions (e.g. interfaces). Furthermore, the dependency inversion principle states that abstrac- tions (e.g. interfaces) should not depend on details. Details (e.g. a concrete imple- mentation) should depend on abstractions.
-
-> 原则依赖倒置(DIP)[[7]]，[[8]]规定高层构件不应依赖低层构件。两者都应该依赖抽象(例如接口)。此外，依赖倒置原则规定抽象(例如接口)不应依赖细节。细节(例如具体实现)应该依赖抽象。
+> 原则依赖倒置(DIP)[[7]]，[[8]]规定**高层构件不应依赖低层构件**。两者都应该依赖抽象(例如接口)。此外，依赖倒置原则规定抽象(例如接口)不应依赖细节。细节(例如具体实现)应该依赖抽象。
 
 The dependency inversion principle results in a decoupling of the implementations of building blocks. This is important to scale implementation efforts (cf. Section [5.2](#_bookmark14)) and to perform proper integration tests.
 
@@ -702,19 +636,19 @@ The dependency inversion principle results in a decoupling of the implementation
 
 The acyclic dependencies principle (ADP) \[[7](#_bookmark329)\], \[[8](#_bookmark330)\] states that dependencies between building blocks should form a directed acyclic graph.
 
-> 原则(ADP)[[7]](＃\_bookmark329)，[[8]](＃\_bookmark330)规定，构建块之间的依赖关系应形成有向无环图。
+> 原则(ADP)[[7]]，[[8]]规定，**构建块之间的依赖关系应形成有向无环图**。
 
-The acyclic dependencies principle helps to identify participating building blocks and reason about error propagation and freedom from interference. In general, it also re- duces the extend of building blocks to consider during activities such as test, build and deployment.
+The acyclic dependencies principle helps to identify participating building blocks and reason about error propagation and freedom from interference. In general, it also reduces the extend of building blocks to consider during activities such as test, build and deployment.
 
 > 原则的无环依赖有助于识别参与组件，并考虑错误传播和免受干扰。一般来说，它也减少了组件的范围，以便在测试、构建和部署等活动中考虑。
 
 ## Deployment
 
-The AUTOSAR Adaptive Platform supports the incremental deployment of applica- tions, where resources and communications are managed dynamically to reduce the effort for software development and integration, enabling short iteration cycles. Incre- mental deployment also supports explorative software development phases. For prod- uct delivery, the AUTOSAR Adaptive Platform allows the system integrator to carefully
+The AUTOSAR Adaptive Platform supports the incremental deployment of applications, where resources and communications are managed dynamically to reduce the effort for software development and integration, enabling short iteration cycles. Incremental deployment also supports explorative software development phases. For product delivery, the AUTOSAR Adaptive Platform allows the system integrator to carefully
 
 > AUTOSAR 自适应平台支持应用程序的增量部署，其中资源和通信被动态管理以减少软件开发和集成的工作量，实现短迭代周期。增量部署也支持探索性的软件开发阶段。对于产品交付，AUTOSAR 自适应平台允许系统集成商仔细地构建和部署系统。
 
-limit dynamic behavior to reduce the risk of unwanted or adverse effects allowing safety qualification. Dynamic behavior of an application will be limited by constraints stated in the Execution Manifest (cf. Section [13.8](#execution-manifest)), for example, dynamic allocation of resources and communication paths are only possible in defined ways, within config- ured ranges. Implementations of an AUTOSAR Adaptive Platform may further remove dynamic capabilities from the software configuration for production use. Examples of reduced behavioral dynamics might be:
+limit dynamic behavior to reduce the risk of unwanted or adverse effects allowing safety qualification. Dynamic behavior of an application will be limited by constraints stated in the Execution Manifest (cf. Section [13.8](#execution-manifest)), for example, dynamic allocation of resources and communication paths are only possible in defined ways, within configured ranges. Implementations of an AUTOSAR Adaptive Platform may further remove dynamic capabilities from the software configuration for production use. Examples of reduced behavioral dynamics might be:
 
 > 限制动态行为以减少不希望或不良效果的风险，从而允许安全资格认证。应用程序的动态行为将由执行清单(参见[13.8]节)中指定的约束所限制，例如，资源和通信路径的动态分配仅能以定义的方式，在配置的范围内进行。 AUTOSAR 自适应平台的实现可能进一步从软件配置中删除动态能力，以供生产使用。减少行为动态性的示例可能包括：
 
@@ -726,9 +660,7 @@ limit dynamic behavior to reduce the risk of unwanted or adverse effects allowin
 - Constraints for AUTOSAR Adaptive Platform API usage by applications
 - Execution of authenticated code only
 
-  1. ## Verification and Validation
-
-> ## 验证与验证
+## Verification and Validation
 
 The AUTOSAR Adaptive Platform standard uses a dedicated implementation of the standard (AUTOSAR Adaptive Platform Demonstrator) to validate the requirements and to verify the (still abstract) software design imposed by the individual software specifications.
 
@@ -736,7 +668,7 @@ The AUTOSAR Adaptive Platform standard uses a dedicated implementation of the st
 
 # Building Block View
 
-This chapter provides an overview of the static structure of the AUTOSAR Adaptive Platform by describing the high-level building blocks and their inter-dependencies. Please note that the use of interfaces between Functional Clusters in the AU- TOSAR Adaptive Platform is currently not standardized. Some aspects, for example, access management, are also not yet fully incorporated and standardized in all Func- tional Clusters.
+This chapter provides an overview of the static structure of the AUTOSAR Adaptive Platform by describing the high-level building blocks and their inter-dependencies. Please note that the use of interfaces between Functional Clusters in the AUTOSAR Adaptive Platform is currently not standardized. Some aspects, for example, access management, are also not yet fully incorporated and standardized in all Functional Clusters.
 
 > 本章概述了 AUTOSAR Adaptive Platform 的静态结构，描述了高级构建块及其相互依赖关系。请注意，AUTOSAR Adaptive Platform 中功能簇之间的接口使用目前尚未标准化。一些方面，例如访问管理，在所有功能簇中尚未完全纳入和标准化。
 
@@ -746,250 +678,121 @@ Figure [9.1](#_bookmark57) provides an overview of the different categories of b
 
 > 图 9.1 提供了 AUTOSAR Adaptive 平台可用的不同类别的构建块的概述。在随后的部分中将对这些类别进行更详细的解释。
 
-**Figure 9.1:** []{#\_bookmark57 .anchor}**Overview of the AUTOSAR Adaptive Platform and its building block cate- gories**
+**Figure 9.1: Overview of the AUTOSAR Adaptive Platform and its building block categories**
 
 ### Description pattern
 
-The description of all building blocks (FunctionalClusters) in this section uses the same pattern. Each FunctionalCluster is described in a separate section of the document. Such a section starts with an overview of the responsibilities of the FunctionalCluster followed by a sub-section called \"Defined interfaces\". The sub- section \"Defined interfaces\" lists all architectural interfaces specified in the namespace of the FunctionalCluster. Each interface is detailed in a separate table.
+The description of all building blocks (FunctionalClusters) in this section uses the same pattern. Each FunctionalCluster is described in a separate section of the document. Such a section starts with an overview of the responsibilities of the FunctionalCluster followed by a sub-section called \"Defined interfaces\". The subsection \"Defined interfaces\" lists all architectural interfaces specified in the namespace of the FunctionalCluster. Each interface is detailed in a separate table.
 
 > 所有构建块(FunctionalCluster)的描述在本节中使用相同的模式。每个 FunctionalCluster 在文档的单独部分中有描述。这样的一个部分以 FunctionalCluster 的责任概述开始，然后是叫做“定义的接口”的子部分。“定义的接口”子部分列出 FunctionalCluster 的命名空间中指定的所有架构接口。每个接口都在单独的表格中进行详细说明。
 
-The subsection \"Provided interfaces\" then lists all interfaces provided by the Func- tionalCluster (i.e. it is fully implemented by the FunctionalCluster) to other FunctionalClusters.
+The subsection \"Provided interfaces\" then lists all interfaces provided by the FunctionalCluster (i.e. it is fully implemented by the FunctionalCluster) to other FunctionalClusters.
 
 > 该子节“提供的接口”列出了 FunctionalCluster 提供给其他 FunctionalClusters 的所有接口(即它完全由 FunctionalCluster 实现)。
 
-The last subsection \"Required interfaces\" lists all interfaces required by the Func- tionalCluster from other FunctionalClusters and external components like the operating system.
+The last subsection \"Required interfaces\" lists all interfaces required by the FunctionalCluster from other FunctionalClusters and external components like the operating system.
 
 > 最后一节“所需接口”列出了 FunctionalCluster 从其他 FunctionalCluster 和外部组件(如操作系统)所需的所有接口。
 
 ## Runtime
 
-![](./media/image11.png)![](./media/image12.png)![](./media/image13.png)![](./media/image14.png)![](./media/image15.png)
-
 **Figure 9.2: Functional Clusters in category Runtime**
 
 ### Execution Management
 
-```
-
-```
-
-1. **Defined interfaces**
-
-> **定义的接口**
+1. **Defined interfaces**(定义的接口)
 
 The interfaces of [Execution Management](#_bookmark61) are categorized into interfaces for state reporting (see Section [9.2.1.1.1](#_bookmark62)), interfaces for the deterministic execution (see Section [9.2.1.1.2](#_bookmark65)), and interfaces for [State Management](#_bookmark76) (see Section [9.2.1.1.3](#_bookmark69)).
 
 > 管理执行(参见第 9.2.1.1.1 节)的接口分为状态报告接口、确定性执行接口(参见第 9.2.1.1.2 节)和状态管理接口(参见第 9.2.1.1.3 节)。
 
-1. []{#\_bookmark62 .anchor}**Interfaces for state reporting**
+1. **Interfaces for state reporting**(报告状态的接口)
 
-> 报告状态的接口
+All processes started by [Execution Management](#_bookmark61) (i.e. all processes of the AUTOSAR Adaptive Platform and all processes of Adaptive Applications) shall report their execution state back to [Execution Management](#_bookmark61) via the [ExecutionClient](#_bookmark64) interface (cf. Figure [9.3](#_bookmark63)).
 
-All processes started by [Execution Management](#_bookmark61) (i.e. all processes of the AU- TOSAR Adaptive Platform and all processes of Adaptive Applications) shall report their execution state back to [Execution Management](#_bookmark61) via the [ExecutionClient](#_bookmark64) interface (cf. Figure [9.3](#_bookmark63)).
-
-> 所有由[执行管理](#_bookmark61)启动的过程(即自适应软件开发框架(AUTOSAR)的所有过程和自适应应用程序的所有过程)都必须通过[执行客户端](#_bookmark64)界面将其执行状态反馈给[执行管理](#_bookmark61)(参见图[9.3](#_bookmark63))。
-
-![](./media/image16.png)
-![](./media/image17.png)
+> 所有由[执行管理]启动的过程(即自适应软件开发框架(AUTOSAR)的所有过程和自适应应用程序的所有过程)都必须通过[执行客户端]界面将其执行状态反馈给[执行管理](参见图[9.3])。
 
 **Figure 9.3:** []{#\_bookmark63 .anchor}**Interfaces for state reporting**
 
-```
+2. **Interfaces for deterministic execution**(极确定性执行的接口)
 
-```
-
-2. []{#\_bookmark65 .anchor}**Interfaces for deterministic execution**
-
-> 极确定性执行的接口
-
-The [DeterministicClient](#_bookmark67) API (cf. Figure [9.4](#_bookmark66)) provides operations to perform determin- istic execution of tasks.
+The [DeterministicClient](#_bookmark67) API (cf. Figure [9.4](#_bookmark66)) provides operations to perform deterministic execution of tasks.
 
 > API DeterministicClient(参见图 9.4)提供操作来执行任务的确定性执行。
 
-![](./media/image18.png)
 **Figure 9.4:** []{#\_bookmark66 .anchor}**Interfaces for deterministic execution**
 
-```
+3. **Interfaces for State Management**(状态管理的接口)
 
-```
-
-3. []{#\_bookmark69 .anchor}**Interfaces for State Management**
-
-> **状态管理的接口**
-
-![](./media/image20.png)The [StateClient](#_bookmark71) API (cf. Figure [9.5](#_bookmark70)) provides operations to control [FunctionGroup](#_bookmark74)s and their [FunctionGroupState](#_bookmark73)s.
-
-![](./media/image21.png)
+The [StateClient](#_bookmark71) API (cf. Figure [9.5](#_bookmark70)) provides operations to control [FunctionGroup](#_bookmark74)s and their [FunctionGroupState](#_bookmark73)s.
 
 **Figure 9.5:** []{#\_bookmark70 .anchor}**Interfaces for State Management**
 
-```
-
-```
-
 2. **Provided interfaces**
 
-> 2. **提供的接口**
-
-![](./media/image20.png) ![](./media/image22.png) ![](./media/image23.png) ![](./media/image24.png) ![](./media/image25.png)
-
-![](./media/image26.png)
-![](./media/image20.png)**Figure 9.6: Users of the ExecutionClient interface**
-![](./media/image27.png)
-
+**Figure 9.6: Users of the ExecutionClient interface**
 **Figure 9.7: Users of the State Management interfaces**
-
-```
-
-```
-
 **Table 9.1: Interfaces provided by Execution Management to other Functional Clusters**
-
-> 表 9.1：执行管理为其他功能集群提供的接口
 
 3. **Required interfaces**
 
-> 3. **必需的接口**
-
-![](./media/image28.png)
-![](./media/image29.png)
-![](./media/image21.png) ![](./media/image30.png) ![](./media/image31.png)
-
 **Figure 9.8: Interfaces required by Execution Management**
-
 **Table 9.2: Interfaces required by Execution Management**
-
-> 表 9.2：执行管理所需的接口
 
 ### State Management
 
-```
-
-```
-
 1. **Defined interfaces**
 
-> **定义的接口**
-
-The interfaces of [State Management](#_bookmark76) are categorized into interfaces for triggering state changes (see Section [9.2.2.1.1](#_bookmark77)), interfaces for diagnostic reset (see Section [9.2.2.1.2](#_bookmark79)), interfaces for requesting a Power Mode (see Section [9.2.2.1.3](#_bookmark83)), and inter- faces for interaction with [Update and Configuration Management](#_bookmark200) (see Section [9.2.2.1.4](#_bookmark87)).
+The interfaces of [State Management](#_bookmark76) are categorized into interfaces for triggering state changes (see Section [9.2.2.1.1](#_bookmark77)), interfaces for diagnostic reset (see Section [9.2.2.1.2](#_bookmark79)), interfaces for requesting a Power Mode (see Section [9.2.2.1.3](#_bookmark83)), and interfaces for interaction with [Update and Configuration Management](#_bookmark200) (see Section [9.2.2.1.4](#_bookmark87)).
 
 > 控制状态管理的接口分为触发状态更改的接口(见第 9.2.2.1.1 节)、诊断复位的接口(见第 9.2.2.1.2 节)、请求功耗模式的接口(见第 9.2.2.1.3 节)以及与更新和配置管理(见第 9.2.2.1.4 节)的交互接口。
 
-1. []{#\_bookmark77 .anchor}**Interfaces for triggering state changes**
-
-> 控制状态变化的接口
+1. **Interfaces for triggering state changes**(控制状态变化的接口)
 
 [State Management](#_bookmark76) provides several interface blueprints to get and set its internal state (cf. Figure [9.9](#_bookmark78)).
 
 > 状态管理提供了几种接口蓝图来获取和设置其内部状态(参见图 9.9)。
 
-![](./media/image32.png)
+**Figure 9.9: Interfaces for triggering state changes**
 
-![](./media/image33.png)
-
-**Figure 9.9:** []{#\_bookmark78 .anchor}**Interfaces for triggering state changes**
-
-```
-
-```
-
-2. []{#\_bookmark79 .anchor}**Interfaces for requesting a diagnostic reset**
-
-> 2. 请求诊断重置的接口
+2. **Interfaces for requesting a diagnostic reset**(请求诊断重置的接口)
 
 The [DiagnosticReset](#_bookmark80) interface propagates a diagnostic reset request ([DiagnosticRe-](#_bookmark82) [set::message()](#_bookmark82)) to all affected Processes. These Processes then shall answer the diagnostic reset request by calling [DiagnosticReset::event()](#_bookmark81).
 
-> 接口 DiagnosticReset 传播诊断重置请求(DiagnosticReset :: message())到所有受影响的进程。这些进程然后应通过调用 DiagnosticReset :: event()来回答诊断重置请求。
-
-![](./media/image34.png) ![](./media/image35.png)
-
-![](./media/image36.png)
+> 接口 DiagnosticReset 传播诊断重置请求(`DiagnosticReset::message()`)到所有受影响的进程。这些进程然后应通过调用 `DiagnosticReset::event()`来回答诊断重置请求。
 
 **Figure 9.10: Interface for handling a diagnostic reset**
 
-```
-
-```
-
-3. []{#\_bookmark83 .anchor}**Interfaces for requesting a Power Mode**
-
-> 求助于电源模式的接口
+3. **Interfaces for requesting a Power Mode**(求助于电源模式的接口)
 
 The [PowerMode](#_bookmark84) interface propagates a diagnostic Power Mode request ([Power-](#_bookmark86) [Mode::message()](#_bookmark86)) to all running Processes. These Processes then shall answer the Power Mode request by calling [PowerMode::event()](#_bookmark85).
 
 > 界面 PowerMode 传播一个诊断的功率模式请求(Power-Mode::message())到所有正在运行的进程。这些进程然后应该通过调用 PowerMode::event()来回答功率模式请求。
 
-![](./media/image37.png)
-
-![](./media/image38.png)
-
 **Figure 9.11: Interface for handling a Power Mode request**
 
-4. []{#\_bookmark87 .anchor}**Interfaces for interaction with Update and Configuration Management**
-
-> 更新和配置管理的交互界面
-
-![](./media/image39.png)
-
-![](./media/image40.png)
+4. **Interfaces for interaction with Update and Configuration Management**(更新和配置管理的交互界面)
 
 **Figure 9.12: Interface for software update handling**
 
-2. ![](./media/image41.png)**Provided interfaces**
-
-> **提供的接口**
-
-![](./media/image42.png)![](./media/image43.png)
-
-![](./media/image44.png)
+2. **Provided interfaces**
 
 **Figure 9.13: Users of the State Management interfaces**
-
-```
-
-```
-
 **Table 9.3: Interfaces provided by State Management to other Functional Clusters**
-
-> 表 9.3：状态管理向其他功能簇提供的接口
 
 3. **Required interfaces**
 
-> 3. **必需的接口**
-
-```
-
-```
-
-![](./media/image45.png)«aapFunctionalClust\...
-![](./media/image46.png)**Figure 9.14: Interfaces required by State Management**
-![](./media/image49.png)
-![](./media/image50.png)
-
+**Figure 9.14: Interfaces required by State Management**
 **Figure 9.15: Interfaces of Execution Management required by State Management**
-
-```
-
-```
-
 **Table 9.4: Interfaces required by State Management**
-
-> 表 9.4：状态管理所需的接口
 
 ### Log and Trace
 
-```
-
-```
-
 1. **Defined interfaces**
-
-> **定义的接口**
 
 The entry point to the Log and Trace framework is the [CreateLogger()](#_bookmark93) operation that constructs a new [Logger](#_bookmark91) context. Afterwards, new messages can be constructed using the [LogStream](#_bookmark94) that is returned by the operations in [Logger](#_bookmark91), for example [LogInfo](#_bookmark92) [()](#_bookmark92).
 
-> 入口点到日志和跟踪框架是[CreateLogger()](#_bookmark93)操作，它构造一个新的[Logger](#_bookmark91)上下文。之后，可以使用[Logger](#_bookmark91)中返回的[LogStream](#_bookmark94)构造新的消息，例如[LogInfo](#_bookmark92) [()](#_bookmark92)。
+> 入口点到日志和跟踪框架是[CreateLogger()]操作，它构造一个新的[Logger](#_bookmark91)上下文。之后，可以使用[Logger](#_bookmark91)中返回的[LogStream](#_bookmark94)构造新的消息，例如[LogInfo](#_bookmark92) [()](#_bookmark92)。
 
 ![](./media/image51.png)
 
@@ -1052,7 +855,7 @@ The entry point to the Log and Trace framework is the [CreateLogger()](#_bookmar
 
 > 1. 初始化和反初始化的接口
 
-The AUTOSAR Adaptive Platform for Applications needs to be initialized by an appli- cation before it is used (using [Initialize()](#_bookmark98)) and de-initialized after it is no longer used (using [Deinitialize()](#_bookmark97)).
+The AUTOSAR Adaptive Platform for Applications needs to be initialized by an application before it is used (using [Initialize()](#_bookmark98)) and de-initialized after it is no longer used (using [Deinitialize()](#_bookmark97)).
 
 > AUTOSAR 自适应应用平台在使用之前需要由应用程序进行初始化(使用[Initialize()](#_bookmark98))，在不再使用时需要进行反初始化(使用[Deinitialize()](#_bookmark97))。
 
@@ -1064,7 +867,7 @@ The AUTOSAR Adaptive Platform for Applications needs to be initialized by an app
 
 > 2. **进程终止的接口**
 
-The AUTOSAR Adaptive Platform for Applications provides an explicit abnormal termi- nation facility using [Abort()](#_bookmark99).
+The AUTOSAR Adaptive Platform for Applications provides an explicit abnormal termination facility using [Abort()](#_bookmark99).
 
 > AUTOSAR Adaptive 平台为应用提供了一个显式的异常终止设施，使用[Abort()](#_bookmark99)。
 
@@ -1122,7 +925,7 @@ The AUTOSAR Adaptive Platform for Applications provides an explicit abnormal ter
 
 ```
 
-**Table 9.7: Interfaces provided by Operating System Interface to other Functional Clus- ters**
+**Table 9.7: Interfaces provided by Operating System Interface to other Functional Clusters**
 
 > 表 9.7：操作系统接口提供的接口对其他功能群
 
@@ -1160,9 +963,9 @@ The AUTOSAR Adaptive Platform for Applications provides an explicit abnormal ter
 
 > **定义的接口**
 
-The interfaces of [Communication Management](#_bookmark105) are categorized into interfaces for raw data streams (see Section [9.3.1.1.1](#_bookmark106)), interfaces for SecOC (see Section [9.3.1.1.2](#_bookmark108)), and interfaces freshness value management (see Section [9.3.1.1.3](#_bookmark109)). Please note that a implementation of [Communication Management](#_bookmark105) will generate additional inter- faces for each modeled Service, e.g. a Proxy and a Skeleton interface. However, these generated interfaces are not covered in this document.
+The interfaces of [Communication Management](#_bookmark105) are categorized into interfaces for raw data streams (see Section [9.3.1.1.1](#_bookmark106)), interfaces for SecOC (see Section [9.3.1.1.2](#_bookmark108)), and interfaces freshness value management (see Section [9.3.1.1.3](#_bookmark109)). Please note that a implementation of [Communication Management](#_bookmark105) will generate additional interfaces for each modeled Service, e.g. a Proxy and a Skeleton interface. However, these generated interfaces are not covered in this document.
 
-> 界面管理(参见[9.3.1.1.1](＃*书签 106))的界面被分为原始数据流的界面，SecOC 的界面(参见[9.3.1.1.2](＃*书签 108))和新鲜度值管理的界面(参见[9.3.1.1.3](＃\_书签 109))。请注意，界面管理的实施将为每个建模的服务生成额外的接口，例如代理和骨架接口。但是，这些生成的接口不在本文档中涵盖。
+> 界面管理(参见[9.3.1.1.1](＃*书签 106))的界面被分为原始数据流的界面，SecOC 的界面(参见[9.3.1.1.2](＃*书签 108))和新鲜度值管理的界面(参见[9.3.1.1.3](#\_书签 109))。请注意，界面管理的实施将为每个建模的服务生成额外的接口，例如代理和骨架接口。但是，这些生成的接口不在本文档中涵盖。
 
 1. ![](./media/image2.png)[]{#\_bookmark106 .anchor}**Interfaces for raw data streams**
 
@@ -1192,7 +995,7 @@ The interfaces of [Communication Management](#_bookmark105) are categorized into
 
 > 2. **提供的接口**
 
-[Communication Management](#_bookmark105) currently provides no interfaces to other Func- tional Clusters.
+[Communication Management](#_bookmark105) currently provides no interfaces to other Functional Clusters.
 
 > 通信管理目前没有提供与其他功能集群的接口。
 
@@ -1256,7 +1059,7 @@ The interfaces of [Communication Management](#_bookmark105) are categorized into
 
 > **定义的接口**
 
-The interfaces of [Time Synchronization](#_bookmark115) are categorized into interfaces for provid- ing time information (see Section [9.3.3.1.1](#_bookmark116)) and interfaces for consuming time informa- tion (see Section [9.3.3.1.2](#_bookmark119)).
+The interfaces of [Time Synchronization](#_bookmark115) are categorized into interfaces for providing time information (see Section [9.3.3.1.1](#_bookmark116)) and interfaces for consuming time information (see Section [9.3.3.1.2](#_bookmark119)).
 
 > 時間同步的介面可分為提供時間資訊的介面(參見第 9.3.3.1.1 節)和消費時間資訊的介面(參見第 9.3.3.1.2 節)。
 
@@ -1414,7 +1217,7 @@ Process (cf. Figure [9.38](#_bookmark146)).
 
 > **常用接口**
 
-The main entry point for using the [Cryptography](#_bookmark150) API are the factory functions [Load-](#_bookmark152) [CryptoProvider()](#_bookmark152) for using cryptographic routines, [LoadKeyStorageProvider()](#_bookmark153) for ac- cess to the key store, and [LoadX509Provider()](#_bookmark154) for X.509 certificate handling.
+The main entry point for using the [Cryptography](#_bookmark150) API are the factory functions [Load-](#_bookmark152) [CryptoProvider()](#_bookmark152) for using cryptographic routines, [LoadKeyStorageProvider()](#_bookmark153) for access to the key store, and [LoadX509Provider()](#_bookmark154) for X.509 certificate handling.
 
 > 主要使用[加密](#_bookmark150) API 的入口点是工厂函数[加载](#_bookmark152) [CryptoProvider()](#_bookmark152)，用于使用加密程序，[LoadKeyStorageProvider()](#_bookmark153)用于访问密钥存储，以及[LoadX509Provider()](#_bookmark154)用于 X.509 证书处理。
 
@@ -1462,7 +1265,7 @@ The [CryptoProvider](#_bookmark157) interface provides access to various cryptog
 
 # Runtime View
 
-This chapter shows the original design approach of the AUTOSAR Adaptive Platform for implementing selected use cases. The presented use cases currently cover just a small part of the functionality of the AUTOSAR Adaptive Platform. More use cases will be added in future versions of this document. Please note that individual imple- mentations of the AUTOSAR Adaptive Platform may always choose a different design internally. Thus, interaction partners, the type of messages, and their order may differ.
+This chapter shows the original design approach of the AUTOSAR Adaptive Platform for implementing selected use cases. The presented use cases currently cover just a small part of the functionality of the AUTOSAR Adaptive Platform. More use cases will be added in future versions of this document. Please note that individual implementations of the AUTOSAR Adaptive Platform may always choose a different design internally. Thus, interaction partners, the type of messages, and their order may differ.
 
 > 本章介绍了 AUTOSAR Adaptive Platform 实现所选用例的原始设计方法。目前提供的用例仅涵盖 AUTOSAR Adaptive Platform 的一小部分功能。未来版本的文档将添加更多的用例。请注意，AUTOSAR Adaptive Platform 的个体实现可能会有不同的内部设计。因此，交互伙伴、消息类型及其顺序可能会有所不同。
 
@@ -1482,19 +1285,19 @@ This chapter shows the original design approach of the AUTOSAR Adaptive Platform
 
 **Figure 11.1:** []{#\_bookmark261 .anchor}**Scenario: Start Platform with Supervision of Applications**
 
-Figure [11.1](#_bookmark261) shows a scenario of for [Start Adaptive Platform](#_bookmark242) with an supervi- sion of Adaptive Applications. It therefore includes the startup of [Platform Health](#_bookmark186) [Management](#_bookmark186) that performs supervision and the startup of an Adaptive Application that is supervised as part of the Startup Machine Function Group State.
+Figure [11.1](#_bookmark261) shows a scenario of for [Start Adaptive Platform](#_bookmark242) with an supervision of Adaptive Applications. It therefore includes the startup of [Platform Health](#_bookmark186) [Management](#_bookmark186) that performs supervision and the startup of an Adaptive Application that is supervised as part of the Startup Machine Function Group State.
 
 > 图 11.1 显示了一个 Start Adaptive Platform 的场景，其中包括 Adaptive Applications 的监督，以及 Startup Machine Function Group State 的一部分，用于执行监督和启动被监督的 Adaptive Application 的 Platform Health Management 的启动。
 
-During the preceding startup of the Machine the [Operating System](#_bookmark28) performs ini- tialization steps in an implementation-specific way. These steps include starting any middleware related to the [Operating System](#_bookmark28), including device-drivers and services handling low-level middleware. The AUTOSAR Adaptive Platform demands that the
+During the preceding startup of the Machine the [Operating System](#_bookmark28) performs initialization steps in an implementation-specific way. These steps include starting any middleware related to the [Operating System](#_bookmark28), including device-drivers and services handling low-level middleware. The AUTOSAR Adaptive Platform demands that the
 
 > 在机器的前一次启动期间，操作系统以实现特定的方式执行初始化步骤。这些步骤包括启动与操作系统相关的任何中间件，包括设备驱动程序和处理低级中间件的服务。AUTOSAR Adaptive Platform 要求操作系统在启动过程中必须满足一定的要求。
 
-[Watchdog](#_bookmark30) is enabled prior to the startup of the AUTOSAR Adaptive Platform, for ex- ample, the [Watchdog](#_bookmark30) could already be enabled by the Bootloader or the [Operat-](#_bookmark28) [ing System](#_bookmark28).
+[Watchdog](#_bookmark30) is enabled prior to the startup of the AUTOSAR Adaptive Platform, for example, the [Watchdog](#_bookmark30) could already be enabled by the Bootloader or the [Operat-](#_bookmark28) [ing System](#_bookmark28).
 
 > 监视狗在 AUTOSAR Adaptive Platform 启动之前已经启用，例如，监视狗可以由引导程序或操作系统已经启用。
 
-[Execution Management](#_bookmark61) is started by the [Operating System](#_bookmark28) as the first process of the AUTOSAR Adaptive Platform. [Execution Management](#_bookmark61) then controls the startup of the AUTOSAR Adaptive Platform by activating the standardized Function Group State called Startup of the Machine Function Group State. This trig- gers the start of additional processes that are configured to run in the Startup state. It is mandatory that [State Management](#_bookmark76) is part of the Startup state. Other processes of the AUTOSAR Adaptive Platform, for example [Platform Health Management](#_bookmark186) and application processes may also be part of the Startup state (see Figure [11.1](#_bookmark261)).
+[Execution Management](#_bookmark61) is started by the [Operating System](#_bookmark28) as the first process of the AUTOSAR Adaptive Platform. [Execution Management](#_bookmark61) then controls the startup of the AUTOSAR Adaptive Platform by activating the standardized Function Group State called Startup of the Machine Function Group State. This triggers the start of additional processes that are configured to run in the Startup state. It is mandatory that [State Management](#_bookmark76) is part of the Startup state. Other processes of the AUTOSAR Adaptive Platform, for example [Platform Health Management](#_bookmark186) and application processes may also be part of the Startup state (see Figure [11.1](#_bookmark261)).
 
 > 执行管理由操作系统作为 AUTOSAR 自适应平台的第一个进程启动。执行管理通过激活称为机器功能组状态启动的标准功能组状态来控制 AUTOSAR 自适应平台的启动。这会触发配置为启动状态运行的其他进程的启动。状态管理必须是启动状态的一部分。AUTOSAR 自适应平台的其他进程，例如平台健康管理和应用程序进程也可以是启动状态的一部分(参见图 11.1)。
 
@@ -1518,7 +1321,7 @@ After the Startup state has been reached, [State Management](#_bookmark76) takes
 
 **Figure 11.2:** []{#\_bookmark263 .anchor}**Scenario: Shutdown Platform with Supervision of Applications**
 
-[]{#\_bookmark264 .anchor}Figure [11.2](#_bookmark263) shows a scenario for [Shutdown Adaptive Platform](#_bookmark243) with a super- vision of Adaptive Applications. It therefore includes the shutdown of [Platform](#_bookmark186) [Health Management](#_bookmark186) that performs supervision.
+[]{#\_bookmark264 .anchor}Figure [11.2](#_bookmark263) shows a scenario for [Shutdown Adaptive Platform](#_bookmark243) with a supervision of Adaptive Applications. It therefore includes the shutdown of [Platform](#_bookmark186) [Health Management](#_bookmark186) that performs supervision.
 
 > 图 11.2 显示了一个关闭自适应平台的场景，其中包括自适应应用程序的监督。因此，它还包括执行监督的平台健康管理的关闭。
 
@@ -1538,7 +1341,7 @@ The shutdown is triggered by [State Management](#_bookmark76) by requesting the 
 
 **Figure 11.3:** []{#\_bookmark265 .anchor}**Scenario: Regular change of a Function Group State**
 
-Figure [11.3](#_bookmark265) shows a scenario for changing a Function Group State. The sce- nario is triggered by [State Management](#_bookmark76). [Execution Management](#_bookmark61) will terminate all processes that are not part of the requested target Function Group State or that have a different StateDependentStartupConfig.
+Figure [11.3](#_bookmark265) shows a scenario for changing a Function Group State. The scenario is triggered by [State Management](#_bookmark76). [Execution Management](#_bookmark61) will terminate all processes that are not part of the requested target Function Group State or that have a different StateDependentStartupConfig.
 
 > 图 11.3 显示了更改功能组状态的场景。该场景由状态管理触发。执行管理将终止不属于所请求的目标功能组状态或具有不同 StateDependentStartupConfig 的所有进程。
 
@@ -1586,7 +1389,7 @@ After the new system state has been reached, [State Management](#_bookmark76) up
 
 **Figure 11.5:** []{#\_bookmark270 .anchor}**Scenario: Reject Trigger Input**
 
-Figure [11.5](#_bookmark270) shows an alternate scenario. An [Adaptive Application](#_bookmark24) changes a field in the TriggerIn\_{StateGroup} (alternatively TriggerI- nOut\_{StateGroup}) service interface. Despite the new input data, [State Man-](#_bookmark76) [agement](#_bookmark76) determines that the current system state is still the desired system state. Therefore, no further action is taken by [State Management](#_bookmark76).
+Figure [11.5](#_bookmark270) shows an alternate scenario. An [Adaptive Application](#_bookmark24) changes a field in the TriggerIn\_{StateGroup} (alternatively TriggerInOut\_{StateGroup}) service interface. Despite the new input data, [State Man-](#_bookmark76) [agement](#_bookmark76) determines that the current system state is still the desired system state. Therefore, no further action is taken by [State Management](#_bookmark76).
 
 > 图 11.5 显示了一个替代方案。自适应应用程序更改 TriggerIn*{StateGroup}(或者 TriggerInOut*{StateGroup})服务接口中的一个字段。尽管有新的输入数据，但状态管理确定当前系统状态仍然是所需的系统状态。因此，状态管理不会采取进一步的行动。
 
@@ -1624,7 +1427,7 @@ Figure [11.6](#_bookmark272) shows the scenario for performing successful recove
 
 Figure [11.7](#_bookmark276) shows the scenario for successfully reading data from a file successfully. The [Adaptive Application](#_bookmark24) needs to open a [FileStorage](#_bookmark130) by calling [OpenFileStor-](#_bookmark129) [age()](#_bookmark129). Afterwards, the [Adaptive Application](#_bookmark24) needs to open an individual file by calling [OpenFileReadOnly()](#_bookmark131) or [OpenFileReadWrite()](#_bookmark132) depending if the [Adaptive Ap-](#_bookmark24) [plication](#_bookmark24) needs to write data to the file as well. Then, the [Adaptive Applica-](#_bookmark24) [tion](#_bookmark24) can read data via the methods provided by [ReadAccessor](#_bookmark134) either as binary data or text data.
 
-> 图 11.7 显示了成功从文件中读取数据的场景。自适应应用程序需要通过调用 OpenFileStor- age()来打开 FileStorage。之后，自适应应用程序需要根据应用程序是否需要将数据写入文件，调用 OpenFileReadOnly()或 OpenFileReadWrite()来打开单个文件。然后，自适应应用程序可以通过 ReadAccessor 提供的方法以二进制数据或文本数据的形式读取数据。
+> 图 11.7 显示了成功从文件中读取数据的场景。自适应应用程序需要通过调用 OpenFileStorage()来打开 FileStorage。之后，自适应应用程序需要根据应用程序是否需要将数据写入文件，调用 OpenFileReadOnly()或 OpenFileReadWrite()来打开单个文件。然后，自适应应用程序可以通过 ReadAccessor 提供的方法以二进制数据或文本数据的形式读取数据。
 
 If enabled in the Manifest, [Persistency](#_bookmark124) will detect and try to correct data errors when reading from a file. If the file or [FileStorage](#_bookmark130) is configured to use encryption, the contents of the file will be transparently decrypted during read.
 
@@ -1650,7 +1453,7 @@ Figure [11.8](#_bookmark278) shows the scenario for successfully reading data by
 
 > 图 11.8 显示了通过提供唯一标识符(键)成功读取数据的场景。自适应应用程序需要通过调用 OpenKeyValueStorage()来打开 KeyValueStorage。然后，自适应应用程序可以通过调用 GetValue()来读取与键相关联的数据。
 
-If enabled in the Manifest, [Persistency](#_bookmark124) will detect and try to correct data errors when reading data. If the individual key or [KeyValueStorage](#_bookmark141) is configured to use en- cryption, data will be transparently decrypted during read.
+If enabled in the Manifest, [Persistency](#_bookmark124) will detect and try to correct data errors when reading data. If the individual key or [KeyValueStorage](#_bookmark141) is configured to use encryption, data will be transparently decrypted during read.
 
 > 如果在清单中启用，持久性将在读取数据时检测并尝试纠正数据错误。如果配置个别键或 KeyValueStorage 使用加密，则在读取时将透明地解密数据。
 
@@ -1668,7 +1471,7 @@ Figure [11.9](#_bookmark280) shows a scenario for storing data to a file success
 
 > 图 11.9 显示了一个成功存储数据到文件的场景。自适应应用程序需要通过调用 OpenFileStorage()来打开文件存储。之后，自适应应用程序需要根据自适应应用程序是否需要从文件中读取数据来调用 OpenFileWriteOnly()或 OpenFileReadWrite()来打开一个单独的文件进行写入。然后，自适应应用程序可以通过 ReadWriteAccessor 提供的方法将数据存储为二进制数据或文本数据。
 
-If enabled in the Manifest, [Persistency](#_bookmark124) stores redundant data to detect and cor- rect errors when reading from a file later. If the file or [FileStorage](#_bookmark130) is configured to use encryption, data will be encrypted before it is written to the underlying storage.
+If enabled in the Manifest, [Persistency](#_bookmark124) stores redundant data to detect and correct errors when reading from a file later. If the file or [FileStorage](#_bookmark130) is configured to use encryption, data will be encrypted before it is written to the underlying storage.
 
 > 如果在清单中启用，持久性可以存储冗余数据以便在稍后从文件中读取时能够检测和纠正错误。如果文件或文件存储被配置为使用加密，数据将在写入底层存储之前被加密。
 
@@ -1689,7 +1492,7 @@ Figure [11.10](#_bookmark282) shows a scenario for storing data associated with 
 
 > 图 11.10 显示了一种成功存储与唯一标识符(键)相关的数据的场景。[自适应应用程序](#_bookmark24)需要通过调用[OpenKeyValueStorage()](#_bookmark140)来打开[KeyValueStorage](#_bookmark141)。然后，[自适应应用程序](#_bookmark24)可以通过调用[SetValue()](#_bookmark143)来存储与键相关的数据。通过调用[SetValue()](#_bookmark143)更新内存中的数据，但不会写入持久存储。[自适应应用程序](#_bookmark24)需要调用[SyncToStorage()](#_bookmark144)来将一个或多个这样的更改写入持久存储。
 
-If enabled in the Manifest, [Persistency](#_bookmark124) stores redundant data to detect and cor- rect errors when reading from a [KeyValueStorage](#_bookmark141) later. If the key or [KeyValueStorage](#_bookmark141) is configured to use encryption, data will be encrypted before it is written to the under- lying storage.
+If enabled in the Manifest, [Persistency](#_bookmark124) stores redundant data to detect and correct errors when reading from a [KeyValueStorage](#_bookmark141) later. If the key or [KeyValueStorage](#_bookmark141) is configured to use encryption, data will be encrypted before it is written to the underlying storage.
 
 > 如果在 Manifest 中启用，持久性会存储冗余数据以便在以后从 KeyValueStorage 读取时检测和纠正错误。如果配置了密钥或 KeyValueStorage 使用加密，则在写入底层存储之前会对数据进行加密。
 
@@ -1769,7 +1572,7 @@ in an implementation-specific way (e.g., using tools provided with the TCP/IP st
 
 **Figure 11.14:** []{#\_bookmark292 .anchor}**Scenario: Report Security Event Successfully**
 
-Figure [11.14](#_bookmark292) shows the scenario for successfully reporting a Security Event to [Adaptive Intrusion Detection System Manager](#_bookmark178). The [Operating System](#_bookmark28) (or another component that implements the actual firewall) reports that a packet has been blocked by a specific rule to the [Firewall](#_bookmark182). If a Security Event has been configured for that rule in the Manifest, the [Firewall](#_bookmark182) will create a correspond- ing Security Event and report it to [Adaptive Intrusion Detection System](#_bookmark178) [Manager](#_bookmark178) by calling [ReportEvent()](#_bookmark180). [Adaptive Intrusion Detection System](#_bookmark178) [Manager](#_bookmark178) will then handle the Security Event accordingly.
+Figure [11.14](#_bookmark292) shows the scenario for successfully reporting a Security Event to [Adaptive Intrusion Detection System Manager](#_bookmark178). The [Operating System](#_bookmark28) (or another component that implements the actual firewall) reports that a packet has been blocked by a specific rule to the [Firewall](#_bookmark182). If a Security Event has been configured for that rule in the Manifest, the [Firewall](#_bookmark182) will create a corresponding Security Event and report it to [Adaptive Intrusion Detection System](#_bookmark178) [Manager](#_bookmark178) by calling [ReportEvent()](#_bookmark180). [Adaptive Intrusion Detection System](#_bookmark178) [Manager](#_bookmark178) will then handle the Security Event accordingly.
 
 > 图 11.14 显示了成功向自适应入侵检测系统管理器报告安全事件的场景。操作系统(或实现实际防火墙的另一组件)报告特定规则已阻止了一个数据包，防火墙将创建一个相应的安全事件并通过调用 ReportEvent()向自适应入侵检测系统管理器报告它。自适应入侵检测系统管理器将相应地处理安全事件。
 
@@ -1777,7 +1580,7 @@ Figure [11.14](#_bookmark292) shows the scenario for successfully reporting a Se
 
 > **部署视图**
 
-This chapter provides an overview of exemplary deployment scenarios for an AU- TOSAR Adaptive Platform. Since the AUTOSAR Adaptive Platform is highly config- urable in its deployment, this section rather provides constraints on supported deploy- ments and a selection of relevant deployment scenarios.
+This chapter provides an overview of exemplary deployment scenarios for an AUTOSAR Adaptive Platform. Since the AUTOSAR Adaptive Platform is highly configurable in its deployment, this section rather provides constraints on supported deployments and a selection of relevant deployment scenarios.
 
 > 本章提供了 AU-TOSAR 自适应平台的示例部署方案概述。由于 AUTOSAR 自适应平台在部署方面具有高度的可配置性，因此本节主要提供支持部署的约束条件以及相关部署方案的选择。
 
@@ -1787,7 +1590,7 @@ This chapter provides an overview of exemplary deployment scenarios for an AU- T
 
 **Figure 12.1: Exemplary vehicle software update scenario**
 
-[Update and Configuration Management](#_bookmark200) allows to install and update software on the AUTOSAR Adaptive Platform and AUTOSAR Classic Platform. For the AU- TOSAR Adaptive Platform, [Update and Configuration Management](#_bookmark200) also al- lows to remove software. The software packages can be received either from a Di- agnostic Client or from a specific Backend System for over-the-air updates. In a vehicle, one [Adaptive Application](#_bookmark24) takes the role of a master that controls the update process in the vehicle and distributes individual software packages to the Ma- chines and ECUs within a vehicle.
+[Update and Configuration Management](#_bookmark200) allows to install and update software on the AUTOSAR Adaptive Platform and AUTOSAR Classic Platform. For the AUTOSAR Adaptive Platform, [Update and Configuration Management](#_bookmark200) also allows to remove software. The software packages can be received either from a Diagnostic Client or from a specific Backend System for over-the-air updates. In a vehicle, one [Adaptive Application](#_bookmark24) takes the role of a master that controls the update process in the vehicle and distributes individual software packages to the Machines and ECUs within a vehicle.
 
 > [更新和配置管理](#_bookmark200)允许在 AUTOSAR 自适应平台和 AUTOSAR 经典平台上安装和更新软件。对于 AUTOSAR 自适应平台，[更新和配置管理](#_bookmark200)还允许删除软件。软件包可以从诊断客户端或特定的后端系统获得，以实现远程更新。在车辆中，一个[自适应应用程序](#_bookmark24)扮演主控制车辆内更新过程并将单个软件包分发到车辆内的机器和 ECU 的角色。
 
@@ -1797,11 +1600,11 @@ This chapter provides an overview of exemplary deployment scenarios for an AU- T
 
 **Figure 12.2:** []{#\_bookmark296 .anchor}**Exemplary deployment of Software Packages on a Machine**
 
-[Update and Configuration Management](#_bookmark200) manages the software installed on a Machine using one or more Software Packages. The configuration of the contents of a Software Package is done in the Manifest by means of a Software Clus- ter. Software Cluster defines the enumeration attribute category with the val- ues APPLICATION, PLATFORM, and PLATFORM_CORE. Some rules apply on the use of the Software Cluster category and corresponding Software Packages which are outlined in the following.
+[Update and Configuration Management](#_bookmark200) manages the software installed on a Machine using one or more Software Packages. The configuration of the contents of a Software Package is done in the Manifest by means of a Software Cluster. Software Cluster defines the enumeration attribute category with the values APPLICATION, PLATFORM, and PLATFORM_CORE. Some rules apply on the use of the Software Cluster category and corresponding Software Packages which are outlined in the following.
 
 > 更新和配置管理使用一个或多个软件包来管理机器上安装的软件。软件包的配置内容在清单中通过软件集群完成。软件集群定义了枚举属性类别，值为 APPLICATION、PLATFORM 和 PLATFORM_CORE。在使用软件集群类别和相应的软件包时，有一些规则，如下所述。
 
-For a Machine there shall exist exactly one Software Cluster with category PLATFORM_CORE. The corresponding Platform Core Package needs to include all required core components provided by the Platform Vendor and Machine Vendor, for example the operating system, device drivers, and the required Func- tional Clusters of the Adaptive Platform (see Figure [12.2](#_bookmark296)). It is assumed that at least the Functional Clusters [Execution Management](#_bookmark61), [State Management](#_bookmark76), and [Update and Configuration Management](#_bookmark200) are part of the Platform Core Package since they are required to install any additional Software Packages. How- ever, the concrete extend of a Platform Core Package is vendor and/or project specific. A Platform Core Package cannot be removed. The Software Clus- ter with category PLATFORM_CORE needs to be self-contained and therefore shall not have dependencies to other Software Clusters.
+For a Machine there shall exist exactly one Software Cluster with category PLATFORM_CORE. The corresponding Platform Core Package needs to include all required core components provided by the Platform Vendor and Machine Vendor, for example the operating system, device drivers, and the required Functional Clusters of the Adaptive Platform (see Figure [12.2](#_bookmark296)). It is assumed that at least the Functional Clusters [Execution Management](#_bookmark61), [State Management](#_bookmark76), and [Update and Configuration Management](#_bookmark200) are part of the Platform Core Package since they are required to install any additional Software Packages. However, the concrete extend of a Platform Core Package is vendor and/or project specific. A Platform Core Package cannot be removed. The Software Cluster with category PLATFORM_CORE needs to be self-contained and therefore shall not have dependencies to other Software Clusters.
 
 > 对于每台机器，应该只有一个属于 PLATFORM_CORE 类别的软件集群。相应的平台核心包应包括由平台供应商和机器供应商提供的所有必需的核心组件，例如操作系统、设备驱动程序和自适应平台所需的功能集群(参见图 12.2)。假设至少包括执行管理(Execution Management)、状态管理(State Management)和更新和配置管理(Update and Configuration Management)三个功能集群，因为它们是安装任何其他软件包所必需的。然而，平台核心包的具体范围是供应商和/或项目特定的。平台核心包不能被移除。具有 PLATFORM_CORE 类别的软件集群需要是自包含的，因此不应该有对其他软件集群的依赖性。
 
@@ -1813,11 +1616,11 @@ Software Cluster with category PLATFORM_CORE (see Figure [12.2](#_bookmark296)).
 
 > 软件集群具有 PLATFORM_CORE 类别(见图 12.2)。可以根据需要安装和卸载平台包。
 
-Application components should be distributed as part of additional Software Clus- ters with category APPLICATION within Application Packages. Such Soft- ware Clusters may depend on the on Software Clusters with any kind of cat- egory (see Figure [12.2](#_bookmark296)). Application Packages may be installed and removed as needed.
+Application components should be distributed as part of additional Software Clusters with category APPLICATION within Application Packages. Such Software Clusters may depend on the on Software Clusters with any kind of category (see Figure [12.2](#_bookmark296)). Application Packages may be installed and removed as needed.
 
 > 应将应用组件作为应用程序包中具有类别 APPLICATION 的附加软件集群的一部分进行分发。此类软件集群可能取决于具有任何类别的软件集群(参见图 12.2)。可以根据需要安装和移除应用程序包。
 
-The Platform Core Package and Platform Packages shall include all required Functional Cluster daemons and their respective configuration (e.g., startup con- figuration). This frees applications (distributed as Application Packages) from tak- ing care of the configuration of the platform.
+The Platform Core Package and Platform Packages shall include all required Functional Cluster daemons and their respective configuration (e.g., startup configuration). This frees applications (distributed as Application Packages) from taking care of the configuration of the platform.
 
 > 核心平台包和平台包应包括所有所需的功能集群守护进程及其相应的配置(例如，启动配置)。这使得作为应用程序包分发的应用程序免于负责平台的配置。
 
@@ -1829,7 +1632,7 @@ This section provides an overview of cross-cutting concepts and patterns used in
 
 ## Overview of Platform Entities
 
-The AUTOSAR Adaptive Platform defines design entities that several Functional Clusters depend on. Figure [13.1](#_bookmark299) provides an overview of these entities, their logical relationships, and the Functional Clusters that depend on them. For the sake of brevity, this overview uses simplifications and abstractions over the actual specifica- tions in the \[[9](#_bookmark331), manifest specification\].
+The AUTOSAR Adaptive Platform defines design entities that several Functional Clusters depend on. Figure [13.1](#_bookmark299) provides an overview of these entities, their logical relationships, and the Functional Clusters that depend on them. For the sake of brevity, this overview uses simplifications and abstractions over the actual specifications in the \[[9](#_bookmark331), manifest specification\].
 
 > AUTOSAR Adaptive Platform 定义了多个功能簇所依赖的设计实体。图 13.1 提供了这些实体、它们的逻辑关系以及依赖它们的功能簇的概览。为了简洁起见，此概览使用了\[[9](#_bookmark331)，清单规范\]中实际规范的简化和抽象。
 
@@ -1837,7 +1640,7 @@ The AUTOSAR Adaptive Platform defines design entities that several Functional Cl
 
 **Figure 13.1:** []{#\_bookmark299 .anchor}**Overview of platform entities and their logical relationships**
 
-A Software Package is a digitally signed package that can be installed/uninstalled via [Update and Configuration Management](#_bookmark200). A Software Package contains exactly one Software Cluster (see Section [13.4](#software-cluster) for details). A Software Clus- ter refers to a set of Executables (and other files). The corresponding executable file then holds the executable code for the Machine that the AUTOSAR Adaptive Plat- form runs on.
+A Software Package is a digitally signed package that can be installed/uninstalled via [Update and Configuration Management](#_bookmark200). A Software Package contains exactly one Software Cluster (see Section [13.4](#software-cluster) for details). A Software Cluster refers to a set of Executables (and other files). The corresponding executable file then holds the executable code for the Machine that the AUTOSAR Adaptive Platform runs on.
 
 > 一个软件包是一个经过数字签名的包，可以通过[更新和配置管理](＃_bookmark200)安装/卸载。一个软件包包含一个软件集群(有关详细信息，请参见[13.4](＃软件集群)节)。软件集群指的是一组可执行文件(和其他文件)。然后，相应的可执行文件为 AUTOSAR Adaptive Platform 运行的机器提供可执行代码。
 
@@ -1845,7 +1648,7 @@ Additionally, a Software Cluster configuration collects a set of Processes (cf. 
 
 > 此外，软件集群配置收集一组进程(参见第 13.4 节)及相关实体。进程指可执行文件，并提供不同的启动配置值，例如参数、调度等。
 
-priority, and resource constraints. A Startup Configuration of a Process ap- plies to one or more Function Group States. Function Group States belong to a Function Group.
+priority, and resource constraints. A Startup Configuration of a Process applies to one or more Function Group States. Function Group States belong to a Function Group.
 
 > 优先级和资源约束。过程的初始配置适用于一个或多个功能组状态。功能组状态属于功能组。
 
@@ -1853,9 +1656,9 @@ During runtime, [State Management](#_bookmark76) requests to enter a Function Gr
 
 > 在运行时，[状态管理](#_bookmark76)要求从[执行管理](#_bookmark61)输入功能组状态。[执行管理](#_bookmark61)然后终止并使用底层[操作系统](#_bookmark28)启动相应的进程。
 
-For safety-critical systems, [Platform Health Management](#_bookmark186) performs supervision of Processes according to rules (logical sequence, deadlines) defined in PhmSuper- visions. A PhmSupervision refers to a number of Supervision Checkpoints. During runtime, a process reports whenever it has reached such a checkpoint in its control flow.
+For safety-critical systems, [Platform Health Management](#_bookmark186) performs supervision of Processes according to rules (logical sequence, deadlines) defined in PhmSupervisions. A PhmSupervision refers to a number of Supervision Checkpoints. During runtime, a process reports whenever it has reached such a checkpoint in its control flow.
 
-> 为了保证安全关键系统，[Platform Health Management](#_bookmark186) 根据 PhmSuper- visions 中定义的规则(逻辑顺序、期限)对过程进行监督。PhmSupervision 指的是一系列的监督检查点。在运行期间，当过程到达控制流程中的检查点时，会上报。
+> 为了保证安全关键系统，[Platform Health Management](#_bookmark186) 根据 PhmSupervisions 中定义的规则(逻辑顺序、期限)对过程进行监督。PhmSupervision 指的是一系列的监督检查点。在运行期间，当过程到达控制流程中的检查点时，会上报。
 
 ## Function Group
 
@@ -1871,15 +1674,15 @@ A Function Group State defines which Processes of a Function Group with what con
 
 ## Software Cluster
 
-A Software Cluster configuration refers to a set of modeled Processes. Those Processes are (transitively) used by one or more Function Group(s). Hereby, a Function Group and its associated entities shall be part of only one Software Cluster. In other words, Function Groups that span several Software Clus- ters are invalid. A Software Cluster is packaged into one Software Package
+A Software Cluster configuration refers to a set of modeled Processes. Those Processes are (transitively) used by one or more Function Group(s). Hereby, a Function Group and its associated entities shall be part of only one Software Cluster. In other words, Function Groups that span several Software Clusters are invalid. A Software Cluster is packaged into one Software Package
 
 > 软件集群配置指的是一组建模的过程。这些过程(传递地)被一个或多个功能组使用。因此，功能组及其相关实体应该只属于一个软件集群。换句话说，跨越多个软件集群的功能组是无效的。软件集群打包成一个软件包。
 
-\- the atomic installable/updateable unit managed by Update and Configuration Management. A Software Cluster may depend on other Software Clusters. Such dependencies are expressed by version constraints. A Software Cluster may also specify structural dependencies to Sub Software Clusters in order to build larger installable units. The top of such a structural dependency hierarchy is called a Root Software Cluster. Please note that a Software Cluster is only used to configure deployment aspects. A Software Cluster is not a runtime entity.
+\the atomic installable/updateable unit managed by Update and Configuration Management. A Software Cluster may depend on other Software Clusters. Such dependencies are expressed by version constraints. A Software Cluster may also specify structural dependencies to Sub Software Clusters in order to build larger installable units. The top of such a structural dependency hierarchy is called a Root Software Cluster. Please note that a Software Cluster is only used to configure deployment aspects. A Software Cluster is not a runtime entity.
 
 > 一个软件集群由更新和配置管理管理的原子可安装/可更新单位组成。软件集群可能依赖于其他软件集群。这些依赖关系由版本约束表达。软件集群还可以指定结构依赖关系，以构建更大的可安装单元。这种结构依赖层次结构的顶级称为根软件集群。请注意，软件集群仅用于配置部署方面。软件集群不是运行时实体。
 
-A Root Software Cluster may specify a diagnostic configuration, in particular, a diagnostic address. In contrast, a Sub Software Cluster may depend on a diag- nostic configuration of its Root Software Cluster. The diagnostic configuration applies to Processes that are (transitively) contained in a Root Software Clus- ter and its Sub Software Cluster(s). That means, at runtime, any diagnostic event produced by those Processes will be associated with the diagnostic address. Please refer to Section [13.11](#diagnostics-deployment) for further details on the diagnostic deployment.
+A Root Software Cluster may specify a diagnostic configuration, in particular, a diagnostic address. In contrast, a Sub Software Cluster may depend on a diagnostic configuration of its Root Software Cluster. The diagnostic configuration applies to Processes that are (transitively) contained in a Root Software Cluster and its Sub Software Cluster(s). That means, at runtime, any diagnostic event produced by those Processes will be associated with the diagnostic address. Please refer to Section [13.11](#diagnostics-deployment) for further details on the diagnostic deployment.
 
 > 一个根软件集群可以指定一个诊断配置，特别是一个诊断地址。相比之下，一个子软件集群可能依赖于其根软件集群的诊断配置。诊断配置适用于(传递)包含在根软件集群及其子软件集群中的进程。这意味着，在运行时，由这些进程产生的任何诊断事件都将与诊断地址关联。有关诊断部署的更多详细信息，请参见[13.11](＃诊断部署)节。
 
@@ -1895,7 +1698,7 @@ A Software Cluster serves as a grouping entity during application design. As a r
 
 **Figure 13.2:** []{#\_bookmark303 .anchor}**Exemplary Software Cluster during application design**
 
-From such a standardized model, an equivalent implementation-specific configura- tion for [Execution Management](#_bookmark61) is derived that is used during runtime (see Figure [13.3](#_bookmark304)). That configuration advises [Execution Management](#_bookmark61) to start and configure processes accordingly when a Function Group State is requested. Hereby, [Ex-](#_bookmark61) [ecution Management](#_bookmark61) (logically) merges configurations contributed by all installed Software Packages. Other Functional Clusters that depend on configuration provided in the Manifests merge the configurations contributed by all installed Soft- ware Packages in the same way. Please also note that there is no corresponding runtime entity for a Software Cluster (see Figure [13.3](#_bookmark304)).
+From such a standardized model, an equivalent implementation-specific configuration for [Execution Management](#_bookmark61) is derived that is used during runtime (see Figure [13.3](#_bookmark304)). That configuration advises [Execution Management](#_bookmark61) to start and configure processes accordingly when a Function Group State is requested. Hereby, [Ex-](#_bookmark61) [ecution Management](#_bookmark61) (logically) merges configurations contributed by all installed Software Packages. Other Functional Clusters that depend on configuration provided in the Manifests merge the configurations contributed by all installed Software Packages in the same way. Please also note that there is no corresponding runtime entity for a Software Cluster (see Figure [13.3](#_bookmark304)).
 
 > 从这样的标准模型中，可以派生出一个用于运行时使用的等效实现特定配置(请参见图 13.3)。该配置建议[执行管理](＃_bookmark61)在请求功能组状态时启动和配置进程。因此，[Ex-](＃_bookmark61)[ecution Management](＃_bookmark61)(逻辑上)合并所有安装软件包提供的配置。其他依赖于清单中提供的配置的功能集群以相同的方式合并所有安装的软件包提供的配置。请注意，软件集群没有相应的运行时实体(请参见图 13.3)。
 
@@ -1903,11 +1706,11 @@ From such a standardized model, an equivalent implementation-specific configura-
 
 **Figure 13.3:** []{#\_bookmark304 .anchor}**Impact of exemplary Software Cluster during runtime**
 
-All Processes related to the Functional Clusters of the AUTOSAR Adaptive Platform should be referenced only in Software Clusters of category PLAT- FORM_CORE or PLATFORM. This allows for platform-independent development of Software Clusters of category APPLICATION_LAYER.
+All Processes related to the Functional Clusters of the AUTOSAR Adaptive Platform should be referenced only in Software Clusters of category PLATFORM_CORE or PLATFORM. This allows for platform-independent development of Software Clusters of category APPLICATION_LAYER.
 
 > 所有与 AUTOSAR Adaptive Platform 功能簇有关的进程都应只在类别 PLATFORM_CORE 或 PLATFORM 的软件簇中引用。这样可以实现类别 APPLICATION_LAYER 的软件簇的平台独立开发。
 
-In case a Functional Cluster may need multiple logical instances (for example, Diagnostic Management has a logical instance per diagnostic address), an imple- mentation of the Functional Cluster should still use a single physical (daemon) process.
+In case a Functional Cluster may need multiple logical instances (for example, Diagnostic Management has a logical instance per diagnostic address), an implementation of the Functional Cluster should still use a single physical (daemon) process.
 
 > 如果功能集群需要多个逻辑实例(例如，诊断管理有一个每个诊断地址的逻辑实例)，功能集群的实现仍应使用单个物理(守护进程)进程。
 
@@ -1917,17 +1720,17 @@ An AUTOSAR Adaptive Platform vendor may deviate from this design guide but shoul
 
 ## Machine
 
-The AUTOSAR Adaptive Platform regards hardware it runs on as a Machine. The ra- tionale behind that is to achieve a consistent platform view regardless of any virtualiza- tion technology which might be used. The Machine might be a real physical machine, a fully-virtualized machine, a para-virtualized OS, an OS-level-virtualized container or any other virtualized environment.
+The AUTOSAR Adaptive Platform regards hardware it runs on as a Machine. The rationale behind that is to achieve a consistent platform view regardless of any virtualization technology which might be used. The Machine might be a real physical machine, a fully-virtualized machine, a para-virtualized OS, an OS-level-virtualized container or any other virtualized environment.
 
 > AUTOSAR Adaptive Platform 将其运行的硬件视为机器。其背后的原理是无论使用何种虚拟化技术，都能够实现一致的平台视图。机器可以是真实的物理机器，完全虚拟化的机器，一个 para-virtualized OS，一个 OS 级别的虚拟容器或者其他任何虚拟化的环境。
 
-On hardware, there can be one or more Machine, and only a single instance of AU- TOSAR Adaptive Platform runs on a machine. It is generally assumed that this hard- ware includes a single chip, hosting a single or multiple Machines. However, it is also possible that multiple chips form a single Machine if the AUTOSAR Adaptive Platform implementation allows it.
+On hardware, there can be one or more Machine, and only a single instance of AUTOSAR Adaptive Platform runs on a machine. It is generally assumed that this hardware includes a single chip, hosting a single or multiple Machines. However, it is also possible that multiple chips form a single Machine if the AUTOSAR Adaptive Platform implementation allows it.
 
-> 在硬件上，可以有一个或多个机器，而 AU- TOSAR 自适应平台只能在一台机器上运行一个实例。通常假定这种硬件包括一片芯片，承载一个或多个机器。但是，如果 AUTOSAR 自适应平台的实现允许，多片芯片也可以组成一个机器。
+> 在硬件上，可以有一个或多个机器，而 AUTOSAR 自适应平台只能在一台机器上运行一个实例。通常假定这种硬件包括一片芯片，承载一个或多个机器。但是，如果 AUTOSAR 自适应平台的实现允许，多片芯片也可以组成一个机器。
 
 ## Manifest
 
-A Manifest represents a piece of AUTOSAR model description that is created to support the configuration of an AUTOSAR Adaptive Platform product and which is up- loaded to the AUTOSAR Adaptive Platform product, potentially in combination with other artifacts (like binary files) that contain executable code to which the Manifest applies. Please note that a typical [Adaptive Application](#_bookmark24) will make use of several distinct but interrelated Manifests. Hereby, the individual Manifests contribute in- formation to the complete application model. For example, each Software Cluster may contribute a self-contained set of Manifests to configure its functionality.
+A Manifest represents a piece of AUTOSAR model description that is created to support the configuration of an AUTOSAR Adaptive Platform product and which is uploaded to the AUTOSAR Adaptive Platform product, potentially in combination with other artifacts (like binary files) that contain executable code to which the Manifest applies. Please note that a typical [Adaptive Application](#_bookmark24) will make use of several distinct but interrelated Manifests. Hereby, the individual Manifests contribute information to the complete application model. For example, each Software Cluster may contribute a self-contained set of Manifests to configure its functionality.
 
 > 一个清单代表一个 AUTOSAR 模型描述的一部分，旨在支持 AUTOSAR 自适应平台产品的配置，并上传到 AUTOSAR 自适应平台产品，可能与其他包含可执行代码的二进制文件结合使用，清单适用。请注意，典型的[自适应应用程序](#_bookmark24)将使用几个不同但相互关联的清单。因此，各个清单为完整的应用程序模型提供信息。例如，每个软件集簇可以提供一组独立的清单来配置其功能。
 
@@ -1935,7 +1738,7 @@ The usage of a Manifest is limited to the AUTOSAR Adaptive Platform. This does n
 
 > 使用清单仅限于 AUTOSAR 自适应平台。然而，这并不意味着在针对 AUTOSAR 自适应平台开发的项目中产生的所有 ARXML 都被自动视为清单。事实上，通常不会仅在车辆项目中使用 AUTOSAR 自适应平台。典型的车辆很可能也会配备基于 AUTOSAR 经典平台开发的一些 ECU，因此，整个车辆的系统设计将必须涵盖基于 AUTOSAR 经典平台和基于 AUTOSAR 自适应平台创建的机器。
 
-In principle, the term Manifest could be defined such that there is conceptually just one \"Manifest\" and every deployment aspect would be handled in this context. This does not seem appropriate because it became apparent that Manifest-related model- elements exist that are relevant in entirely different phases of a typical development project.
+In principle, the term Manifest could be defined such that there is conceptually just one \"Manifest\" and every deployment aspect would be handled in this context. This does not seem appropriate because it became apparent that Manifest-related modelelements exist that are relevant in entirely different phases of a typical development project.
 
 > 原则上，“Manifest”这个术语可以定义为只有一个概念上的“Manifest”，每个部署方面都会在这个上下文中处理。但这似乎不合适，因为显然有与 Manifest 相关的模型元素，它们与典型开发项目的完全不同阶段有关。
 
@@ -1951,11 +1754,11 @@ Execution Manifest and Service Instance Manifest. See Section [13.7](#applicatio
 
 > 执行清单和服务实例清单。详细信息请参见[13.7](＃应用程序设计)节。
 
-**Execution Manifest** This kind of Manifest is used to specify the deployment-related information of applications running on the AUTOSAR Adaptive Platform. An Execu- tion Manifest is bundled with the actual executable code to support the integration of the executable code onto the machine. See Section [13.8](#execution-manifest) for details.
+**Execution Manifest** This kind of Manifest is used to specify the deployment-related information of applications running on the AUTOSAR Adaptive Platform. An Execution Manifest is bundled with the actual executable code to support the integration of the executable code onto the machine. See Section [13.8](#execution-manifest) for details.
 
 > **执行清单** 这种清单用于指定在 AUTOSAR 自适应平台上运行的应用程序的部署相关信息。执行清单与实际可执行代码一起打包，以支持将可执行代码集成到机器上。有关详细信息，请参见第 13.8 节。
 
-**Service Instance Manifest** This kind of Manifest is used to specify how service- oriented communication is configured in terms of the requirements of the underlying transport protocols. A Service Instance Manifest is bundled with the actual executable code that implements the respective usage of service-oriented communi- cation. See Section [13.9](#service-instance-manifest) for details.
+**Service Instance Manifest** This kind of Manifest is used to specify how serviceoriented communication is configured in terms of the requirements of the underlying transport protocols. A Service Instance Manifest is bundled with the actual executable code that implements the respective usage of service-oriented communication. See Section [13.9](#service-instance-manifest) for details.
 
 > **服务实例清单** 此类清单用于指定服务导向通信如何根据底层传输协议的要求进行配置。服务实例清单与实际执行实现相关服务导向通信用法的可执行代码一起打包。有关详细信息，请参见第 13.9 节(服务实例清单)。
 
@@ -1963,17 +1766,17 @@ Execution Manifest and Service Instance Manifest. See Section [13.7](#applicatio
 
 > **机器清单** 这种清单旨在描述仅适用于运行 AUTOSAR 自适应平台的基础机器(即在机器上没有运行任何应用程序)的部署相关内容。机器清单与用于建立 AUTOSAR 自适应平台实例的软件一起打包。有关详细信息，请参见第 13.10 节(机器清单)。
 
-The temporal division between the definition (and usage) of different kinds of Mani- fest leads to the conclusion that in most cases different physical files will be used to store the content of the three kinds of Manifest. In addition to the Application Design and the different kinds of Manifest, the AUTOSAR Methodology supports a Sys- tem Design with the possibility to describe Software Components of both AUTOSAR Platforms that will be used in a System in one single model. The Software Compo- nents of the different AUTOSAR platforms may communicate in a service-oriented way with each other. But it is also possible to describe a mapping of Signals to Services to create a bridge between the service-oriented communication and the signal-based communication.
+The temporal division between the definition (and usage) of different kinds of Manifest leads to the conclusion that in most cases different physical files will be used to store the content of the three kinds of Manifest. In addition to the Application Design and the different kinds of Manifest, the AUTOSAR Methodology supports a System Design with the possibility to describe Software Components of both AUTOSAR Platforms that will be used in a System in one single model. The Software Components of the different AUTOSAR platforms may communicate in a service-oriented way with each other. But it is also possible to describe a mapping of Signals to Services to create a bridge between the service-oriented communication and the signal-based communication.
 
 > 在定义(和使用)不同类型的 Manifest 之间的时间分割导致了这样的结论：在大多数情况下，将使用不同的物理文件来存储三种 Manifest 的内容。除了应用设计和不同类型的 Manifest 外，AUTOSAR 方法还支持系统设计，可以在一个模型中描述将在系统中使用的 AUTOSAR 平台上的软件组件。不同的 AUTOSAR 平台的软件组件可以以服务导向的方式相互通信。但是也可以描述信号到服务的映射，以建立服务导向通信和基于信号的通信之间的桥梁。
 
 ## Application Design
 
-The application design describes all design-related modeling that applies to the cre- ation of application software for the AUTOSAR AP. Application Design focuses on the following aspects:
+The application design describes all design-related modeling that applies to the creation of application software for the AUTOSAR AP. Application Design focuses on the following aspects:
 
 > 应用设计描述了所有与 AUTOSAR AP 创建应用软件相关的设计模型。应用设计重点关注以下方面：
 
-- Data types used to classify information for the software design and implementa- tion
+- Data types used to classify information for the software design and implementation
 - Service interfaces as the pivotal element for service-oriented communication
 - Definition how service-oriented communication is accessible by the application
 - Persistency Interfaces as the pivotal element to access persistent data and files
@@ -2002,7 +1805,7 @@ The purpose of the execution manifest is to provide information that is needed f
 
 - instantiate the same application software several times on the same machine, or to
 
-- deploy the application software to several machines and instantiate the applica- tion software per machine.
+- deploy the application software to several machines and instantiate the application software per machine.
 
 > 部署应用程序软件到多台机器，并在每台机器上实例化应用程序软件。
 
@@ -2020,7 +1823,7 @@ The Execution manifest focuses on the following aspects:
 
 > ## 服务实例清单
 
-The implementation of service-oriented communication on the network requires con- figuration which is specific to the used communication technology (e.g. SOME/IP). Since the communication infrastructure shall behave the same on the provider and the requesters of a service, the implementation of the service shall be compatible on both sides.
+The implementation of service-oriented communication on the network requires configuration which is specific to the used communication technology (e.g. SOME/IP). Since the communication infrastructure shall behave the same on the provider and the requesters of a service, the implementation of the service shall be compatible on both sides.
 
 > 实现网络上的服务导向通信需要特定于所使用的通信技术(例如 SOME / IP)的配置。由于通信基础设施在服务提供者和服务请求者之间应该表现一致，因此服务的实施应该在双方都兼容。
 
@@ -2071,7 +1874,7 @@ The Machine Manifest focuses on the following aspects:
 - The configuration of Platform Health Management.
 - The configuration of Time Synchronization.
 
-- Documentation of available hardware resources (e.g. how much RAM is avail- able; how many processor cores are available).
+- Documentation of available hardware resources (e.g. how much RAM is available; how many processor cores are available).
 
 > 文档提供可用的硬件资源(例如可用的 RAM 大小；有多少处理器内核)。
 
@@ -2079,7 +1882,7 @@ The Machine Manifest focuses on the following aspects:
 
 > ## 诊断部署
 
-A diagnostic configuration, in particular a diagnostic address, may only be assigned to a Root Software Cluster in the Manifest. Nevertheless, the mapped Diag- nosticContributionSet(s) may be distributed across several Software Clus- ters. This concept provides a lot of flexibility in assignment of a single diagnostic address to Software Clusters. For example, in one extreme this allows to use a single diagnostic address for the whole Machine (see Figure [13.4](#_bookmark312)), in another extreme
+A diagnostic configuration, in particular a diagnostic address, may only be assigned to a Root Software Cluster in the Manifest. Nevertheless, the mapped DiagnosticContributionSet(s) may be distributed across several Software Clusters. This concept provides a lot of flexibility in assignment of a single diagnostic address to Software Clusters. For example, in one extreme this allows to use a single diagnostic address for the whole Machine (see Figure [13.4](#_bookmark312)), in another extreme
 
 > 一个诊断配置，特别是一个诊断地址，只能在清单中分配给根软件集群。尽管如此，映射的 DiagnosticContributionSet(s)可以分布在几个软件集群中。这个概念为将单个诊断地址分配给软件集群提供了很大的灵活性。例如，在一个极端，这允许使用单个诊断地址为整个机器(参见图 13.4)，在另一个极端
 
@@ -2095,19 +1898,19 @@ a single diagnostic address per Software Cluster could be used (see Figure [13.5
 
 **Figure 13.5:** []{#\_bookmark313 .anchor}**Example using one diagnostic address for each Software Cluster**
 
-![](./media/image324.png)In the case of a distributed DiagnosticContributionSet, each Software Clus- ter shall include its related diagnostic configuration objects (for example, the Data Identifier configuration). The merge of such a split DiagnosticContribution- Set is done internally by the AUTOSAR Adaptive Platform (e.g. during installation or during start up the Diagnostic Management daemon).
+![](./media/image324.png)In the case of a distributed DiagnosticContributionSet, each Software Cluster shall include its related diagnostic configuration objects (for example, the Data Identifier configuration). The merge of such a split DiagnosticContributionSet is done internally by the AUTOSAR Adaptive Platform (e.g. during installation or during start up the Diagnostic Management daemon).
 
 ## Error Handling
 
-Proper handling of errors during runtime is an important aspect to build safe and se- cure systems. The AUTOSAR Adaptive Platform does provide means for raising and handling of such errors on different levels in the platform.
+Proper handling of errors during runtime is an important aspect to build safe and secure systems. The AUTOSAR Adaptive Platform does provide means for raising and handling of such errors on different levels in the platform.
 
 > 正确处理运行时发生的错误是构建安全可靠系统的重要方面。AUTOSAR Adaptive Platform 提供了在平台不同层次上报告和处理这些错误的手段。
 
-[Platform Health Management](#_bookmark186) detects errors (errors in the logical control flow, missed deadlines, and missed liveness reporting) at the level of Processes and performs recovery actions (for example, degradation) according to rules defined in the Manifest. [Execution Management](#_bookmark61) detects unexpected termination of Pro- cesses and reports to [State Management](#_bookmark76) for handling of such errors.
+[Platform Health Management](#_bookmark186) detects errors (errors in the logical control flow, missed deadlines, and missed liveness reporting) at the level of Processes and performs recovery actions (for example, degradation) according to rules defined in the Manifest. [Execution Management](#_bookmark61) detects unexpected termination of Processes and reports to [State Management](#_bookmark76) for handling of such errors.
 
 > 平台健康管理(#\_bookmark186)可以检测出逻辑控制流中的错误、未按时完成的任务和未及时报告的活动性，并根据清单中定义的规则执行恢复操作(例如降级)。执行管理(#\_bookmark61)可以检测到进程的意外终止，并将此错误报告给状态管理(#\_bookmark76)以处理。
 
-During execution of a Process of an [Adaptive Application](#_bookmark24), different abnormal conditions might be detected and need to be handled and/or reported. The follow- ing types of unsuccessful operations are distinguished within the AUTOSAR Adaptive Platform:
+During execution of a Process of an [Adaptive Application](#_bookmark24), different abnormal conditions might be detected and need to be handled and/or reported. The following types of unsuccessful operations are distinguished within the AUTOSAR Adaptive Platform:
 
 > 在[自适应应用](#_bookmark24)的过程中，可能会检测到不同的异常情况，需要处理和/或报告。AUTOSAR 自适应平台内部区分了以下类型的不成功操作：
 
@@ -2115,7 +1918,7 @@ During execution of a Process of an [Adaptive Application](#_bookmark24), differ
 
 > 一个错误是 AUTOSAR 运行时适应性应用程序 API 函数无法实现其指定目的的能力。错误通常是无效和/或意外的输入数据的结果。错误被认为是可恢复的，因此应由应用程序处理。
 
-- A Violation is the consequence of failed pre- or post-conditions of internal state of the AUTOSAR Runtime for Adaptive Applications. A Violation is con- sidered to be non-recoverable.
+- A Violation is the consequence of failed preor post-conditions of internal state of the AUTOSAR Runtime for Adaptive Applications. A Violation is considered to be non-recoverable.
 
 > 违反是自适应应用程序的 AUTOSAR 运行时内部状态的前置或后置条件失败的后果。违反被认为是不可恢复的。
 
@@ -2123,41 +1926,41 @@ During execution of a Process of an [Adaptive Application](#_bookmark24), differ
 
 > 损坏是系统资源损坏的结果，例如堆栈或堆栈溢出，或硬件内存缺陷(例如，检测到的位翻转)。损坏被认为是不可恢复的。
 
-- A failed default allocation is the inability of the AUTOSAR Runtime for Adaptive Applications's default memory allocation mechanism to satisfy an allo- cation request (for example, there is not enough free memory available).
+- A failed default allocation is the inability of the AUTOSAR Runtime for Adaptive Applications's default memory allocation mechanism to satisfy an allocation request (for example, there is not enough free memory available).
 
 > 无法满足分配请求的默认分配失败是 AUTOSAR 运行时适应应用程序的默认内存分配机制无法满足分配请求(例如，可用内存不足)。
 
-It is expected that a Violation or Corruption will not be experienced by a user of the AUTOSAR Adaptive Platform (i.e. an application developer), unless there is some- thing seriously wrong in the overall system. For example, faulty hardware may lead to a Corruption. A Violation may occur if basic assumptions about resource require- ments are violated, or the user runs the AUTOSAR Runtime for Adaptive Applications in a configuration that is not supported by its vendor.
+It is expected that a Violation or Corruption will not be experienced by a user of the AUTOSAR Adaptive Platform (i.e. an application developer), unless there is something seriously wrong in the overall system. For example, faulty hardware may lead to a Corruption. A Violation may occur if basic assumptions about resource requirements are violated, or the user runs the AUTOSAR Runtime for Adaptive Applications in a configuration that is not supported by its vendor.
 
 > 预期不会出现任何 AUTOSAR Adaptive Platform(即应用程序开发者)用户的违规或腐败，除非整个系统出现严重问题。例如，故障硬件可能会导致腐败。如果违反了资源需求的基本假设或者用户运行的 AUTOSAR Runtime for Adaptive Applications 配置不受其供应商支持，可能会发生违规。
 
 ## Trusted Platform
 
-To guarantee the correct function of the system, it is crucial to ensure that the code ex- ecuted on the AUTOSAR Adaptive Platform is unaltered (integrity) and has legitimate origin (authenticity). Keeping this property allows the integrator to build a Trusted Platform. A key property of a system that implements a Trusted Platform is a Trust Anchor (also called Root of Trust). A Trust Anchor is often realized
+To guarantee the correct function of the system, it is crucial to ensure that the code executed on the AUTOSAR Adaptive Platform is unaltered (integrity) and has legitimate origin (authenticity). Keeping this property allows the integrator to build a Trusted Platform. A key property of a system that implements a Trusted Platform is a Trust Anchor (also called Root of Trust). A Trust Anchor is often realized
 
 > 为了保证系统的正确功能，确保在 AUTOSAR Adaptive Platform 上执行的代码不受改变(完整性)并具有合法的起源(真实性)至关重要。保持这一特性允许集成器构建一个可信平台。实现可信平台的系统的一个关键属性是可信锚点(也称为可信根)。可信锚点通常是实现的。
 
-as a public key that is stored in a secure environment, e.g. in non-modifiable persistent memory or in an Hardware Security Module. A system designer is responsible to ensure that the system starts beginning with a Trust Anchor and that the chain of trust is kept until the [Execution Management](#_bookmark61) is launched. Depending on the mech- anism that is chosen by the system designer to establish the chain of trust, the integrity and authenticity of the entire system (including all executables) may be checked during system start-up. Alternatively, the system designer might only ensure that the already executed software has been checked regarding integrity and authenticity and [Execu-](#_bookmark61) [tion Management](#_bookmark61) takes over responsibility on continuing the chain of trust when it takes over control of the system. In the latter case, the system integrator is responsible to ensure that the [Execution Management](#_bookmark61) is configured accordingly.
+as a public key that is stored in a secure environment, e.g. in non-modifiable persistent memory or in an Hardware Security Module. A system designer is responsible to ensure that the system starts beginning with a Trust Anchor and that the chain of trust is kept until the [Execution Management](#_bookmark61) is launched. Depending on the mechanism that is chosen by the system designer to establish the chain of trust, the integrity and authenticity of the entire system (including all executables) may be checked during system start-up. Alternatively, the system designer might only ensure that the already executed software has been checked regarding integrity and authenticity and [Execu-](#_bookmark61) [tion Management](#_bookmark61) takes over responsibility on continuing the chain of trust when it takes over control of the system. In the latter case, the system integrator is responsible to ensure that the [Execution Management](#_bookmark61) is configured accordingly.
 
 > 作为一个存储在安全环境中的公钥，例如存储在不可修改的持久内存中或硬件安全模块中。系统设计者负责确保系统从信任锚点开始启动，并确保信任链在启动[执行管理](#_bookmark61)时保持不变。根据系统设计者选择的建立信任链的机制，可以在系统启动时检查整个系统(包括所有可执行文件)的完整性和真实性。或者，系统设计者可以仅确保已执行的软件已经检查了完整性和真实性，并且[执行管理](#_bookmark61)在接管系统控制权时负责继续保持信任链。在后一种情况下，系统集成商负责确保[执行管理](#_bookmark61)得到正确配置。
 
-Passing trust requires that a trusted entity checks (using trusted functionality) that the entity down the chain is authentic. The Trust Anchor (the first entity in the chain) is authentic by definition. An example of such a chain of trust could look like this: The Trust Anchor authenticates the bootloader before the bootloader is being started. In each subsequent step in the boot process, the to-be-started executable shall be au- thenticated first, for example by the executable started previously or by some external entity like an Hardware Security Module. After the relevant parts of the [Operat-](#_bookmark28) [ing System](#_bookmark28) have been authentically started, it shall launch [Execution Manage-](#_bookmark61) [ment](#_bookmark61) as one of its first processes in the same manner passing trust to the AUTOSAR Adaptive Platform. Then, [Execution Management](#_bookmark61) takes over the responsibility of authenticating [Adaptive Application](#_bookmark24)s before launching them.
+Passing trust requires that a trusted entity checks (using trusted functionality) that the entity down the chain is authentic. The Trust Anchor (the first entity in the chain) is authentic by definition. An example of such a chain of trust could look like this: The Trust Anchor authenticates the bootloader before the bootloader is being started. In each subsequent step in the boot process, the to-be-started executable shall be authenticated first, for example by the executable started previously or by some external entity like an Hardware Security Module. After the relevant parts of the [Operat-](#_bookmark28) [ing System](#_bookmark28) have been authentically started, it shall launch [Execution Manage-](#_bookmark61) [ment](#_bookmark61) as one of its first processes in the same manner passing trust to the AUTOSAR Adaptive Platform. Then, [Execution Management](#_bookmark61) takes over the responsibility of authenticating [Adaptive Application](#_bookmark24)s before launching them.
 
 > 传递信任需要一个可信任的实体(使用可信任的功能)检查链中下一个实体是否真实可靠。信任锚点(链中的第一个实体)默认是可信任的。这样的信任链的一个例子可以是：信任锚点在启动引导程序之前验证它。在启动过程的每一步，要启动的可执行文件应该首先被验证，例如由先前启动的可执行文件或某些外部实体(如硬件安全模块)验证。在真实启动相关的操作系统部分之后，它应该以相同的方式启动执行管理作为它的第一个进程，将信任传递给 AUTOSAR 自适应平台。然后，执行管理负责在启动自适应应用程序之前验证它们。
 
-As stated above, if authenticity is not checked by the functionality of the Trust An- chor itself, which is authentic by definition, the functionality that shall be applied to verify authenticity of an executable has to be authenticated as well before it is applied. For instance, if the Crypto Functional Cluster shall be used to verify authentic- ity of executables, the Crypto Functional Cluster itself shall be authenticated by some trusted entity before it is used.
+As stated above, if authenticity is not checked by the functionality of the Trust Anchor itself, which is authentic by definition, the functionality that shall be applied to verify authenticity of an executable has to be authenticated as well before it is applied. For instance, if the Crypto Functional Cluster shall be used to verify authenticity of executables, the Crypto Functional Cluster itself shall be authenticated by some trusted entity before it is used.
 
 > 如上所述，如果可信锚点本身的功能没有检查真实性(由定义可知是可信的)，则必须在应用它之前验证用于验证可执行文件真实性的功能是否可信。例如，如果要使用加密功能集群来验证可执行文件的真实性，则必须在使用之前由某个可信实体验证加密功能集群本身。
 
 ## Secure Communication
 
-AUTOSAR supports different protocols that provide communication security over a net- work. Integrity of messages can be ensured by the end-to-end protection offered by the \[[10](#_bookmark332), AUTOSAR E2E library\]. End-to-end protection assumes that safety- and security- related data exchange shall be protected at runtime against the effects of faults within the communication link. Such faults include random hardware faults (e.g. corrupt regis- ters of a transceiver), interference (e.g. electromagnetic interference), and systematic faults in the communication stack. The configuration of end-to-end-protection is done via Service Instance Manifest on level of Service events, methods, and fields (notifier, get, and set methods). Confidentiality and authenticity of messages can be ensured by dedicated configurations for the individual transport protocols (e.g. TLS, SecOC) in the Service Instance Manifest on level of Service events, meth- ods, and fields (notifier, get, and set methods).
+AUTOSAR supports different protocols that provide communication security over a network. Integrity of messages can be ensured by the end-to-end protection offered by the \[[10](#_bookmark332), AUTOSAR E2E library\]. End-to-end protection assumes that safetyand securityrelated data exchange shall be protected at runtime against the effects of faults within the communication link. Such faults include random hardware faults (e.g. corrupt registers of a transceiver), interference (e.g. electromagnetic interference), and systematic faults in the communication stack. The configuration of end-to-end-protection is done via Service Instance Manifest on level of Service events, methods, and fields (notifier, get, and set methods). Confidentiality and authenticity of messages can be ensured by dedicated configurations for the individual transport protocols (e.g. TLS, SecOC) in the Service Instance Manifest on level of Service events, methods, and fields (notifier, get, and set methods).
 
 > AUTOSAR 支持不同的协议，可以在网络上提供通信安全。消息的完整性可以通过[10]，AUTOSAR E2E 库提供的端到端保护来确保。端到端保护假设安全和安全相关的数据交换应该在通信链路中的故障的影响下运行时保护。这些故障包括随机硬件故障(例如，收发器的错误寄存器)，干扰(例如，电磁干扰)以及通信堆栈中的系统故障。端到端保护的配置是通过服务实例清单在服务事件、方法和字段(通知者，获取和设置方法)的级别上完成的。消息的机密性和真实性可以通过为单个传输协议(例如 TLS，SecOC)在服务实例清单的服务事件、方法和字段(通知者，获取和设置方法)的级别上的专用配置来确保。
 
 # Risks and Technical Debt
 
-This chapter lists and rates risks associated with the overall architecture of the AU- TOSAR Adaptive Platform in Section [14.1](#risks). These risks usually might cause that some of the quality attributes of the AUTOSAR Adaptive Platform are not (fully) meat. Sec- tion [14.2](#technical-debt) lists technical debt of the AUTOSAR Adaptive Platform that may impact its maintainability.
+This chapter lists and rates risks associated with the overall architecture of the AUTOSAR Adaptive Platform in Section [14.1](#risks). These risks usually might cause that some of the quality attributes of the AUTOSAR Adaptive Platform are not (fully) meat. Section [14.2](#technical-debt) lists technical debt of the AUTOSAR Adaptive Platform that may impact its maintainability.
 
 > 本章节列出和评估与 AUTOSAR Adaptive Platform 的整体架构相关的风险，在[14.1](#risks)中。这些风险通常可能导致 AUTOSAR Adaptive Platform 的某些质量属性不能(完全)满足。[14.2](#technical-debt)部分列出了可能影响其可维护性的 AUTOSAR Adaptive Platform 的技术债务。
 
@@ -2171,24 +1974,24 @@ This document categorizes risks according to their severity. The severity is a f
 
 > 这份文件根据风险的严重性对风险进行了分类。严重性是概率和风险影响的函数。概率分为以下几类：
 
-- **very low** - probability is less than 1 thousandth
-- **low** - probability is between 1 thousandth and 1 percent
-- **medium** - probability is between 1 percent and 10 percent
-- **high** - probability is between 10 percent and 50 percent
+- **very low** probability is less than 1 thousandth
+- **low** probability is between 1 thousandth and 1 percent
+- **medium** probability is between 1 percent and 10 percent
+- **high** probability is between 10 percent and 50 percent
 
-- **very high** - probability is more than 50 percent The impact of a risk is categorized as follows:
+- **very high** probability is more than 50 percent The impact of a risk is categorized as follows:
 
-> 风险的影响可以分为以下几类：**非常高** - 概率超过 50％
+> 风险的影响可以分为以下几类：**非常高** 概率超过 50％
 
-- **very low** - at most one quality scenario will take additional significant effort to be satisfied
+- **very low** at most one quality scenario will take additional significant effort to be satisfied
 
 > 最多只有一个质量场景需要额外的重大努力才能满足。
 
-- **low** - more than one quality scenario will take additional significant effort to be satisfied
-- **medium** - at most one quality scenario is not satisfied with small gaps
-- **high** - at most one quality scenario is not satisfied with big gaps
+- **low** more than one quality scenario will take additional significant effort to be satisfied
+- **medium** at most one quality scenario is not satisfied with small gaps
+- **high** at most one quality scenario is not satisfied with big gaps
 
-- **very high** - more than one quality scenario is not satisfied with big gaps The final severity of a risk is then calculated according to table [14.1](#_bookmark320).
+- **very high** more than one quality scenario is not satisfied with big gaps The final severity of a risk is then calculated according to table [14.1](#_bookmark320).
 
 > 风险的最终严重程度然后根据表 14.1 来计算，但是超过一个质量场景都不满足，存在较大差距。
 
@@ -2214,7 +2017,7 @@ No technical debt has been identified yet.
 
 # References
 
-1. []{#\_bookmark323 .anchor}ISO 42010:2011 -- Systems and software engineering -- Architecture description []{#\_bookmark324 .anchor}[http://www.iso.org](http://www.iso.org/)
+1. []{#\_bookmark323 .anchor}ISO 42010:2011 -Systems and software engineering -Architecture description []{#\_bookmark324 .anchor}[http://www.iso.org](http://www.iso.org/)
 
 > ISO 42010:2011－系统和软件工程－架构描述－[http://www.iso.org](http://www.iso.org/)
 
