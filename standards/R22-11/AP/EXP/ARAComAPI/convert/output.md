@@ -153,6 +153,18 @@ The glossary below includes acronyms and abbreviations relevant to the explanati
 
 > 以下词汇表包括与 `ara::com` API 解释相关的缩略词和缩写。
 
+```
+table1
+```
+
+```
+Terms       Description
+
+Binding     This typically describes the realization of some abstract conceptwith a specific implementation or technology.In AUTOSAR, for instance, we have an abstract data type andinterface model described in the methodology.Mapping it to a concrete programming language is calledlan-guage binding. In the AUTOSAR Adaptive Platform for instancewe do have a C++ language binding.In this explanatory document we typically use the tech termbind-ingto refer to the implementation of the abstract (technology in-dependent) ara::com API to a concrete communication transporttechnology like for instance sockets, pipes, shared memory, ...
+
+Callable     In the context of C++ a Callable is defined as: A Callable type is atype for which the INVOKE operation (used by, e.g., std::function,std::bind, and std::thread::thread) is applicable. This operationmay be performed explicitly using the library function std::invoke.(since C++17)12 of 145Document ID 846: AUTOSAR_EXP_ARAComAPI
+```
+
 # 3. Introduction
 
 ## 1. Approach
@@ -192,6 +204,12 @@ So in the final [ara::com] API specification, the reader will find concepts (whi
 - Zero-copy capable API with possibility to shift memory management to the middleware (DADDY)
 - Data reception filtering (DDS, DADDY)
 
+> - 代理（Proxy）/存根（Stub）方法/骨架（Skeleton）方法（CORBA、Ice、CommonAPI、Java RMI……）
+> - 协议无关的 API（CommonAPI、Java RMI）
+> - 带有可配置接收端高速缓存的队列通信（DDS、DADDY、Classic Platform）
+> - 具有零拷贝能力的 API，可以将内存管理转移到中间件（DADDY）
+> - 数据接收过滤（DDS、DADDY）
+
 Now that we have established the introduction of a new middleware API, we go into the details of the API in the following chapters.
 
 > 现在我们已经建立了新的中间件 API 的介绍，我们将在接下来的章节中详细介绍该 API。
@@ -224,13 +242,13 @@ Major steps involved in the development of Adaptive Software are
 - Adaptive Software Development
 - Integration and Deployment
 
-Adaptive applications run on top of ARA layer and exchanges the information using [SI]s and Ports. Important contribution for [ara::com] API work performed during the Integration and Deployment step of Adaptive Methodology. It supports the generation of [SI] Description ARXML file, which aggregates the [SI]s and ports. [SI]s for service-oriented communication defined by Events, Methods and Fields [ [5.1]. This is done independent of Software components or Transport layer used for underlying communication.
+Adaptive applications run on top of ARA layer and exchanges the information using [SI]s and Ports. Important contribution for [ara::com] API work performed during the Integration and Deployment step of Adaptive Methodology. It supports the generation of [SI] Description ARXML file, which aggregates the [SI]s and ports. [SI]s for service-oriented communication defined by Events, Methods and Fields [5.1]. This is done independent of Software components or Transport layer used for underlying communication.
 
 > 应用程序可以在 ARA 层之上运行，并使用 SI 和端口来交换信息。在自适应方法论的集成和部署步骤中，为 ara::com API 工作做出了重要贡献。它支持生成 SI 描述 ARXML 文件，该文件聚合了 SI 和端口。针对基于底层通信的服务导向通信定义的 SI，其由事件、方法和字段组成[5.1]。这是独立于用于底层通信的软件组件或传输层完成的。
 
 Adaptive Platform supports two types of ports namely Provided and Required. [SI] along with Provided port details used for the generation of the Service Skeleton class and Required port details used for the generation of Proxy classes [Figure] [5.2]. Proxy and Skeleton classes use [ara::com] API to communicate with other Adaptive Platform clusters and Adaptive Applications.
 
-> 适应性平台支持两种端口，即提供的端口和需要的端口。[SI]除了提供的端口详细信息用于生成服务骨架类，所需的端口详细信息用于生成代理类[图] \> [5.2]。代理和骨架类使用[ara::com]API 与其他适应性平台集群和适应性应用程序进行通信。
+> 适应性平台支持两种端口，即提供的端口和需要的端口。[SI]除了提供的端口详细信息用于生成服务骨架类，所需的端口详细信息用于生成代理类[图] [5.2]。代理和骨架类使用[ara::com]API 与其他适应性平台集群和适应性应用程序进行通信。
 
 Service instances are configured, notably the binding of the [SI]s to a chosen transport layer, whether a specific service instance is either Provided or Required and whether there is a mapping to a dedicated Machine. The configurations of the service instance are manifested in the Service Instance Manifest.
 
@@ -268,7 +286,7 @@ During the design phase of the API we constantly challenged each part of our dra
 
 One of the central design points was --as already stated in the introduction --to support polling and event-driven programming paradigms equally well.
 
-> 一个核心的设计点就是，如引言中所述，要同时支持轮询和事件驱动的编程范式。
+> 一个核心的设计点就是，如引言中所述，要**同时支持轮询和事件驱动的编程范式**。
 
 So you will see in the later chapters, that the application developer, when using [ara::com] is free to chose the approach, which fits best to his application design, independent whether he implements the service consumer or service provider side of a communication relation.
 
@@ -288,17 +306,28 @@ The decision within AUTOSAR to genuinely support C++11/C++14 for AP was a very g
 
 For enhanced usability, comfort and a breeze of elegance [ara::com] API exploits C++ features like smart pointers, template functions and classes, proven concepts for asynchronous operations and reasonable operator overloading.
 
-> 为了提高可用性、舒适度和优雅的气息，[ara::com] API 利用 C++ 的特性，如智能指针、模板函数和类，已经证明的异步操作概念以及合理的运算符重载。
+> 为了提高可用性、舒适度和优雅的气息，**[ara::com] API 利用 C++ 的特性，如智能指针、模板函数和类，已经证明的异步操作概念以及合理的运算符重载**。
 
-1. # Fundamentals
+> [!NOTE]
+> 在 Autosar 协议中，`IPC` 指的是 `Inter Process Communication` 即进程间通信，它是用于在不同的进程间进行数据传输和通信的一种机制。
+>
+> 在 Autosar 的架构中，各个核心组件以及软件组件都被组织在不同的进程中，这些进程之间需要互相协作才能完成整个系统的功能。而 `IPC` 机制就是为了满足这种需求而设计的一种通信方式。通过 `IPC`，不同的软件组件可以互相传递消息，以实现数据的共享和交换。
+>
+> 在 Autosar 中，主要使用以下三种 `IPC` 通信机制：
+>
+> 1. `Sender Receiver`：发送者和接收者通过队列进行通信，发送者将数据放入队列中，接收者从队列中读取数据。这种方式适用于数据量小的通信场景。
+> 2. `Client Server`：客户端和服务端通过远程过程调用实现通信，客户端向服务端发送请求，服务端进行处理并返回结果。这种方式适用于需要处理复杂数据或进行复杂算法的场景。
+> 3. `Event Message`：通过事件触发的方式进行通信，发送者产生一个事件并发送给接收者，接收者进行相应的操作。这种方式适用于一些简单的通知和事件触发的场景。
+>
+> 总体来说，在 Autosar 中，`IPC` 机制是实现不同进程间通信的重要手段，它使得系统中的各个组件能够共享数据、协作完成任务，从而实现整个系统的功能。
 
-   1. ## Proxy/Skeleton Architecture
+# Fundamentals
 
-> ## 代理/骨架架构
+## Proxy/Skeleton Architecture
 
 If you've ever had contact with middleware technology from a programmer's perspective, then the approach of a Proxy/Skeleton architecture might be well known to you.
 
-> 如果你从程序员的角度接触过中间件技术，那么代理/骨架架构的方法可能对你来说很熟悉。
+> 如果你从程序员的角度接触过中间件技术，那么**代理/骨架**架构的方法可能对你来说很熟悉。
 
 Looking at the number of middleware technologies using the Proxy/Skeleton (sometimes even called Stub/Skeleton) paradigm, it is reasonable to call it the \"classic approach\".
 
@@ -308,7 +337,7 @@ So with [ara::com] we also decided to use this classical Proxy/Skeleton architec
 
 > 因此，我们还决定采用这种经典的代理/骨架架构模式，并相应地将其命名为 [ara::com]。
 
-![](./media/image1.png)
+![](./media/fig_4.1.png)
 **Figure 4.1: Proxy Skeleton Pattern**
 
 The basic idea of this pattern is, that from a formal service definition two code artifacts are generated:
@@ -317,23 +346,19 @@ The basic idea of this pattern is, that from a formal service definition two cod
 
 - Service Proxy: This code is from the perspective of the service consumer, which wants to use a possibly remote service the facade that represents this service on code level.
 
-> 服务代理：这段代码是从服务消费者的角度出发，该消费者希望使用可能是远程的服务，代码层面上代表这项服务的外观。
+> **服务代理**：这段代码是从服务消费者的角度出发，该消费者希望使用可能是远程的服务，代码层面上代表这项服务的外观。
 
 In an object-oriented language binding, this typically is an instance of a generated class, which provides methods for all functionalities the service provides. So the service consumer side application code interacts with this local facade, which then knows how to propagate these calls to the remote service implementation and back.
 
-> 在面向对象语言绑定中，这通常是一个生成类的实例，它提供服务提供的所有功能的方法。因此，服务消费者端应用程序代码与此本地外观交互，然后知道如何将这些调用传播到远程服务实现并返回。
+> 在面向对象语言绑定中，这通常是一个**生成类的实例**，它提供服务提供的所有功能的方法。因此，服务消费者端应用程序代码与此本地外观交互，然后知道如何将这些调用传播到远程服务实现并返回。
 
-- Service Skeleton: This code is from the perspective of the service implementation, which provides functionalities according to the service definition the code, which allows to connect the service implementation to the Communication Man-
+- Service Skeleton: This code is from the perspective of the service implementation, which provides functionalities according to the service definition the code, which allows to connect the service implementation to the Communication Management transport layer, so that the service implementation can be contacted by distributed service consumers.
 
-> 服务骨架：这段代码是从服务实现的角度提供的，根据服务定义提供功能 这段代码允许将服务实现连接到通信管理。
-
-agement transport layer, so that the service implementation can be contacted by distributed service consumers.
-
-> 管理传输层，以便分布式服务消费者可以联系服务实现。
+> **服务骨架**：这段代码是从服务实现的角度提供的，根据服务定义提供功能 这段代码允许将服务实现连接到通信管理，以便分布式服务消费者可以联系服务实现。
 
 In an object-oriented language binding, this typically is an instance of a generated class. Usually the service implementation from the application developer is connected with this generated class via a subclass relationship.
 
-> 在面向对象的语言绑定中，这通常是一个生成类的实例。通常，应用程序开发人员的服务实现与此生成的类通过子类关系连接。
+> 在面向对象的语言绑定中，这通常是一个**生成类的实例**。通常，应用程序开发人员的服务实现与此生成的类通过子类关系连接。
 
 So the service side application code interacts with this middleware adapter either by implementing abstract methods of the generated class or by calling methods of that generated class.
 
@@ -351,7 +376,7 @@ Now, that we've talked about the Proxy/Skeleton Architecture, let us continue to
 
 ara::com defines four different mechanisms to communicate between a server and a client
 
-> ara::com 定义了四种不同的机制来在服务器和客户端之间进行通信。
+> ara::com 定义了**四种不同的机制来在服务器和客户端之间进行通信**。
 
 - Methods
 - Events
@@ -374,12 +399,12 @@ When data is available for an event, the server application sends the event data
 
 Triggers are used by the server to notify when a specific condition occurs. It does not transfer any data. It uses the same subscription and notification mechanisms as events.
 
-> 触发器由服务器用于在特定条件发生时通知。它不传输任何数据。它使用与事件相同的订阅和通知机制。
+> **触发器**由服务器用于在特定条件发生时通知。它不传输任何数据。它使用与事件相同的订阅和通知机制。
 
 ![](./media/image4.png)
-**Figure 4.2:** []**ara::com event based communication**
+**Figure 4.2:** ara::com event based communication
 
-## ara::com Method based communication
+## `ara::com` Method based communication
 
 With method based communication a client application calls a method that is executed on the remote server. This is shown in figure [Figure] [4.3]. The method may, or may not return a value to the client. If a return value is provided, the [ara::core::Future] and [ara::core::Promise] pattern is used to give a possibility of a non-blocking behavior for the communication. See chapter [5.3.6](#methods) for details.
 
@@ -390,19 +415,17 @@ The server can be configured for different processing modes of method invocation
 > 服务器可以配置为不同的方法调用处理模式。选项有
 
 - **Event-driven, concurrent** (kEvent): Incoming service method calls are processed in an event based manner.
-
-> **事件驱动，并发**(kEvent)：来自服务方法调用以基于事件的方式处理。
-
-**Event-driven, sequential** (kEventSingleThread): Same as kEvent on single thread basis.
-
+- **Event-driven, sequential** (kEventSingleThread): Same as kEvent on single thread basis.
 - **Polling** (KPoll): Incoming service method calls need to be explicitly processed in polling manner by calling [ProcessNextMethodCall].
 
+> **事件驱动，并发**(kEvent)：来自服务方法调用以基于事件的方式处理。
+> **事件驱动，顺序**（keventsinglethread）：与单线程上的 kevent 相同。
 > **Polling**(KPoll)：需要通过调用 [ProcessNextMethodCall] 显式地以轮询方式处理传入的服务方法调用。
 
 ![](./media/image5.png)
-**Figure 4.3:** []**ara::com method based communication**
+**Figure 4.3:** ara::com method based communication
 
-## ara::com Field based communication
+## `ara::com` Field based communication
 
 With field based communication a server can provide a value for some data that a client can access or update at any time. The functionality of a field can be viewed as a combination of event and methods:
 
@@ -424,7 +447,7 @@ On the server side, the field is handled in the skeleton implementation by
 > - 定义一个回调，当客户端通过[RegisterSetHandler()]更新值时调用。
 > - 当新值要发布给客户端时，调用更新方法([Update()])。
 
-1. ## Data Type Abstractions
+## Data Type Abstractions
 
 [ara::com] API introduces specific data types, which are used throughout its various interfaces. They can roughly be divided into the following classes:
 
@@ -433,12 +456,12 @@ On the server side, the field is handled in the skeleton implementation by
 - Pointer types: for pointers to data transmitted via middleware
 - Collection types: for collections of data transmitted via middleware.
 - Types for async operation result management: [ara::com] relies on AUTOSAR AP specific data types (see [3]), which are specific versions of C++ [std::fu-] [ture]/[std::promise]
-
-> 用于异步操作结果管理的类型：[ara::com] 依赖于 AUTOSAR AP 特定的数据类型(参见[3])，它们是 C++ [std::future]/[std::promise] 的特定版本。
-
 - Function wrappers: for various application side callback or handler functions to be called by the middleware
 
-> 函数包装器：用于调用中间件的各种应用程序端回调或处理程序函数。
+> - 指针类型：用于通过中间件传输的数据指针
+> - 收集类型：用于通过中间件传输的数据收集。
+> - 用于异步操作结果管理的类型：[ara::com] 依赖于 AUTOSAR AP 特定的数据类型(参见[3])，它们是 C++ [std::future]/[std::promise] 的特定版本。
+> - 函数包装器：用于调用中间件的各种应用程序端回调或处理程序函数。
 
 [ara::com] defines signature and expected behavior of those types, but does not provide an implementation. The idea of this approach is, that platform vendors could easily come up with their own optimized implementation of those types.
 
@@ -452,13 +475,9 @@ Being able to provide their own implementations allows to optimize for their cho
 
 > 能够提供自己的实现可以为他们选择的记忆模型进行优化。
 
-For most of the types [ara::com] provides a default mapping to existing C++ types in ara/com/types.h. The default mapping of the types provided by [3] can be found in,
+For most of the types [ara::com] provides a default mapping to existing C++ types in ara/com/types.h. The default mapping of the types provided by [3] can be found in, e.g. 'ara/core/future.h' or 'ara/core/promise.h'. This default mapping decision could be reused by an AP product vendor.
 
-> ara::com 提供了一种默认映射到 ara/com/types.h 中现有 C++ 类型的方式，可以在[3]中找到默认映射的类型。
-
-e.g. ara/core/future.h or ara/core/promise.h. This default mapping decision could be reused by an AP product vendor.
-
-> 例如：ara/core/future.h 或 ara/core/promise.h。此默认映射决定可由 AP 产品供应商重复使用。
+> `ara::com` 提供了一种默认映射到 ara/com/types.h 中现有 C++ 类型的方式，可以在[3]中找到默认映射的类型。例如：'ara/core/future.h' 或 'ara/core/promise.h'。此默认映射决定可由 AP 产品供应商重复使用。
 
 The default mapping provided by [ara::com] even has a real benefit for a product vendor, who wants to implement its own variant: He can validate the functional behavior of his own implementation against the implementation of the default mapping.
 
@@ -468,7 +487,7 @@ The default mapping provided by [ara::com] even has a real benefit for a product
 
 [ara::com] API follows the concepts of error handling described in chapter \"Error handling\" in [3]. Recoverable [Error]s will be returned via an ara::Core::ErrorCode embedded into a [ara::core::Result], which either holds a valid return value or the ara::Core::ErrorCode.
 
-> ara::com API 遵循第 3 章中描述的错误处理概念。可恢复的错误将通过 ara::Core::ErrorCode 嵌入 ara::core::Result 中返回，该结果既可以包含有效的返回值，也可以包含 ara::Core::ErrorCode。
+> `ara::com` API 遵循第 3 章中描述的错误处理概念。可恢复的错误将通过 `ara::Core::ErrorCode` 嵌入 `ara::core::Result` 中返回，该结果既可以包含有效的返回值，也可以包含 `ara::Core::ErrorCode`。
 
 For each function in the [ara::com] API a set of predefined ara::Core::ErrorCodes from the error domain [ara::com::ComErrorDomain], (or from [ara::com::e2e::E2EErrorDomain] for E2E checks) are defined. These errors should be handled by the application that is using the API. Besides these a stack vendor may also define additional error codes, that might need to be handles as well.
 
@@ -482,13 +501,9 @@ Exceptions in the [ara::com] API are only used in case of [Violation]s or [Corru
 
 > 在 ara::com API 中，只有在发生违规或腐败时才会使用异常。这些都是不可恢复的，通常不应由应用程序开发人员处理。
 
-1. ## Service Connection Approach
+## Service Connection Approach
 
-> 服务连接方法
-
-1. ### Instance Identifiers and Instance Specifiers
-
-> ### 实例标识符和实例指定符
+### Instance Identifiers and Instance Specifiers(实例标识符和实例指定符)
 
 Instance identifiers, which get used at proxy and as well at skeleton side, are such a central concept, that their explanation is drawn here --before the detailed description of [ara::com] proxies and skeletons in upcoming chapters.
 
@@ -504,43 +519,32 @@ At [ara::com] API level the instance identifier is generally a technical binding
 
 Therefore the concrete content/structure of which such an instance identifier consists, is totally technology specific: So f.i. SOME/IP is using 16 bit unsigned integer identifiers to distinguish different instances of the same service type, while DDS (DDS-RPC) uses _string\<256\>_ as service_instance_name.
 
-> 因此，这种实例标识符的具体内容/结构完全取决于技术：例如，SOME/IP 使用 16 位无符号整数标识符来区分同一服务类型的不同实例，而 DDS(DDS-RPC)使用 _string\<256\>_ 作为服务实例名称。
+> 因此，这种实例标识符的具体内容/结构完全取决于技术：例如，**SOME/IP 使用 16 位无符号整数标识符来区分同一服务类型的不同实例，而 DDS(DDS-RPC)使用 _string\<256\>_ 作为服务实例名称**。
 
-Independant of the binding technology the abstract facade of any concrete instance identifier shall apply to this signature at [ara::com] API level in namespace [ara::-] [com]:
+Independant of the binding technology the abstract facade of any concrete instance identifier shall apply to this signature at [ara::com] API level in namespace [ara::com]:
 
-> 不管绑定技术是什么，所有具体实例标识符的抽象外观都应应用于 [ara::com] API 层级的命名空间 [ara::-] \> [com] 中的此签名：
+> 不管绑定技术是什么，所有具体实例标识符的抽象外观都应应用于 [ara::com] API 层级的命名空间 [ara::com] 中的此签名：
 
-```
+```bash
 class InstanceIdentifier {
-
 public:
 
-static ara::core::Result\<InstanceIdentifier\>
+   static ara::core::Result<InstanceIdentifier>
+   Create(StringView serializedFormat) noexcept;
 
-Create(StringView serializedFormat) noexcept;
-
-explicit InstanceIdentifier
-
-(ara::core::StringView serializedFormat);
-
-ara::core::StringView ToString() const;
-
-bool operator==(const InstanceIdentifier& other) const;
-
-bool operator\<(const InstanceIdentifier& other) const;
-
-InstanceIdentifier& operator=(const InstanceIdentifier& other);
-
+   explicit InstanceIdentifier(ara::core::StringView serializedFormat);
+   ara::core::StringView ToString() const;
+   bool operator==(const InstanceIdentifier& other) const;
+   bool operator<(const InstanceIdentifier& other) const;
+   InstanceIdentifier& operator=(const InstanceIdentifier& other);
 };
 ```
 
 **Listing 4.1: InstanceIdentifier class**
 
-> 列表 4.1：InstanceIdentifier 类
-
 As you can see the instance identifier interface [ara::com::InstanceIdentifier] provides a [ctor] taking a string, which means it can be constructed from a string representation. It also provides a ToString() method, which allows to get a stringified representation of the technology specific [ara::com::InstanceIdentifier].
 
-> 可以看到，实例标识符接口 [ara::com::InstanceIdentifier] 提供了一个接受字符串的 [ctor]，这意味着它可以从字符串表示中构造出来。它还提供了一个 ToString()方法，允许获取特定技术的 [ara::com::InstanceIdentifier] 的字符串表示。
+> 可以看到，实例标识符接口 [ara::com::InstanceIdentifier] 提供了一个接受字符串的 [ctor]，这意味着它可以从字符串表示中构造出来。它还提供了一个 `ToString()` 方法，允许获取特定技术的 [ara::com::InstanceIdentifier] 的字符串表示。
 
 This pair of [ctor] taking a string representation and the possibility to write out the string representation makes the [ara::com::InstanceIdentifier] \"serializable\". This allows it to be transferred, persisted, later re-used, \... (more on potential use cases later).
 
@@ -554,13 +558,13 @@ Since it is a core feature, that the technical binding used by an [ara::com] bas
 
 > 由于核心特性是由 ara::com 基础应用程序使用的技术绑定在部署期间由集成器定义/指定，因此 ara::com 软件开发人员对其内容/结构的期望通常是无效的。然而，将其记录/跟踪到日志通道可能有助于调试分析。
 
-Then, where does the software-developer get such a highly binding specific [ara::-] [com::InstanceIdentifier] to be used in [ara::com] API calls?
+Then, where does the software-developer get such a highly binding specific [ara::com::InstanceIdentifier] to be used in [ara::com] API calls?
 
-> 那么软件开发者从哪里获取这样一个高度约束的特定 [ara::-] \> [com::InstanceIdentifier] 来用于 [ara::com] API 调用？
+> 那么软件开发者从哪里获取这样一个高度约束的特定 [ara::com::InstanceIdentifier] 来用于 [ara::com] API 调用？
 
 The answer is: By an [ara::com] provided functionality, which translates a logical local name used typically by the software developer in his realm into the technology/binding specific [ara::com::InstanceIdentifier]. This indirection masters both challenges:
 
-> 答案是：通过 ara::com 提供的功能，将软件开发人员在其领域中通常使用的逻辑本地名称转换为技术/绑定特定的 ara::com::InstanceIdentifier。这种间接性掌握了两个挑战：
+> 答案是：通过 `ara::com` 提供的功能，将软件开发人员在其领域中通常使用的逻辑本地名称转换为技术/绑定特定的 `ara::com::InstanceIdentifier`。这种间接性掌握了两个挑战：
 
 - developer using [ara::com] does not need to know anything about bindings and their specifics
 
@@ -576,57 +580,37 @@ The requirement for this local name --we will call it \"instance specifier\" fro
 
 --is, that it is unambiguous within an executable. It has basically the form:
 
+```
 \<context 0\>/\<context 1\>/\.../\<context N\>/\<port name\>
-
-> \<上下文 0\>/\<上下文 1\>/\.../\<上下文 N\>/\<端口名称\>
+```
 
 The C++ representation of such an \"instance specifier\" is the class [ara::core::In-] [stanceSpecifier]. Structurally it looks similar to the [ara::com::InstanceIden-] [tifier]:
 
-> C++ 中表示这样的"实例指定符"的是类 ara::core::InstanceSpecifier。结构上它看起来与 ara::com::InstanceIdentifier 类似。
+> C++ 中表示这样的"实例指定符"的是类 `ara::core::InstanceSpecifier`。结构上它看起来与 `ara::com::InstanceIdentifier` 类似。
 
-```
-[]class InstanceSpecifier final
-
+```cpp
+class InstanceSpecifier final
 {
-
 public:
-
 // ctor to build specifier from AUTOSAR short name identifier
-
 // with '/' as separator between package names
-
 static Result\<InstanceSpecifier\> Create(StringView metaModelIdentifier);
-
 explicit InstanceSpecifier(StringView metaModelIdentifier);
-
 InstanceSpecifier(const InstanceSpecifier& other);
-
 InstanceSpecifier(InstanceSpecifier&& other) noexcept;
-
 InstanceSpecifier& operator=(const InstanceSpecifier& other);
-
 InstanceSpecifier& operator=(InstanceSpecifier&& other);
-
-\~InstanceSpecifier() noexcept;
-
+~InstanceSpecifier() noexcept;
 StringView ToString() const noexcept;
-
 bool operator==(const InstanceSpecifier& other) const noexcept;
-
 bool operator==(StringView other) const noexcept;
-
 bool operator!=(const InstanceSpecifier& other) const noexcept;
-
 bool operator!=(StringView other) const noexcept;
-
 bool operator\<(const InstanceSpecifier& other) const noexcept;
-
 };
 ```
 
 **Listing 4.2: InstanceSpecifier class**
-
-> **列表 4.2：InstanceSpecifier 类**
 
 If the unambiguousness is ensured, the integrator/deployer can assign a dedicated technical binding with its specific instance IDs to those \"instance specifier\" via a \"manifest file\", which is specifically used for a distinct instantiation/execution of the executable.
 
@@ -644,25 +628,17 @@ The API [ara::com] provides the following function, to do the translation from t
 
 > API [ara::com] 提供以下功能，将软件开发人员领域中的 [ara::core::InstanceSpecifier](本地名称)转换为技术 [ara::com::InstanceIdentifier]：
 
-```
-[]namespace ara {
-
+```bash
+namespace ara {
 namespace com {
-
 namespace runtime {
-
 ara::core::Result\<ara::com::InstanceIdentifierContainer\> ResolveInstanceIDs (ara::core::InstanceSpecifier modelName);
-
 }
-
 }
-
 }
 ```
 
 **Listing 4.3: InstanceSpecifier Resolution**
-
-> 列表 4.3：实例指定符解析
 
 Why this API does return an [ara::com::InstanceIdentifierContainer], which represents a collection of [ara::com::InstanceIdentifier] is in need of explanation: AUTOSAR supports, that the integrator may configure multiple technical bindings behind one abstract identifier visible to the software component developer.
 
@@ -670,7 +646,7 @@ Why this API does return an [ara::com::InstanceIdentifierContainer], which repre
 
 This feature is called multi-binding and referred to at different parts in this document (you find a more detailed explanation in [section](#multi-binding-implications) [7.3](#multi-binding-implications)).
 
-> 这个功能叫做多重绑定，在本文档的不同部分都有提到(您可以在 [7.3 节](#multi-binding-implications)中找到更详细的解释)。
+> 这个功能叫做**多重绑定**，在本文档的不同部分都有提到(您可以在 [7.3 节](#multi-binding-implications)中找到更详细的解释)。
 
 Using multi-binding on the skeleton/server side is a common use case, since it simply allows different clients to use their preferred binding, when contacting the server.
 
@@ -678,45 +654,29 @@ Using multi-binding on the skeleton/server side is a common use case, since it s
 
 Contrary using multi-binding on the proxy/client side is a rather exotic one. E.g. it could be used to support some fail-over approaches (if binding A does not work, fall back on binding B).
 
-> 对于代理/客户端端来说，使用多绑定是一种比较特殊的方法。例如，它可以用来支持一些故障转移方法(如果绑定 A 不起作用，则转到绑定 B)。
+> 对于代理/客户端端来说，使用多绑定是一种比较特殊的方法。例如，它可以用来支持一些故障转移方法(**如果绑定 A 不起作用，则转到绑定 B**)。
 
 So the possible returns for a call of [ResolveInstanceIDs()] are:
 
 > 所以调用 [ResolveInstanceIDs()]的可能返回值是：
 
 - empty list: The integrator failed to provide a mapping for the abstract identifier. This most likely is a configuration error.
-
-> 空列表：集成器未能提供抽象标识符的映射。这很可能是配置错误。
-
 - list with one element: The common case. Mapping to one concrete instance id of one concrete technical binding.
-
-> 一个元素的列表：常见情况。映射到一个具体实例 ID 的一个具体技术绑定。
-
 - list with more than one element: Mapping to multiple technical instances with possibly multiple technical bindings.
 
-> 映射到可能有多个技术绑定的多个技术实例的列表。
+> - 空列表：集成器未能提供抽象标识符的映射。这很可能是配置错误。
+> - 一个元素的列表：常见情况。映射到一个具体实例 ID 的一个具体技术绑定。
+> - 映射到可能有多个技术绑定的多个技术实例的列表。
 
 Technically the middleware implementation of [ResolveInstanceIDs()]does a lookup of the [ara::core::InstanceSpecifier] from the service instance manifest bundled within the process.
-
-> 技术上，[ResolveInstanceIDs()] 中间件的实现从进程中打包的服务实例清单中查找 [ara::core::InstanceSpecifier]。
-
 Therefore the [ara::core::InstanceSpecifier] must be unambiguous within the bundled service instance manifest.
 
+> 技术上，[ResolveInstanceIDs()] 中间件的实现从进程中打包的服务实例清单中查找 [ara::core::InstanceSpecifier]。
 > 因此，[ara::core::InstanceSpecifier] 必须在打包的服务实例清单中是明确无误的。
 
 ### When to use InstanceIdentifier versus InstanceSpecifier
 
-According to the previous explanations, the impression may have arisen that a software developer always has to resolve [ara::core::InstanceSpecifier] to [ara:-]
-
-> 根据之前的解释，可能产生的印象是软件开发人员总是必须将 [ara::core::InstanceSpecifier] 解析为 [ara:-]。
-
-[:com::InstanceIdentifier] manually (by a call to [ResolveInstanceIDs()]) first, be-
-
-> 首先，通过调用 ResolveInstanceIDs()手动[:com::InstanceIdentifier]。
-
-fore using [ara::com] APIs, which need instance identifier information.
-
-> 在使用 [ara::com] 的 API 之前，需要实例标识符信息。
+According to the previous explanations, the impression may have arisen that a software developer always has to resolve [ara::core::InstanceSpecifier] to [ara::com::InstanceIdentifier] manually (by a call to [ResolveInstanceIDs()]) first, before using [ara::com] APIs, which need instance identifier information.
 
 This would be indeed a bit awkward as we already mentioned, that the \"typical\" approach for a software developer, which implements an Adaptive AUTOSAR SWC, is to use abstract \"instance specifiers\" from the realm of the software component model.
 
@@ -730,79 +690,51 @@ This means, that the direct use of [ara::com::InstanceIdentifier] and manual res
 
 > 这意味着，[ara::com::InstanceIdentifier] 的直接使用和 [ara::core::InstanceSpecifier] 的手动解析更适合具有特定/异国情调的高级用户。在讨论相应 [ara::com]API 覆盖代理/骨架端时，将给出一些示例。
 
-The fundamental difference between the two variants is this: An [ara::com::In-] [stanceIdentifier] can be exchanged more easily between Adaptive Applications/processes!
+The fundamental difference between the two variants is this: An [ara::com::InstanceIdentifier] can be exchanged more easily between Adaptive Applications/processes!
 
-> 两种变体的基本区别在于：ara：com：In-实例标识符可以更容易地在自适应应用程序/进程之间交换！
+> 两种变体的基本区别在于：`[ara::com::InstanceIdentifier]` 可以更容易地在自适应应用程序/进程之间交换！
 
 As they already exactly contain all the technology specific information and do not need any further resolution via content of a service instance manifest such a serialized [ara::com::InstanceIdentifier] can be reconstructed within a different process and be used as long as his process has access to the same binding technology the [ara::com::InstanceIdentifier] is based upon.
 
-> 他们已经包含了所有技术特定信息，不需要通过服务实例清单的内容进行进一步解析，因此可以在不同的进程中重建序列化的[ara::com ::
->
-> ---
->
-> ```
->  InstanceIdentifier]，只要该进程具有访问[ara::com
-> ```
->
-> ---
->
-> InstanceIdentifier]所基于的相同绑定技术的权限即可使用。
->
-> ---
+> 他们已经包含了所有技术特定信息，不需要通过服务实例清单的内容进行进一步解析，因此可以在不同的进程中重建序列化的[ara::com::InstanceIdentifier]，只要该进程具有访问[ara::com::InstanceIdentifier]所基于的相同绑定技术的权限即可使用。
 
 ### Transfer of an InstanceIdentifier
 
 As discussed before the [ara::com::InstanceIdentifier] should only be used for \"power users\" since its format is stack vendor dependent and it contains technology binding information. The transfer or the storage of an [ara::com::InstanceIden-] [tifier] may be very risky, therefore. As the transfer binding may not exist anymore after the transfer or re-storing or the [ara::com::InstanceIdentifier] of stack vendor A may be interpreted by an application using the stack of vendor B.
 
-> 在之前的讨论中，[ara::com::InstanceIdentifier] 只应该被"高级用户"使用，因为它的格式取决于堆栈供应商，并且包含技术绑定信息。因此，传输或存储 [ara::com::InstanceIden-] \> [tifier] 可能非常危险。因为传输绑定在传输或重新存储后可能不再存在，或者堆栈供应商 A 的 [ara::com::InstanceIdentifier] 可能被使用堆栈供应商 B 的应用程序解释。
+> 在之前的讨论中，[ara::com::InstanceIdentifier] 只应该被"高级用户"使用，因为它的格式取决于堆栈供应商，并且包含技术绑定信息。因此，传输或存储 [ara::com::InstanceIdentifier] 可能非常危险。因为传输绑定在传输或重新存储后可能不再存在，或者堆栈供应商 A 的 [ara::com::InstanceIdentifier] 可能被使用堆栈供应商 B 的应用程序解释。
 
-5. # Detailed API description
+# Detailed API description
 
-> # 详细的 API 描述
-
-1. ## High Level API Structure
-
-> ## 高级 API 结构
+## High Level API Structure
 
 [ara::com] provides an API that supports the AUTOSAR service model. The services have methods, events, fields and triggers.
 
 > [ara::com] 提供一个支持 AUTOSAR 服务模型的 API。服务具有方法、事件、字段和触发器。
 
 - **Methods**: Execute a function in the Service Application which can also return a value (e.g. Calibrate method).
-
-> **方法**：在服务应用程序中执行一个函数，该函数也可以返回一个值(例如，校准方法)。
-
 - **Events**: The Service Application sends an event (may also include a value) when specific conditions occur (e.g. Brake event). A Client Application can subscribe to events.
-
-> 服务应用程序在特定条件发生时(例如刹车事件)发送事件(可能还包括值)。客户端应用程序可以订阅事件。
-
 - **Fields**: Have a value at any time, like a status value. Can be read using Get or modified using Set (e.g. UpdateRate field). A Client Application can be notified when a Field value changes.
-
-> **字段**：随时具有值，如状态值。可以使用 Get 读取或使用 Set 修改(例如 UpdateRate 字段)。当字段值更改时，客户端应用程序可以收到通知。
-
 - **Triggers**: The Service Application sends a trigger when specific conditions occur. A Client Application can subscribe to triggers.
 
-> 服务应用程序在特定条件发生时发送触发器。客户端应用程序可以订阅触发器。
+> **Methods**：在服务应用程序中执行一个函数，该函数也可以返回一个值(例如，校准方法)。
+> **Event**：服务应用程序在特定条件发生时(例如刹车事件)发送事件(可能还包括值)。客户端应用程序可以订阅事件。
+> **Fields**：随时具有值，如状态值。可以使用 Get 读取或使用 Set 修改(例如 UpdateRate 字段)。当字段值更改时，客户端应用程序可以收到通知。
+> **Triggers**：服务应用程序在特定条件发生时发送触发器。客户端应用程序可以订阅触发器。
 
 As described in [section](#proxyskeleton-architecture) [4.1](#proxyskeleton-architecture), Client and Service Application communicate with each other and therefore the API supports methods, events and fields in both sides. This means that the API defines interfaces for sending and receiving events, provides and calls service methods, register handlers for field setters and getters amongst others.
 
 > 根据[第 4.1 节](#proxyskeleton-architecture)中的描述，客户端和服务应用程序彼此通信，因此 API 支持双方的方法、事件和字段。这意味着 API 为发送和接收事件定义了接口，提供和调用服务方法，注册字段设置器和获取器的处理程序等。
 
 The [ara::com] API also defines ctors/dtors to create and destroy instances for Proxy and Skeleton classes.
+Finally, the [ara::com] API also provides methods to offer / find services and subscribe / unsubscribe to events.
 
 > API [ara::com] 也定义了构造函数/析构函数，用于创建和销毁 Proxy 和 Skeleton 类的实例。
-
-Finally, the [ara::com] API also provides methods to offer / find services and subscribe
-
-> 最后，[ara::com] API 还提供了提供/查找服务和订阅的方法。
-
-/ unsubscribe to events.
-
-> 取消订阅事件。
+> 最后，[ara::com] API 还提供了提供/查找服务和订阅/取消订阅事件的方法。
 
 ## API Elements
 
-The following subchapters will guide through the different API elements, which [ara::-] [com] defines. Since we will give code examples for various artifacts and provide sample code how to use those APIs from a developer perspective, it is a good idea to have some uniformity in our examples.
+The following subchapters will guide through the different API elements, which [ara::com] defines. Since we will give code examples for various artifacts and provide sample code how to use those APIs from a developer perspective, it is a good idea to have some uniformity in our examples.
 
 > 以下的小节将指引您通过 ara::com 定义的不同的 API 元素。由于我们将为各种工件提供代码示例，并提供如何从开发者的角度使用这些 API 的示例代码，因此有一个统一的示例是一个好主意。
 
@@ -810,153 +742,11 @@ So we will use a virtual service (interface) called \"RadarService\". The follow
 
 > 我们将使用一个叫做"RadarService"的虚拟服务(接口)。以下是一种半正式描述，它应该让您对"RadarService"提供/做什么有一个印象，可能比正式的 AUTOSAR ARXML 服务描述更容易阅读：
 
-```
-[]RadarService {
+```cpp
 
-// types used within service
-
-type RadarObjects {
-
-active : bool
-
-objects : array {
-
-size: variable
-
-}
-
-}
-
-+---------+--------------------+--------------------------------------+
-| 10      |                    |                                      |
-+=========+====================+======================================+
-| 11      | type               | Position {                           |
-+---------+--------------------+--------------------------------------+
-| 12      | x:                 | uint32                               |
-+---------+--------------------+--------------------------------------+
-| 13      | y:                 | uint32                               |
-+---------+--------------------+--------------------------------------+
-| 14      | z:                 | uint32                               |
-+---------+--------------------+--------------------------------------+
-| 15      | > }                |                                      |
-+---------+--------------------+--------------------------------------+
-| 16      |                    |                                      |
-+---------+--------------------+--------------------------------------+
-
-// events provided by service
-
-event BrakeEvent {
-
-type:RadarObjects
-
-}
-
-// fields provided by service
-
-field UpdateRate {
-
-type:uint32
-
-get: true
-
-set: true
-
-}
-
-error CalibrationFailed {
-
-errorCode : 1
-
-errorContext {
-
-failureText : string
-
-}
-
-}
-
-error InvalidConfigString {
-
-errorCode : 2
-
-errorContext {
-
-invalidConfig : string
-
-currentValidConfig : string
-
-}
-
-}
-
-// methods provided by service
-
-method Calibrate {
-
-param configuration {
-
-type: string
-
-direction: in
-
-}
-
-param result {
-
-type: bool
-
-direction: out
-
-}
-
-raises {
-
-CalibrationFailed
-
-InvalidConfigString
-
-}
-
-}
-
-method Adjust {
-
-param target_position {
-
-+-----+-----+----------------------------------------------------------+
-| 63  |     | > direction: in                                          |
-+=====+=====+==========================================================+
-| 64  |     | }                                                        |
-+-----+-----+----------------------------------------------------------+
-| 65  |     | param success {                                          |
-+-----+-----+----------------------------------------------------------+
-| 66  |     | > type: bool                                             |
-+-----+-----+----------------------------------------------------------+
-| 67  |     | > direction: out                                         |
-+-----+-----+----------------------------------------------------------+
-| 68  |     | }                                                        |
-+-----+-----+----------------------------------------------------------+
-| 69  |     | param effective_position {                               |
-+-----+-----+----------------------------------------------------------+
-| 70  |     | > type: Position                                         |
-+-----+-----+----------------------------------------------------------+
-| 71  |     | > direction: out                                         |
-+-----+-----+----------------------------------------------------------+
-| 72  |     | }                                                        |
-+-----+-----+----------------------------------------------------------+
-| 73  | > } |                                                          |
-+-----+-----+----------------------------------------------------------+
-| 74  |     |                                                          |
-+-----+-----+----------------------------------------------------------+
-
-oneway method LogCurrentState
-
-}
 ```
 
 **Listing 5.1: RadarService Definition**
-
-> 列表 5.1：雷达服务定义
 
 So the example service RadarService provides an event "BrakeEvent", which consists of a structure containing a flag and a variable length array of uint8 (as extra payload).
 
@@ -990,286 +780,38 @@ The Proxy class is generated from the [SI] description of the AUTOSAR meta model
 
 Note: Since the interfaces the Proxy class has to provide are defined by [ara::com], a generic (product independent) generator could generate an abstract class or a mock class against which the application developer could implement his service consumer application. This perfectly suits the platform vendor independent development of Adaptive AUTOSAR SWCs.
 
+> 注意：由于代理类必须提供的接口由[ARA :: com]定义，因此通用（产品独立）生成器可以生成摘要类或模拟类别，应用程序开发人员可以实现其服务消费者应用程序。这非常适合自适应 Autosar SWC 的平台供应商独立开发。
+
 [ara::com] expects proxy related artifacts inside a namespace \"proxy\". This namespace is typically included in a namespace hierarchy deduced from the service definition and its context.
 
 > [ara::com] 预期代理相关的工件在一个名称空间"代理"中。这个名称空间通常包含在从服务定义及其上下文推断出的名称空间层次结构中。
 
 ### Proxy Class API's
 
-- [FindService()]
-- [StartFindService()]
-- [StopFindService()]
-- [Subscribe()]
-- [Unsubscribe()]
-- [GetSubscriptionState()]
-- [SetSubscriptionStateChangeHandler()]
-- [UnsetSubscriptionStateChangeHandler()]
-- [GetNewSamples()]
-- GetResult()
-- [GetFreeSampleCount()]
-- [SetReceiveHandler()]
-- [UnsetReceiveHandler()]
-- [ResolveInstanceIDs()]
-- [Field::Get()]
-- [Field::Set()]
+- `FindService()`
+- `StartFindService()`
+- `StopFindService()`
+- `Subscribe()`
+- `Unsubscribe()`
+- `GetSubscriptionState()`
+- `SetSubscriptionStateChangeHandler()`
+- `UnsetSubscriptionStateChangeHandler()`
+- `GetNewSamples()`
+- `GetResult()`
+- `GetFreeSampleCount()`
+- `SetReceiveHandler()`
+- `UnsetReceiveHandler()`
+- `ResolveInstanceIDs()`
+- `Field::Get()`
+- `Field::Set()`
+
+### RadarService Proxy Class Example
+
+```cpp
 
-  1. ### RadarService Proxy Class Example
-
-> ### 雷达服务代理类示例
-
-```
-[]class RadarServiceProxy {
-
-public:
-
-/\*\*
-
-\* \\brief Implementation is platform vendor specific
-
-\*
-
-\* A HandleType must contain the information that is needed to create
-
-\* a proxy.
-
-\*
-
-\* This information shall be hidden.
-
-\* Since the platform vendor is responsible for creation of handles, the
-
-\* ctor signature is not given as it is not of interest to the user.
-
-class HandleType {
-
-/\*\*
-
-\* \\brief Two ServiceHandles are considered equal if they represent
-
-\* the same service instance.
-
-\*
-
-\* \\param other
-
-\*
-
-\* \\return bool
-
-\*/
-
-inline bool operator==(const HandleType &other) const;
-
-const ara::com::InstanceIdentifier &GetInstanceId() const;
-
-};
-
-/\*\*
-
-\* StartFindService does not need an explicit version parameter as this
-
-\* is internally available in ProxyClass.
-
-\* That means only compatible services are returned.
-
-\*
-
-\* \\param handler this handler gets called any time the service
-
-\* availability of the services matching the given
-
-\* instance criteria changes. If you use this variant of
-
-\* FindService, the Communication Management has to
-
-\* continuously monitor the availability of the services
-
-\* and call the handler on any change.
-
-\*
-
-\* \\param instanceId which instance of the service type defined
-
-\* by T shall be searched/found.
-
-\*
-
-\* \\return a handle for this search/find request, which shall
-
-\* be used to stop the availability monitoring and related
-
-\* firing of the given handler. (\\see StopFindService())
-
-\*/
-
-static ara::core::Result\<ara::com::FindServiceHandle\> StartFindService(
-
-ara::com::FindServiceHandler\<RadarServiceProxy::HandleType\> handler,
-
-ara::com::InstanceIdentifier instanceId);
-
-/\*\*
-
-\* This is an overload of the StartFindService method using an
-
-\* instance specifier, which gets resolved via service instance
-
-\* manifest.
-
-\* \\param instanceSpec instance specifier
-
-\*/
-
-static ara::core::Result\<ara::com::FindServiceHandle\> StartFindService
-
- (
-
-ara::com::FindServiceHandler\<RadarServiceProxy::HandleType\> handler,
-
-ara::core::InstanceSpecifier instanceSpec);
-
-/\*\*
-
-\* Method to stop finding service request (see above)
-
-\*/
-
-static void StopFindService(ara::com::FindServiceHandle handle);
-
-/\*\*
-
-\* Opposed to StartFindService(handler, instance) this version
-
-\* is a \"one-shot\" find request, which is:
-
-\* and a result list of matching service instances is
-
-\* available. (list may be empty, if no matching service
-
-\* instances currently exist)
-
-\* does reflect the availability at the time of the method
-
-\* call. No further (background) checks of availability are
-
-\* done.
-
-\*
-
-\* \\param instanceId which instance of the service type defined
-
-\* by T shall be searched/found.
-
-\*
-
-\*/
-
-static ara::core::Result\<ara::com::ServiceHandleContainer
-
-\<RadarServiceProxy::HandleType\>\>
-
-FindService(ara::com::InstanceIdentifier instanceId);
-
-/\*\*
-
-\* This is an overload of the FindService method using an
-
-\* instance specifier, which gets resolved via service instance
-
-\* manifest.
-
-\*/
-
-static ara::core::Result\<ara::com::ServiceHandleContainer
-
-\<RadarServiceProxy::HandleType\>\>
-
-FindService(ara::core::InstanceSpecifier instanceSpec);
-
-/\*\*
-
-\* \\brief The proxy can only be created using a specific
-
-\* handle which identifies a service.
-
-\*
-
-\* This handle can be a known value which is defined at
-
-\* deployment or it can be obtained using the
-
-\* ProxyClass::FindService method.
-
-\*
-
-\* \\param handle The identification of the service the
-
-\* proxy should represent.
-
-\*/
-
-explicit RadarServiceProxy(HandleType &handle);
-
-/\*\*
-
-\* proxy instances are not copy constructible.
-
-\*/
-
-RadarServiceProxy(RadarServiceProxy &other) = delete;
-
-/\*\*
-
-\* proxy instances are not copy assignable
-
-\*/
-
-RadarServiceProxy& operator=(const RadarServiceProxy &other) = delete;
-
-/\*\*
-
-\* \\brief Public member for the BrakeEvent
-
-\*/
-
-events::BrakeEvent BrakeEvent;
-
-/\*\*
-
-\* \\brief Public Field for UpdateRate
-
-\*/
-
-/\*\*
-
-\* \\brief Public member for the Calibrate method
-
-\*/
-
-methods::Calibrate Calibrate;
-
-/\*\*
-
-\* \\brief Public member for the Adjust method
-
-\*/
-
-methods::Adjust Adjust;
-
-/\*\*
-
-\* \\brief Public member for the LogCurrentState fire-and-forget method
-
-\*/
-
-methods::LogCurrentState LogCurrentState;
-
-};
 ```
 
 **Listing 5.2: RadarService Proxy**
-
-> 列表 5.2：雷达服务代理
 
 ### Constructor and Handle Concept
 
@@ -1297,9 +839,9 @@ The solution is, that [ara::com] provides the application developer with an API 
 
 > 解决方案是，ara::com 提供了一个 API，可以帮助应用程序开发者查找服务实例，返回这些句柄。
 
-This part of the API is described in detail here: [subsection](#finding-services) [5.3.4](#finding-services). The co-benefit from this approach --that proxy instances can only be created from handles, which are the result of a \"FindService\" API --is, that you are only able to create proxies, which are really backed by an existing service instance.
+This part of the API is described in detail here: [subsection 5.3.4](#finding-services). The co-benefit from this approach --that proxy instances can only be created from handles, which are the result of a \"FindService\" API --is, that you are only able to create proxies, which are really backed by an existing service instance.
 
-> 这部分 API 的详细描述可在这里找到：[子节](#finding-services) \> [5.3.4](#finding-services)。这种方法的共同好处是，只能从句柄创建代理实例，而句柄是"FindService"API 的结果，这样只能创建真正由现有服务实例支持的代理。
+> 这部分 API 的详细描述可在这里找到：[子节 5.3.4](#finding-services)。这种方法的共同好处是，只能从句柄创建代理实例，而句柄是"FindService"API 的结果，这样只能创建真正由现有服务实例支持的代理。
 
 So the question which probably might come up here: Why this indirection, that an application developer first has to call some [ara::com] provided functionality, to get a
 
@@ -1309,9 +851,9 @@ handle, which I then have to use in a [ctor] call? [ara::com] could have given b
 
 > 我必须在 [ctor] 调用中使用的 handle？[ara::com] 本可以直接从"FindService"功能中返回一个代理实例而不是一个 handle。
 
-The reason for that could be better understood, after reading how [ara::com] handles the access to events ([subsection](#events) [5.3.5](#events)). But what is sufficient to say at this point is, that a proxy instance contains certain state.
+The reason for that could be better understood, after reading how [ara::com] handles the access to events ([subsection 5.3.5](#events)). But what is sufficient to say at this point is, that a proxy instance contains certain state.
 
-> 理解这个原因可以在阅读 [ara::com] 如何处理事件访问([子节](#events) \> [5.3.5](#events))后更容易。但是在此可以说的是，代理实例包含某些状态。
+> 理解这个原因可以在阅读 [ara::com] 如何处理事件访问([子节 5.3.5](#events))后更容易。但是在此可以说的是，代理实例包含某些状态。
 
 And because of this there are use cases, where the application developer wants to use different instances of a proxy, all \"connected\" to the same service instance.
 
@@ -1321,9 +863,9 @@ So if you just accept, that there are such cases, the decision for this indirect
 
 > 如果你只接受存在这种情况，通过句柄做间接的决定就变得清楚了：[ara::com] 无法知道应用开发者是想要始终使用相同的代理实例(明确共享状态)，还是每次触发某个"FindService"功能时都返回一个代理，以获取完全相同的服务实例。
 
-So by providing this indirection/decoupling the decision is in the hands of the [ara::-] [com] user.
+So by providing this indirection/decoupling the decision is in the hands of the [ara::com] user.
 
-> 所以通过提供这种间接/解耦，决策权掌握在 ara::-com 用户手中。
+> 所以通过提供这种间接/解耦，决策权掌握在 ara::com 用户手中。
 
 Instances of the Proxy class on the other hand are neither copy constructible nor copy assignable! This is an explicit design decision, which complements the idea of forcing the construction via [HandleType].
 
@@ -1335,7 +877,7 @@ The instances of a proxy class might be very resource intensive because of ownin
 
 So --in a nutshell --forcing the user to go the route via [HandleType] for Proxy creation shall sensitize him, that this decision shall be well thought out.
 
-> 所以总之，强制用户通过 [HandleType] 创建代理，可以让他意识到这个决定应该是经过深思熟虑的。
+> 所以总之，**强制用户通过 [HandleType] 创建代理**，可以让他意识到这个决定应该是经过深思熟虑的。
 
 ### Finding Services
 
@@ -1350,18 +892,20 @@ Since the availability of service instances is dynamic by nature, as they have a
 - [StartFindService] is a class method, which starts a continuous "FindService" activity in the background, which notifies the caller via a given callback anytime the availability of instances of the service changes.
 - [FindService] is a one-off call, which returns available instances at the point in time of the call.
 
-Both of those methods come in two different overrides, depending on the instance identifier approach taken (see [subsection](#instance-identifiers-and-instance-specifiers) [4.8.1](#instance-identifiers-and-instance-specifiers)):
+Both of those methods come in two different overrides, depending on the instance identifier approach taken (see [subsection 4.8.1](#instance-identifiers-and-instance-specifiers)):
 
-> 这两种方法按照采用的实例标识符方法有两种不同的覆盖(参见[子节](#instance-identifiers-and-instance-specifiers) \> [4.8.1](#instance-identifiers-and-instance-specifiers))：
+> 这两种方法按照采用的实例标识符方法有两种不同的覆盖(参见[子节 4.8.1](#instance-identifiers-and-instance-specifiers))：
 
 - one taking an [ara::com::InstanceIdentifier]
 - one taking an [ara::core::InstanceSpecifier]
 
 Note that only technical bindings will be used for finding/searching, which are configured for the corresponding [SI] within the service instance manifest in the form of a [SI] deployment.
 
-The synchronous one-off variant [FindService] returns a container of handles (see [sub-](#constructor-and-handle-concept) [section](#constructor-and-handle-concept) [5.3.3](#constructor-and-handle-concept)) for the matching service instances, which might also be empty, if no matching service instance is currently available.
+> 请注意，只有技术绑定将用于查找/搜索，这些绑定在服务实例中以[SI]部署的形式显示为相应的[SI]。
 
-> 这种同步一次性变体 [FindService] 返回一个匹配服务实例的句柄容器(参见[子](#constructor-and-handle-concept) \> [部分](#constructor-and-handle-concept) \> [5.3.3](#constructor-and-handle-concept))，如果没有匹配的服务实例当前可用，容器也可能为空。
+The synchronous one-off variant [FindService] returns a container of handles (see [subsection 5.3.3](#constructor-and-handle-concept)) for the matching service instances, which might also be empty, if no matching service instance is currently available.
+
+> 这种同步一次性变体 [FindService] 返回一个匹配服务实例的句柄容器(参见[子部分 5.3.3](#constructor-and-handle-concept))，如果没有匹配的服务实例当前可用，容器也可能为空。
 
 Opposed to that, the [StartFindService] returns a [FindServiceHandle], which can be used to stop the ongoing background activity of monitoring service instance availability via call to [StopFindService].
 
@@ -1371,13 +915,9 @@ The first (and specific for this variant) parameter to [StartFindService] is a u
 
 > 第一个(并且专门为这个变体)参数 [StartFindService] 是一个用户提供的处理函数，其签名如下：
 
-using FindServiceHandler = std::function\<void(ServiceHandleContainer\<T
-
-> 使用 FindServiceHandler = std::function\<void(ServiceHandleContainer `<T>`
-
-\>, FindServiceHandle)\>;
-
-> 查找服务句柄();
+```
+using FindServiceHandler = std::function\<void(ServiceHandleContainer\<T\>, FindServiceHandle)\>;
+```
 
 Any time the binding detects, that the availability of service instances matching the given instance criteria in the call to [StartFindService] has changed, it will call the user provided handler with an updated list of handles of the now available service instances.
 
@@ -1429,25 +969,13 @@ If a service consumer application has instantiated a service proxy instance from
 
 > 如果服务消费者应用程序从某些 Find Service 变体返回的句柄实例化了服务代理实例，则可能发生的序列如下图所示。
 
-![](./media/image6.png)T0
-
-![](./media/image7.png)T1
-
-![](./media/image7.png)T2
-
-![](./media/image8.png)T3
-
-![](./media/image9.png)
-
-**Figure 5.1:** []**Auto Updating of Proxy Instance**
-
-Explanation of figure [5.1]:
-
-> 图 5.1 的解释：
+**Figure 5.1:** []\*\*Auto Updating of Proxy Instance Explanation of figure [5.1]:
 
 - **T0**: The service consumer may successfully call a service method of that proxy (and [GetSubscriptionState()] on subscribed events will return kSubscribed according to [5.3.5.2](#monitoring-event-subscription)).
 
-> 服务消费者可以成功调用该代理的服务方法(并且订阅事件上的 [GetSubscriptionState()]将根据 [5.3.5.2](#monitoring-event-subscription) 返回 kSubscribed)。**T1**: The service instance goes down, correctly notified via service discovery.
+> 服务消费者可以成功调用该代理的服务方法(并且订阅事件上的 [GetSubscriptionState()]将根据 [5.3.5.2](#monitoring-event-subscription) 返回 kSubscribed)。
+
+- **T1**: The service instance goes down, correctly notified via service discovery.
 
 - **T2**: A call of a service method on that proxy will lead to a kServiceNotAvailable error, since the targeted service instance of the call does not exist anymore. Correspondingly [GetSubscriptionState()] on any subscribed event will return kSubscriptionPending (see also [5.3.5.2](#monitoring-event-subscription)) at this point even if the event has been successfully subscribed (kSubscribed) before.
 
@@ -1492,49 +1020,7 @@ This expectation is shown in the following code snippet:
 > 以下代码片段展示了这种期望：
 
 ```
-/\*\*
 
-\* Reference to radar instance, we work with,
-
-\* initialized during startup
-
-\*/
-
-RadarServiceProxy \*myRadarProxy;
-
-void radarServiceAvailabilityHandler(ServiceHandleContainer\< RadarServiceProxy::HandleType\> curHandles, FindServiceHandle handle) {
-
-for (RadarServiceProxy::HandleType handle : curHandles) {
-
-if (handle.GetInstanceId() == myRadarProxy-\>GetHandle(). GetInstanceId()) {
-
-/\*\*
-
-\* This call on the proxy instance shall NOT lead to an exception,
-
-\* regarding service instance not reachable, since proxy instance
-
-\* should be already auto updated at this point in time.
-
-\*/
-
-+------+---+-----+----------------------------------------------------------------------+
-| 15   |   |     | > ara::core::Future\<Calibrate::Output\> out =                       |
-+======+===+=====+======================================================================+
-| 16   |   |     | > myRadarProxy-\>Calibrate(\"test\");                                |
-+------+---+-----+----------------------------------------------------------------------+
-| 17   |   |     | > // \... do something with out.                                     |
-|      |   |     |                                                                      |
-| 18   |   |     |                                                                      |
-+------+---+-----+----------------------------------------------------------------------+
-| 19   |   | > } |                                                                      |
-+------+---+-----+----------------------------------------------------------------------+
-| 20   | } |     |                                                                      |
-|      |   |     |                                                                      |
-| 21 } |   |     |                                                                      |
-+------+---+-----+----------------------------------------------------------------------+
-|      |   |     | **Listing 5.3: Access to proxy instance within FindService handler** |
-+------+---+-----+----------------------------------------------------------------------+
 ```
 
 ### Events
@@ -1552,238 +1038,10 @@ The member in the proxy is used to access events/event data, which are sent by t
 > 代理中的成员用于存取我们连接的服务实例发送的事件/事件资料。让我们看一下我们示例的生成事件类：
 
 ```
-/\*\*
 
-\* \\brief Shortcut for the events data type.
-
-\*/
-
-using SampleType = RadarObjects;
-
-/\*\*
-
-\* \\brief The application expects the CM to subscribe the event.
-
-\*
-
-\* The Communication Management shall try to subscribe and resubscribe
-
-\* until \\see Unsubscribe() is called explicitly.
-
-\* The error handling shall be kept within the Communication Management
-
- .
-
-\*
-
-\* The function returns immediately. If the user wants to get notified,
-
-\* when subscription has succeeded, he needs to register a handler
-
-\* via \\see SetSubscriptionStateChangeHandler(). This handler gets
-
-\* then called after subscription was successful.
-
-\*
-
-\* \\param maxSampleCount maximum number of samples, which can be held.
-
-\*/
-
-ara::core::Result\<void\> Subscribe(size_t maxSampleCount);
-
-/\*\*
-
-\* \\brief Query current subscription state.
-
-\*
-
-\* \\return Current state of the subscription.
-
-\*/
-
-ara::com::SubscriptionState GetSubscriptionState() const;
-
-/\*\*
-
-\* \\brief Unsubscribe from the service.
-
-\*/
-
-void Unsubscribe();
-
-/\*\*
-
-\* \\brief Get the number of currently free/available sample slots.
-
-\*
-
-\* \\return number from 0 N (N = count given in call to Subscribe())
-
-\* or an ErrorCode in case of number of currently held samples
-
-\* already exceeds the max number given in Subscribe().
-
-\*/
-
-size_t GetFreeSampleCount() const noexcept;
-
-/\*\*
-
-\* Setting a receive handler signals the Communication Management
-
-\* implementation to use event style mode.
-
-\* I.e. the registered handler gets called asynchronously by the
-
-\* Communication Management as soon as new event data arrives for
-
-\* that event. If the user wants to have strict polling behavior,
-
-\* where no handler is called, NO handler should be registered.
-
-\*
-
-\* Handler may be overwritten anytime during runtime.
-
-\*
-
-\* Provided Handler needs not to be re-entrant since the
-
-\* Communication Management implementation has to serialize calls
-
-\* events arrived since the last call to GetNewSamples().
-
-\*
-
-\* When application calls GetNewSamples() again in the context of the
-
-\* receive handler, MW must in case new events arrived in the
-
-\* meantime defer next call to receive handler until after
-
-\* the previous call to receive handler has been completed.
-
-\*/
-
-ara::core::Result\<void\> SetReceiveHandler(ara::com::EventReceiveHandler
-
- handler);
-
-/\*\*
-
-\* Remove handler set by SetReceiveHandler()
-
-\*/
-
-ara::core::Result\<void\> UnsetReceiveHandler();
-
-/\*\*
-
-\* Setting a subscription state change handler, which shall get
-
-\* called by the Communication Management implementation as soon
-
-\* as the subscription state of this event has changed.
-
-\*
-
-\* Communication Management implementation will serialize calls
-
-\* to the registered handler. If multiple changes of the
-
-\* subscription state take place during the runtime of a
-
-\* previous call to a handler, the Communication Management
-
-\* aggregates all changes to one call with the last/effective
-
-\* state.
-
-\*
-
-\* Handler may be overwritten during runtime.
-
-\*/
-
-ara::core::Result\<void\> SetSubscriptionStateChangeHandler(
-
-ara::com::SubscriptionStateChangeHandler handler);
-
-/\*\*
-
-\* Remove handler set by SetSubscriptionStateChangeHandler()
-
-\*/
-
-void UnsetSubscriptionStateChangeHandler();
-
-/\*\*
-
-\* \\brief Get new data from the Communication Management
-
-\* buffers and provide it in callbacks to the given callable f.
-
-\*
-
-\* \\pre BrakeEvent::Subscribe has been called before
-
-\* (and not be withdrawn by BrakeEvent::Unsubscribe)
-
-\*
-
-\* \\param f
-
-\* \\parblock
-
-\* callback, which shall be called with new sample.
-
-\*
-
-\* This callable has to fulfill signature
-
-\* void(ara::com::SamplePtr\<SampleType const\>)
-
-\* \\parblockend
-
-\*
-
-\* \\param maxNumberOfSamples
-
-\* \\parblock
-
-\* upper bound of samples to be fetched from middleware buffers.
-
-+-----+-------------------------------------------------------------------------+
-| 112 | > \* are fetched as long as there are free sample slots.                |
-+=====+=========================================================================+
-| 113 | > \* \\parblockend                                                      |
-+-----+-------------------------------------------------------------------------+
-| 114 | > \*                                                                    |
-+-----+-------------------------------------------------------------------------+
-| 115 | > \* \\return Result, which contains the number of samples,             |
-+-----+-------------------------------------------------------------------------+
-| 116 | > \* which have been fetched and presented to user via calls to f or an |
-+-----+-------------------------------------------------------------------------+
-| 117 | > \* ErrorCode in case of error (e.g. precondition not fullfilled)      |
-+-----+-------------------------------------------------------------------------+
-| 118 | > \*/                                                                   |
-+-----+-------------------------------------------------------------------------+
-
-template \<typename F\>
-
-ara::core::Result\<size_t\> GetNewSamples(
-
-F&& f,
-
-size_t maxNumberOfSamples = std::numeric_limits\<size_t\>::max());
-
-};
 ```
 
 **Listing 5.4: Proxy side BrakeEvent Class**
-
-> 列表 5.4：代理端 BrakeEvent 类
 
 The data type of the event data in our example event is RadarObjects (see [5.1]). The first you encounter is the using-directive which assigns the generic name SampleType to the concrete type, which is then used throughout the interface.
 
@@ -1792,40 +1050,22 @@ The data type of the event data in our example event is RadarObjects (see [5.1])
 ### Event Subscription and Local Cache
 
 The mere fact, that there exists a member of the event wrapper class inside the proxy instance does not mean, that the user gets instant access to events raised/sent out by service instance.
-
-> 事实上，在代理实例中存在事件包装类的成员并不意味着用户可以立即访问由服务实例引发/发出的事件。
-
 First you have to "subscribe" for the event, in order to tell the Communication Management, that you are now interested in receiving events.
-
-> 首先你必须"订阅"这个活动，以便告知通信管理，你现在有兴趣接收活动信息。
-
 For that purpose the event wrapper class of [ara::com] provides the method
 
+> 事实上，在代理实例中存在事件包装类的成员并不意味着用户可以立即访问由服务实例引发/发出的事件。
+> 首先你必须"订阅"这个活动，以便告知通信管理，你现在有兴趣接收活动信息。
 > 为此，[ara::com] 的事件包装类提供了方法
 
 ```
-/\*\*
 
-\* \\brief The application expects the CM to subscribe the event.
-
-\*
-
-\* \....
-
-\*
-
-\* \\param maxSampleCount maximum number of samples, which can be held.
-
-\*/
-
-ara::core::Result\<void\> Subscribe(size_t maxSampleCount);
 ```
 
 This method expects a parameter maxSampleCount, which basically informs Communication Management implementation, how many event samples the application intends to hold at maximum. Therefore --with calling this method, you not only tell the Communication Management, that you now are interested in receiving event updates, but you are at the same time setting up a \"local cache\" for those events bound to the event wrapper instance with the given maxSampleCount.
 
 > 这种方法需要一个参数 maxSampleCount，它主要告知通信管理实现，应用程序最多可以保留多少个事件样本。因此，通过调用此方法，您不仅告诉通信管理，您现在有兴趣接收事件更新，而且您同时还为具有给定 maxSampleCount 的事件包装实例设置了"本地缓存"。
 
-This cache is allocated and filled by the Communication Management implementation, which hands out smartpointers to the application for accessing the event sample data. How that works in detail is described in [subsubsection](#accessing-event-data-aka-samples) [5.3.5.3](#accessing-event-data-aka-samples)).
+This cache is allocated and filled by the Communication Management implementation, which hands out smartpointers to the application for accessing the event sample data. How that works in detail is described in [subsubsection 5.3.5.3](#accessing-event-data-aka-samples)).
 
 > 这个缓存由通信管理实现分配和填充，它为应用程序提供智能指针来访问事件样本数据。具体的工作原理在 [5.3.5.3](#accessing-event-data-aka-samples) 小节中有详细描述。
 
@@ -1833,7 +1073,7 @@ This cache is allocated and filled by the Communication Management implementatio
 
 The call to the Subscribe() method is asynchronous by nature. This means that at the point in time Subscribe() returns, it is just the indication, that the Communication Management has accepted the order to care for subscription.
 
-> 调用 Subscribe()方法本质上是异步的。这意味着在 Subscribe()返回的时间点，只是表明通信管理已接受订阅的命令。
+> **调用 Subscribe()方法本质上是异步的**。这意味着在 Subscribe()返回的时间点，只是表明通信管理已接受订阅的命令。
 
 The subscription process itself may (most likely, but depends on the underlying [IPC] implementation) involve the event provider side. Contacting the possibly remote service for setting up the subscription might take some time.
 
@@ -1857,9 +1097,9 @@ So the binding implementation of the subscribe is allowed to return immediately 
 ara::com::SubscriptionState GetSubscriptionState() const;
 ```
 
-In the case the underlying [IPC] implementation uses some mechanism like a subscription acknowledge from the service side, then an immediate call to [GetSubscriptionState] [()] after Subscribe() may return [kSubscriptionPending], if the acknowledge has not yet arrived.
+In the case the underlying [IPC] implementation uses some mechanism like a subscription acknowledge from the service side, then an immediate call to [GetSubscriptionState()] after Subscribe() may return [kSubscriptionPending], if the acknowledge has not yet arrived.
 
-> 在底层 [IPC] 实现使用某种机制(例如服务端的订阅确认)的情况下，调用 Subscribe()后立即调用 [GetSubscriptionState] \> [()]可能会返回 [kSubscriptionPending]，如果确认尚未到达。
+> 在底层 [IPC] 实现使用某种机制(例如服务端的订阅确认)的情况下，调用 Subscribe()后立即调用 [GetSubscriptionState()]可能会返回 [kSubscriptionPending]，如果确认尚未到达。
 
 Otherwise --in case the underlying [IPC] implementation gets instant feedback, which is very likely for local communication --the call might also already return [kSubscribed].
 
@@ -1902,7 +1142,6 @@ Here the user may register a handler function, which has to fulfill the followin
 
 ```
 enum class SubscriptionState ;
-
 using SubscriptionStateChangeHandler = std::function\<void( SubscriptionState)\>;
 ```
 
@@ -1922,9 +1161,9 @@ Calls to the registered "subscription state change" handler are done fully async
 
 > 调用已注册的"订阅状态更改"处理程序是完全异步的。这意味着，它们甚至可能发生，而调用 Subscribe()尚未返回。用户必须意识到这一点！
 
-Once the user has registered such a "subscription state change" handler for a certain event, he may receive multiple calls to this handler. Not only initially, when the state changes from [SubscriptionState.kNotSubscribed] to [SubscriptionState.kSub-] [scribed] (eventually via an intermediate step [SubscriptionState.kSubscriptionPending]), but also anytime later as the service providing this event may have a certain life-cycle (maybe bound to certain vehicle modes).
+Once the user has registered such a "subscription state change" handler for a certain event, he may receive multiple calls to this handler. Not only initially, when the state changes from [SubscriptionState.kNotSubscribed] to [SubscriptionState.kSubscribed] (eventually via an intermediate step [SubscriptionState.kSubscriptionPending]), but also anytime later as the service providing this event may have a certain life-cycle (maybe bound to certain vehicle modes).
 
-> 一旦用户为某个特定事件注册了这样的"订阅状态更改"处理程序，他可能会收到多次调用此处理程序的请求。不仅是初始时，当状态从 [SubscriptionState.kNotSubscribed] 更改为 [SubscriptionState.kSub-] \> [scribed](最终可通过中间步骤 [SubscriptionState.kSubscriptionPending])，而且随后提供此事件的服务可能具有某种生命周期(可能与某些车辆模式相关联)。
+> 一旦用户为某个特定事件注册了这样的"订阅状态更改"处理程序，他可能会收到多次调用此处理程序的请求。不仅是初始时，当状态从 [SubscriptionState.kNotSubscribed] 更改为 [SubscriptionState.kSubscribed](最终可通过中间步骤 [SubscriptionState.kSubscriptionPending])，而且随后提供此事件的服务可能具有某种生命周期(可能与某些车辆模式相关联)。
 
 The service might therefore toggle between availability and (temporarily) unavailability or it might even unexpectedly crash and restart. Those changes of the availability of the service instance providing the event may be visible to the proxy side Communication Management implementation.
 
@@ -1996,7 +1235,7 @@ size_t maxNumberOfSamples = std::numeric_limits\<size_t\>::max());
 
 As you can see, the API is a function template, due to the fact, that the first parameter f is a very flexible user provided [Callable], which has to fulfill the following singnature requirement: void(ara::com::SamplePtr\<SampleType const\>).
 
-> 可以看到，API 是一个函数模板，因为第一个参数 f 是一个非常灵活的用户提供的[可调用]，它必须满足以下签名要求：void(ara::com::SamplePtr\<SampleType const\>)。
+> 可以看到，API 是一个函数模板，因为第一个参数 f 是一个非常灵活的用户提供的[可调用]，它必须满足以下签名要求：`void(ara::com::SamplePtr\<SampleType const\>)`。
 
 The second argument of type size_t controls the maximum number of event samples, that shall be fetched/deserialized from the middleware buffers and then presented to the application in form of a call to f.
 
@@ -2009,23 +1248,15 @@ On a call to [GetNewSamples()], the [ara::com] implementation checks first, whet
 - there aren't any new samples in the buffers
 - there are further samples in the buffers, but the application provided maxNumberOfSamples argument in call to [GetNewSamples()] has been reached.
 
-> 已达到在调用 [GetNewSamples()]时提供的 maxNumberOfSamples 参数，因此缓冲区中没有更多的样本了。there are further samples in the buffers, but the application already exceeds its
+> 已达到在调用 [GetNewSamples()]时提供的 maxNumberOfSamples 参数，因此缓冲区中没有更多的样本了。
 
-maxSampleCount, which it had committed in Subscribe().
+there are further samples in the buffers, but the application already exceeds its maxSampleCount, which it had committed in Subscribe().
 
-> 最大样本数，它已经在 Subscribe()中承诺。
+Within the implementation of callback f, which the application/user provides, it can be decided, what to do with the passed SamplePtr argument (i.e. by eventually doing a deep inspection of the event data): Shall the new sample be \"thrown away\", because it of event samples means, the semantics of the SamplePtr, which is the access/entry point to the event sample data has to be fully understood.
 
-Within the implementation of callback f, which the application/user provides, it can be decided, what to do with the passed SamplePtr argument (i.e. by eventually doing a deep inspection of the event data): Shall the new sample be \"thrown away\", because it
-
-> 在回调 f 的实现中，应用程序/用户提供的参数可以决定如何处理传入的 SamplePtr 参数(即通过最终检查事件数据)：是否应该"丢弃"新样本，因为它
-
-of event samples means, the semantics of the SamplePtr, which is the access/entry point to the event sample data has to be fully understood.
-
-> 事件样本意味着，SamplePtr 作为访问/进入事件样本数据的入口点，必须完全理解其意义。
+> 在应用程序/用户提供的回调 f 的实现中，可以确定，该如何处理传递的 smameptr 参数（即，通过最终对事件数据进行深入检查）：应\'丢弃新样本\”，因为事件样本的意思是，示例 PTR 的语义是对事件样本数据的访问/输入点的，必须完全了解。
 
 The following chapter shall clarify this.
-
-> 以下章节将会澄清这一点。
 
 The returned [ara::core::Result] contains either an ErrorCode or --in the success case --the number of calls to f, which have been done in the context of the [GetNewSamples()] call.
 
@@ -2035,7 +1266,7 @@ The returned [ara::core::Result] contains either an ErrorCode or --in the succes
 
 A SamplePtr, which is handed over from the [ara::com] implementation to application/user layer is --from a semantical perspective --a unique-pointer (very similar to a std::unique_ptr): When the [ara::com] implementation hands it over an ownership transfer takes place. From now on the application/user is responsible for the lifetime management of the underlying sample. As long as the user doesn't free the sample by destroying the SamplePtr or by calling explicit assignment-ops/modifiers on the SamplePtr instance, the [ara::com] implementation can not reclaim the memory slot occupied by this sample.
 
-> 一个由 ara::com 实现交给应用/用户层的 SamplePtr，从语义上来看是一个唯一指针(与 std::unique_ptr 非常相似)：当 ara::com 实现交出时，就发生了所有权转移。从此以后，应用/用户负责底层样本的生命周期管理。只要用户不通过销毁 SamplePtr 或调用 SamplePtr 实例上的显式赋值运算符/修改器来释放样本，ara::com 实现就不能收回占用此样本的内存槽。
+> **一个由 ara::com 实现交给应用/用户层的 SamplePtr，从语义上来看是一个唯一指针(与 std::unique_ptr 非常相似**)：当 ara::com 实现交出时，就发生了所有权转移。从此以后，应用/用户负责底层样本的生命周期管理。只要用户不通过销毁 SamplePtr 或调用 SamplePtr 实例上的显式赋值运算符/修改器来释放样本，ara::com 实现就不能收回占用此样本的内存槽。
 
 Those memory-slots, in which the event sample data reside, are allocated by the [ara::com] implementation. This typically takes place in the context of the call to Subscribe(), where the user/application defines by parameter maxSampleCount, what maximum number of event data samples it wants to have concurrently accessible. Within later [GetNewSamples()] calls, the [ara::com] implementation then populates/fills such a \"sample slot\" (if one is free) and passes a SamplePtr pointing to it in the user/application callback f.
 
@@ -2043,17 +1274,7 @@ Those memory-slots, in which the event sample data reside, are allocated by the 
 
 In the callback implementation the user/application decides then, what to do with this passed in SamplePtr. If it wants to keep the sample for later access (i.e. after the return of the callback, it will make a copy at some outer scope location, where it fits in its software component architecture. The decission, whether to copy it (i.e. keep it) might simply depend on the properties/values of the event sample data. In this case the callback implementation is basically applying a \"filter\" on the received event samples. Since we stated, that the SamplePtr behaves like a std::unique_ptr), the above statement has to be slightly corrected: The implementation --when deciding to keep that event sample --is obviously not copying that passed in SamplePtr, but moving it to a outer scope location.
 
-> ---
->
-> 在回调实现中，用户/应用程序决定如何使用传入的 SamplePtr。如果它想保留样本以供稍后访问(即在回调返回后)，它将在一些外部范围位置复制它，以便符合其软件组件架构。决定是否复制(即保留)它可能只取决于事件样本数据的属性/值。在这种情况下，回调实现基本上是在接收到的事件样本上应用"过滤器"。由于我们指出 SamplePtr 的行为就像 std
->
-> ---
->
-> ```
->                                                                                                 unique_ptr，因此上述声明必须略作修正：当决定保留该事件样本时，实现显然不是复制传入的 SamplePtr，而是将其移动到外部范围位置。
-> ```
->
-> ---
+> 在回调实现中，用户/应用程序决定如何使用传入的 SamplePtr。如果它想保留样本以供稍后访问(即在回调返回后)，它将在一些外部范围位置复制它，以便符合其软件组件架构。决定是否复制(即保留)它可能只取决于事件样本数据的属性/值。在这种情况下，回调实现基本上是在接收到的事件样本上应用"过滤器"。由于我们**指出 `SamplePtr` 的行为就像 `std::unique_ptr`**，因此上述声明必须略作修正：当决定保留该事件样本时，实现显然不是复制传入的 `SamplePtr`，而是将其移动到外部范围位置。
 
 The small example in [5.5] shows --beside other things --in method handleBrakeEventReception() how such a callback implementation could realize simple filtering and moving of samples to a global storage with a \"LastN\" semantic for later use/processing.
 

@@ -794,90 +794,37 @@ The entry point to the Log and Trace framework is the [CreateLogger()](#_bookmar
 
 > 入口点到日志和跟踪框架是[CreateLogger()]操作，它构造一个新的[Logger](#_bookmark91)上下文。之后，可以使用[Logger](#_bookmark91)中返回的[LogStream](#_bookmark94)构造新的消息，例如[LogInfo](#_bookmark92) [()](#_bookmark92)。
 
-![](./media/image51.png)
-
-![](./media/image52.png)
-
 **Figure 9.16: Interfaces of Log and Trace**
-
-```
-
-```
 
 2. **Provided interfaces**
 
-> 2. **提供的接口**
-
-![](./media/image28.png) ![](./media/image53.png) ![](./media/image55.png) ![](./media/image56.png)
-![](./media/image58.png)![](./media/image59.png)![](./media/image59.png)
-![](./media/image20.png)
-![](./media/image24.png)![](./media/image60.png)![](./media/image22.png)**Figure 9.17: Users of the Log and Trace interfaces**
-
-```
-
-```
-
+**Figure 9.17: Users of the Log and Trace interfaces**
 **Table 9.5: Interfaces provided by Log and Trace to other Functional Clusters**
-
-> 表 9.5：日志和跟踪提供给其他功能群的接口
 
 3. **Required interfaces**
 
-> 3. **必需的接口**
-
-![](./media/image61.png)
-
-![](./media/image62.png)![](./media/image63.png)**Figure 9.18: Interfaces required by LogAndTrace**
-
-```
-
-```
-
+**Figure 9.18: Interfaces required by LogAndTrace**
 **Table 9.6: Interfaces required by Log and Trace**
-
-> 表 9.6：日志和跟踪所需的接口
 
 ### Core
 
-```
-
-```
-
 1. **Defined interfaces**
-
-> **定义的接口**
-
-![](./media/image64.png)
 
 **Figure 9.19: Interfaces of Core**
 
-1. **Interfaces for initialization and de-initialization**
-
-> 1. 初始化和反初始化的接口
+1. **Interfaces for initialization and de-initialization**(初始化和反初始化的接口)
 
 The AUTOSAR Adaptive Platform for Applications needs to be initialized by an application before it is used (using [Initialize()](#_bookmark98)) and de-initialized after it is no longer used (using [Deinitialize()](#_bookmark97)).
 
-> AUTOSAR 自适应应用平台在使用之前需要由应用程序进行初始化(使用[Initialize()](#_bookmark98))，在不再使用时需要进行反初始化(使用[Deinitialize()](#_bookmark97))。
+> AUTOSAR 自适应应用平台在使用之前需要由应用程序进行初始化(使用[Initialize()])，在不再使用时需要进行反初始化(使用[Deinitialize()])。
 
-```
-
-```
-
-2. **Interfaces for process termination**
-
-> 2. **进程终止的接口**
+2. **Interfaces for process termination**(进程终止的接口)
 
 The AUTOSAR Adaptive Platform for Applications provides an explicit abnormal termination facility using [Abort()](#_bookmark99).
 
-> AUTOSAR Adaptive 平台为应用提供了一个显式的异常终止设施，使用[Abort()](#_bookmark99)。
-
-```
-
-```
+> AUTOSAR Adaptive 平台为应用提供了一个显式的异常终止设施，使用[Abort()]。
 
 2. **Provided interfaces**
-
-> 2. **提供的接口**
 
 [Core](#_bookmark96) currently provides no interfaces to other Functional Clusters.
 
@@ -885,49 +832,18 @@ The AUTOSAR Adaptive Platform for Applications provides an explicit abnormal ter
 
 3. **Required interfaces**
 
-> 3. **必需的接口**
-
 [Core](#_bookmark96) currently requires no interfaces.
-
-> 核心目前不需要任何界面。
 
 ### Operating System Interface
 
-```
-
-```
-
 1. **Defined interfaces**
-
-> **定义的接口**
-
-![](./media/image16.png)
-
-![](./media/image17.png)
 
 **Figure 9.20: Interfaces defined by Operating System Interface**
 
-```
-
-```
-
 2. **Provided interfaces**
 
-> 2. **提供的接口**
-
-![](./media/image65.png)
-
-![](./media/image66.png)
-
 **Figure 9.21: Users of the OperatingSystemInterface interfaces**
-
-```
-
-```
-
 **Table 9.7: Interfaces provided by Operating System Interface to other Functional Clusters**
-
-> 表 9.7：操作系统接口提供的接口对其他功能群
 
 3. **Required interfaces**
 
